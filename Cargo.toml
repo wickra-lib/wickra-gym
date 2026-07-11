@@ -17,8 +17,8 @@ members = [
     "bindings/c",
     "bindings/python",
     "bindings/node",
-    # crates/gym-bench and bindings/wasm are added to this list as each lands,
-    # phase by phase.
+    "bindings/wasm",
+    # crates/gym-bench is added to this list as it lands.
 ]
 # The fuzz crate is its own (detached) workspace — cargo-fuzz builds it on a
 # nightly toolchain with sanitizer flags.

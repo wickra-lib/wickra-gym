@@ -1,0 +1,41 @@
+[package]
+name = "wickra-gym-wasm"
+description = "WebAssembly bindings for wickra-gym — a deterministic, Gymnasium-compatible backtest environment, in the browser."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+homepage.workspace = true
+readme = "README.md"
+publish = false
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+# Modern rustc emits a wasm feature set (bulk-memory, sign-ext, …) that the
+# wasm-opt bundled with wasm-pack is too old to validate. The wasm-bindgen output
+# is already valid and functional; skip the optional size-only optimizer pass.
+[package.metadata.wasm-pack.profile.release]
+wasm-opt = false
+
+[lints]
+workspace = true
+
+[dependencies]
+# The gym core as a direct path dep (not `workspace = true`) so
+# `default-features = false` is honored — cargo silently ignores it on an
+# inherited workspace dependency. Dropping the default `parallel` feature runs
+# the feature-tensor precompute sequentially (no rayon thread pool in a browser
+# sandbox), which is byte-identical to the native parallel run — the exact
+# cross-language golden check.
+gym-core = { path = "../../crates/gym-core", version = "0.1.0", default-features = false }
+wasm-bindgen = "0.2"
+
+# gym-core's seeded episode RNG (via `rand`) pulls in `getrandom`, which needs
+# its JS-backed entropy source to compile for `wasm32-unknown-unknown`. The RNG
+# is only ever seeded explicitly (never from entropy), so this backend is never
+# actually called — it only satisfies the build.
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+getrandom = { version = "0.2", features = ["js"] }
