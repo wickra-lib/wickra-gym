@@ -14,8 +14,9 @@ resolver = "2"
 members = [
     "crates/gym-core",
     "crates/gym-cli",
-    # crates/gym-bench and bindings/{python,node,wasm,c} are added to this list
-    # as each lands, phase by phase.
+    "bindings/c",
+    # crates/gym-bench and bindings/{python,node,wasm} are added to this list as
+    # each lands, phase by phase.
 ]
 # The fuzz crate is its own (detached) workspace — cargo-fuzz builds it on a
 # nightly toolchain with sanitizer flags.
