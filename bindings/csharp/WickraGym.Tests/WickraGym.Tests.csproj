@@ -1,0 +1,45 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.7.0" />
+    <PackageReference Include="xunit" Version="2.9.3" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="3.1.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../WickraGym/WickraGym.csproj" />
+  </ItemGroup>
+
+  <!--
+    Copy the native C ABI library next to the test assembly so the resolver's
+    default probe finds it. CI builds `cargo build -p wickra-gym-c` before running
+    the tests; the DllImportResolver also probes the Cargo target/ tree.
+  -->
+  <ItemGroup>
+    <Content Include="../../../target/release/wickra_gym.dll" Condition="Exists('../../../target/release/wickra_gym.dll')">
+      <Link>wickra_gym.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="../../../target/debug/wickra_gym.dll" Condition="Exists('../../../target/debug/wickra_gym.dll')">
+      <Link>wickra_gym.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="../../../target/release/libwickra_gym.so" Condition="Exists('../../../target/release/libwickra_gym.so')">
+      <Link>libwickra_gym.so</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="../../../target/release/libwickra_gym.dylib" Condition="Exists('../../../target/release/libwickra_gym.dylib')">
+      <Link>libwickra_gym.dylib</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>
