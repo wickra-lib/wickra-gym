@@ -1,0 +1,99 @@
+{
+  "seed": 42,
+  "actions": [
+    2,
+    2,
+    2,
+    2,
+    2
+  ],
+  "reset": {
+    "observation": [
+      59.75522252,
+      102.70537863
+    ],
+    "info": {
+      "bar": 15.0,
+      "equity": 0.0,
+      "pos": 0.0,
+      "step": 0.0
+    }
+  },
+  "trajectory": [
+    {
+      "observation": [
+        63.43716337,
+        103.93335304
+      ],
+      "reward": 1.22797442,
+      "terminated": false,
+      "truncated": false,
+      "info": {
+        "bar": 16.0,
+        "equity": 1.22797442,
+        "pos": 1.0,
+        "step": 1.0
+      }
+    },
+    {
+      "observation": [
+        67.77031162,
+        105.60900879
+      ],
+      "reward": 1.67565575,
+      "terminated": false,
+      "truncated": false,
+      "info": {
+        "bar": 17.0,
+        "equity": 2.90363016,
+        "pos": 1.0,
+        "step": 2.0
+      }
+    },
+    {
+      "observation": [
+        72.01966476,
+        107.60292251
+      ],
+      "reward": 1.99391372,
+      "terminated": false,
+      "truncated": false,
+      "info": {
+        "bar": 18.0,
+        "equity": 4.89754388,
+        "pos": 1.0,
+        "step": 3.0
+      }
+    },
+    {
+      "observation": [
+        75.73131791,
+        109.75063505
+      ],
+      "reward": 2.14771254,
+      "terminated": false,
+      "truncated": false,
+      "info": {
+        "bar": 19.0,
+        "equity": 7.04525642,
+        "pos": 1.0,
+        "step": 4.0
+      }
+    },
+    {
+      "observation": [
+        78.73073071,
+        111.87075615
+      ],
+      "reward": 2.1201211,
+      "terminated": false,
+      "truncated": true,
+      "info": {
+        "bar": 20.0,
+        "equity": 9.16537753,
+        "pos": 1.0,
+        "step": 5.0
+      }
+    }
+  ]
+}

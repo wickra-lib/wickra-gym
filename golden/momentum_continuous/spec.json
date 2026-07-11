@@ -1,0 +1,30 @@
+{
+  "dataset_ref": "golden",
+  "symbol": "BTCUSDT",
+  "observation": {
+    "features": [
+      {
+        "kind": "indicator",
+        "name": "Rsi",
+        "params": [
+          14
+        ]
+      },
+      {
+        "kind": "price",
+        "field": "close"
+      }
+    ]
+  },
+  "action_space": {
+    "type": "continuous",
+    "low": -1.0,
+    "high": 1.0
+  },
+  "reward": "pnl",
+  "episode": {
+    "max_steps": 5,
+    "warmup": 15
+  },
+  "seed": 42
+}

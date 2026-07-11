@@ -1,0 +1,29 @@
+{
+  "dataset_ref": "golden",
+  "symbol": "BTCUSDT",
+  "observation": {
+    "features": [
+      {
+        "kind": "indicator",
+        "name": "Rsi",
+        "params": [
+          14
+        ]
+      },
+      {
+        "kind": "price",
+        "field": "close"
+      }
+    ]
+  },
+  "action_space": {
+    "type": "discrete",
+    "n": 3
+  },
+  "reward": "sharpe",
+  "episode": {
+    "max_steps": 5,
+    "warmup": 15
+  },
+  "seed": 42
+}
