@@ -1,0 +1,32 @@
+[package]
+name = "gym-bench"
+description = "Criterion benchmarks for gym-core: rollout step throughput by observation dimension and feature-tensor precompute by dataset size."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+publish = false
+
+[lints]
+workspace = true
+
+[features]
+# On by default: forward the core's parallel (rayon) precompute. Off
+# (`--no-default-features`) benches the sequential path — the output is
+# byte-identical, so this isolates the scheduling difference.
+default = ["parallel"]
+parallel = ["gym-core/parallel"]
+
+[dependencies]
+# Path (not workspace) dep so `default-features = false` takes effect.
+gym-core = { path = "../gym-core", version = "0.1.0", default-features = false }
+serde_json.workspace = true
+
+[dev-dependencies]
+criterion.workspace = true
+
+[[bench]]
+name = "rollout"
+harness = false
