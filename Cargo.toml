@@ -41,6 +41,8 @@ serde = { version = "1", features = ["derive"] }
 # re-parses to the exact same f64 it was written from, which the determinism
 # (byte-identical trajectory) invariant requires.
 serde_json = { version = "1", features = ["float_roundtrip"] }
+# TOML spec files for the CLI (EnvSpec::from_toml / Config::from_toml).
+toml = "0.8"
 rust_decimal = "1"
 thiserror = "2"
 # Parallel feature-tensor precompute (feature-gated: off on the sequential WASM
