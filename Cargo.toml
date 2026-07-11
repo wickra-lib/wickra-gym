@@ -1,0 +1,96 @@
+# Wickra Gym — workspace.
+# A Gymnasium-compatible, microstructure-aware backtest environment with O(1)
+# steps: the whole dataset is precomputed once (O(1) per bar) into a fixed
+# feature tensor, so step() is a pure array index — fast, deterministic RL
+# rollouts. The core (`gym-core`) is exposed as a JSON-over-C-ABI data API in ten
+# languages: a Rust core with native Python/Node/WASM bindings plus a C ABI hub
+# for C/C++/C#/Go/Java/R, and a real gymnasium.Env subclass as the Python
+# consumer.
+#
+# The `members` list grows as crates are added, phase by phase.
+
+[workspace]
+resolver = "2"
+members = [
+    "crates/gym-core",
+    "crates/gym-cli",
+    "crates/gym-bench",
+    "bindings/python",
+    "bindings/node",
+    "bindings/wasm",
+    "bindings/c",
+]
+# The fuzz crate is its own (detached) workspace — cargo-fuzz builds it on a
+# nightly toolchain with sanitizer flags.
+exclude = ["fuzz"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.86"
+license = "MIT OR Apache-2.0"
+authors = ["wickra-lib"]
+repository = "https://github.com/wickra-lib/wickra-gym"
+homepage = "https://wickra.org"
+readme = "README.md"
+keywords = ["trading", "backtest", "reinforcement-learning", "gymnasium", "finance"]
+categories = ["finance", "science", "command-line-utilities"]
+
+[workspace.dependencies]
+# Workspace-internal core, referenced by the CLI, bench and bindings.
+gym-core = { version = "0.1.0", path = "crates/gym-core" }
+# Serialization — the data-driven boundary (spec/observation/step as JSON).
+serde = { version = "1", features = ["derive"] }
+# `float_roundtrip` makes serde_json's float parser correctly rounded: a float
+# re-parses to the exact same f64 it was written from, which the determinism
+# (byte-identical trajectory) invariant requires.
+serde_json = { version = "1", features = ["float_roundtrip"] }
+rust_decimal = "1"
+thiserror = "2"
+# Parallel feature-tensor precompute (feature-gated: off on the sequential WASM
+# path; the reductions stay serial so the tensor is byte-identical either way).
+rayon = "1"
+# The only RNG is the explicitly-seeded episode RNG — never thread_rng — so a
+# seed fully determines a trajectory.
+rand = "0.8"
+clap = { version = "4", features = ["derive"] }
+# The indicator registry (name + params -> Box<dyn Indicator>) and Candle/CSV
+# reader, reused verbatim for feature extraction. Pinned like wickra-backtest.
+wickra-core = "0.9"
+wickra-data = "0.9"
+# The backtest engine supplies fill/PnL semantics for the step() reward. Consumed
+# from git until its first crates.io release (USER-GO gated); a `version` is
+# pinned alongside `git` so it is not a wildcard (cargo-deny bans.wildcards).
+wickra-backtest = { git = "https://github.com/wickra-lib/wickra-backtest", version = "0.1" }
+# Optional microstructure feeds (orderbook / funding / OI) behind feature `live`.
+wickra-exchange = { git = "https://github.com/wickra-lib/wickra-exchange", version = "0.1" }
+# C ABI header generation.
+cbindgen = "0.27"
+# Test/dev.
+criterion = "0.5"
+proptest = "1"
+
+[workspace.lints.rust]
+# The core and all bindings are safe Rust; the C ABI hub re-allows unsafe
+# locally (it must call across the FFI boundary).
+unsafe_code = "forbid"
+
+[workspace.lints.clippy]
+all = { level = "warn", priority = -1 }
+pedantic = { level = "warn", priority = -1 }
+cast_precision_loss = "allow"
+cast_sign_loss = "allow"
+cast_possible_truncation = "allow"
+module_name_repetitions = "allow"
+missing_errors_doc = "allow"
+missing_panics_doc = "allow"
+must_use_candidate = "allow"
+too_many_lines = "allow"
+similar_names = "allow"
+
+[profile.release]
+# Panics must never unwind across the C ABI boundary: abort instead.
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true

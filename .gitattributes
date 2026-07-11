@@ -1,0 +1,7 @@
+# Normalise line endings to LF in the repo (Windows checkouts may use CRLF).
+* text=auto eol=lf
+# Datasets are byte-stable: a stray CRLF would change a candle CSV's bytes and
+# therefore every downstream report hash. Pin them to LF explicitly.
+*.csv text eol=lf
+*.webp binary
+*.png binary
