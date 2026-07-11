@@ -6,9 +6,15 @@ package wickra
 
 /*
 #cgo CFLAGS: -I${SRCDIR}/include
-#cgo linux LDFLAGS: -L${SRCDIR}/lib/linux_amd64 -lwickra_gym
-#cgo darwin LDFLAGS: -L${SRCDIR}/lib/darwin_arm64 -lwickra_gym
-#cgo windows LDFLAGS: -L${SRCDIR}/lib/windows_amd64 -lwickra_gym
+// Bake an rpath into the linked test/consumer binary so the loader finds the
+// staged shared library at run time — otherwise Linux/macOS need
+// LD_LIBRARY_PATH/DYLD_LIBRARY_PATH set explicitly (PATH only helps Windows).
+#cgo linux,amd64 LDFLAGS: -L${SRCDIR}/lib/linux_amd64 -lwickra_gym -Wl,-rpath,${SRCDIR}/lib/linux_amd64
+#cgo linux,arm64 LDFLAGS: -L${SRCDIR}/lib/linux_arm64 -lwickra_gym -Wl,-rpath,${SRCDIR}/lib/linux_arm64
+#cgo darwin,amd64 LDFLAGS: -L${SRCDIR}/lib/darwin_amd64 -lwickra_gym -Wl,-rpath,${SRCDIR}/lib/darwin_amd64
+#cgo darwin,arm64 LDFLAGS: -L${SRCDIR}/lib/darwin_arm64 -lwickra_gym -Wl,-rpath,${SRCDIR}/lib/darwin_arm64
+#cgo windows,amd64 LDFLAGS: -L${SRCDIR}/lib/windows_amd64 -l:wickra_gym.dll
+#cgo windows,arm64 LDFLAGS: -L${SRCDIR}/lib/windows_arm64 -l:wickra_gym.dll
 #include <stdlib.h>
 #include "wickra_gym.h"
 */
