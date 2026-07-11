@@ -1,0 +1,44 @@
+[package]
+name = "gym-core"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+homepage.workspace = true
+readme.workspace = true
+keywords.workspace = true
+categories.workspace = true
+description = "Deterministic core of wickra-gym: precompute a candle dataset into a fixed feature tensor once, then step a Gymnasium-style RL environment in O(1) with byte-identical trajectories."
+
+[dependencies]
+serde.workspace = true
+serde_json.workspace = true
+rust_decimal.workspace = true
+thiserror.workspace = true
+# The only RNG is the explicitly-seeded episode RNG (never thread_rng).
+rand.workspace = true
+# The indicator registry (name + params -> indicator) and the fill/PnL model
+# come from the backtest engine, reused verbatim for feature extraction and the
+# step reward.
+wickra-core.workspace = true
+wickra-data.workspace = true
+wickra-backtest.workspace = true
+# Parallel feature-tensor precompute; off on the sequential WASM path. The
+# per-feature reductions stay serial, so the tensor is byte-identical either way.
+rayon = { workspace = true, optional = true }
+# Optional microstructure feeds (orderbook / funding / OI) for the observation.
+wickra-exchange = { workspace = true, optional = true }
+
+[features]
+default = ["parallel"]
+parallel = ["dep:rayon"]
+live = ["dep:wickra-exchange"]
+
+[dev-dependencies]
+serde_json.workspace = true
+proptest.workspace = true
+
+[lints]
+workspace = true
