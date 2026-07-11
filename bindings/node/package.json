@@ -1,0 +1,66 @@
+{
+  "name": "wickra-gym",
+  "version": "0.1.0",
+  "description": "A deterministic, Gymnasium-compatible backtest environment: precompute a candle dataset once into a fixed feature tensor, then step an RL environment in O(1) with byte-identical trajectories. Node bindings powered by Rust.",
+  "author": "kingchenc <support@wickra.org>",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "license": "MIT OR Apache-2.0",
+  "keywords": [
+    "trading",
+    "backtest",
+    "reinforcement-learning",
+    "gymnasium",
+    "finance",
+    "rust"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wickra-lib/wickra-gym"
+  },
+  "bugs": {
+    "url": "https://github.com/wickra-lib/wickra-gym/issues"
+  },
+  "homepage": "https://github.com/wickra-lib/wickra-gym",
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "npm",
+    "*.node"
+  ],
+  "napi": {
+    "name": "wickra-gym",
+    "triples": {
+      "defaults": false,
+      "additional": [
+        "x86_64-unknown-linux-gnu",
+        "aarch64-unknown-linux-gnu",
+        "x86_64-apple-darwin",
+        "aarch64-apple-darwin",
+        "x86_64-pc-windows-msvc",
+        "aarch64-pc-windows-msvc"
+      ]
+    }
+  },
+  "engines": {
+    "node": ">= 22"
+  },
+  "optionalDependencies": {
+    "wickra-gym-linux-x64-gnu": "0.1.0",
+    "wickra-gym-linux-arm64-gnu": "0.1.0",
+    "wickra-gym-darwin-x64": "0.1.0",
+    "wickra-gym-darwin-arm64": "0.1.0",
+    "wickra-gym-win32-x64-msvc": "0.1.0",
+    "wickra-gym-win32-arm64-msvc": "0.1.0"
+  },
+  "scripts": {
+    "build": "napi build --platform --release",
+    "build:debug": "napi build --platform",
+    "artifacts": "napi artifacts",
+    "version": "napi version",
+    "test": "node --test"
+  },
+  "devDependencies": {
+    "@napi-rs/cli": "^3.7.2"
+  }
+}
