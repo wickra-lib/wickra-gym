@@ -1,0 +1,24 @@
+{
+  "dataset_ref": "golden",
+  "symbol": "BTCUSDT",
+  "observation": {
+    "features": [
+      {
+        "kind": "price",
+        "field": "close"
+      }
+    ],
+    "include_book_levels": 2,
+    "include_funding_oi": true
+  },
+  "action_space": {
+    "type": "discrete",
+    "n": 3
+  },
+  "reward": "pnl",
+  "episode": {
+    "max_steps": 5,
+    "warmup": 2
+  },
+  "seed": 7
+}

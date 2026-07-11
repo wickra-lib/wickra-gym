@@ -2854,6 +2854,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "wickra-gym-example"
+version = "0.1.0"
+dependencies = [
+ "gym-core",
+ "serde_json",
+ "wickra-data",
+]
+
+[[package]]
 name = "wickra-gym-node"
 version = "0.1.0"
 dependencies = [

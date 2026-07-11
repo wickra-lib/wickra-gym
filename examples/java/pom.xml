@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.wickra</groupId>
+  <artifactId>wickra-gym-example</artifactId>
+  <version>0.1.0</version>
+  <packaging>jar</packaging>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.release>22</maven.compiler.release>
+    <!-- The built C ABI library; override with -Dnative.lib.dir=... -->
+    <native.lib.dir>${project.basedir}/../../target/release</native.lib.dir>
+  </properties>
+
+  <dependencies>
+    <!--
+      Resolved from the local repository. Build it first:
+        (cd bindings/java && mvn -q install -DskipTests)
+    -->
+    <dependency>
+      <groupId>org.wickra</groupId>
+      <artifactId>wickra-gym</artifactId>
+      <version>0.1.0</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>3.5.0</version>
+        <configuration>
+          <!-- exec:exec spawns a fresh JVM so the FFM native-access flag and
+               the native.lib.dir system property take effect. -->
+          <executable>java</executable>
+          <arguments>
+            <argument>--enable-native-access=ALL-UNNAMED</argument>
+            <argument>-Dnative.lib.dir=${native.lib.dir}</argument>
+            <argument>-classpath</argument>
+            <classpath/>
+            <argument>org.wickra.gym.examples.Rollout</argument>
+          </arguments>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

@@ -1,0 +1,22 @@
+[package]
+name = "wickra-gym-example"
+description = "A runnable Rust example for the wickra-gym core."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish = false
+
+[lints]
+workspace = true
+
+[[bin]]
+name = "rollout"
+path = "src/main.rs"
+
+[dependencies]
+gym-core = { workspace = true }
+serde_json = { workspace = true }
+# The canonical candle ingestion path: read a CSV series (same reader the CLI
+# uses) and map into gym candles.
+wickra-data = { workspace = true }

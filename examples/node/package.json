@@ -1,0 +1,14 @@
+{
+  "name": "wickra-gym-example-node",
+  "private": true,
+  "version": "0.1.0",
+  "description": "A runnable Node.js example for the wickra-gym environment.",
+  "license": "MIT OR Apache-2.0",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node rollout.js"
+  },
+  "dependencies": {
+    "wickra-gym": "file:../../bindings/node"
+  }
+}
