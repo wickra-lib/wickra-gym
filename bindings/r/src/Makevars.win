@@ -1,0 +1,4 @@
+# On Windows the C ABI DLL is linked directly (mingw resolves the import stubs
+# from wickra_gym.dll); the loader finds it via PATH at run time.
+PKG_CPPFLAGS = -I$(WKGYM_INC)
+PKG_LIBS = -L$(WKGYM_LIB) -l:wickra_gym.dll

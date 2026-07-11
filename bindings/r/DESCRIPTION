@@ -1,0 +1,18 @@
+Package: wickragym
+Type: Package
+Title: Deterministic Gymnasium-Compatible Backtest Environment
+Version: 0.1.0
+Authors@R: person("kingchenc", role = c("aut", "cre"), email = "support@wickra.org")
+Description: R bindings for wickra-gym over its C ABI hub: build a
+    Gymnasium-compatible backtest environment from a JSON spec, load candles and
+    drive it with reset/step commands - the same JSON protocol as the CLI and
+    every other language binding, with byte-identical trajectories.
+License: MIT + file LICENSE | Apache License 2.0
+URL: https://github.com/wickra-lib/wickra-gym
+BugReports: https://github.com/wickra-lib/wickra-gym/issues
+Encoding: UTF-8
+NeedsCompilation: yes
+SystemRequirements: the wickra-gym C ABI shared library (WKGYM_LIB) and its
+    header (WKGYM_INC).
+Suggests: jsonlite
+RoxygenNote: 7.3.2

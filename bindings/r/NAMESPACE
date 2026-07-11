@@ -1,0 +1,4 @@
+useDynLib(wickragym, .registration = TRUE, .fixes = "C_")
+export(wkgym_version)
+export(wkgym_new)
+export(wkgym_command)
