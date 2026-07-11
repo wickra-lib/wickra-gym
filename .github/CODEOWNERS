@@ -1,0 +1,7 @@
+# Default owner for everything in this repository.
+*       @kingchenc
+
+# The curated registry is the value of the product: its cases and datasets are
+# hash-pinned and golden-verified, so changes to them get explicit review.
+/cases/     @kingchenc
+/datasets/  @kingchenc

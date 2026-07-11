@@ -1,0 +1,10 @@
+# Python dev dependencies for the binding CI (build + test). Compiled to a
+# hash-locked ci-dev.txt with:
+#   uv pip compile --generate-hashes .github/requirements/ci-dev.in -o .github/requirements/ci-dev.txt
+# The gym extension returns observations as numpy arrays, so numpy is required.
+# `gymnasium` is the optional [gym] extra — the gymnasium.Env test skips cleanly
+# when it is absent, so it is not pinned here (installed separately in the
+# gymnasium CI leg).
+maturin
+pytest
+numpy

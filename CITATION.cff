@@ -1,0 +1,25 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "wickra-gym"
+abstract: >-
+  A reproducible, golden-verified benchmark suite for quant backtests: a curated,
+  hash-pinned collection of (strategy, dataset, expected report) cases that anyone
+  can recompute with the deterministic Wickra backtest engine and confirm
+  byte-for-byte in ten languages. The "ImageNet for trading-strategy
+  reproducibility". Exposed as a JSON-over-C-ABI data API in ten languages.
+type: software
+authors:
+  - alias: kingchenc
+    website: "https://wickra.org"
+repository-code: "https://github.com/wickra-lib/wickra-gym"
+url: "https://wickra.org"
+license:
+  - MIT
+  - Apache-2.0
+keywords:
+  - trading
+  - backtest
+  - benchmark
+  - determinism
+  - reproducibility
+  - finance

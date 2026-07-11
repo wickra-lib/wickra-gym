@@ -1,0 +1,10 @@
+# Python dev dependencies for the binding CI (build + test).
+#
+# This is the compiled form of ci-dev.in. Regenerate the hash-locked version
+# (recommended before a release) with:
+#   uv pip compile --generate-hashes .github/requirements/ci-dev.in -o .github/requirements/ci-dev.txt
+# The CI python job installs these directly (`pip install maturin pytest numpy`);
+# this file is the pinned source Dependabot tracks and the refresh script locks.
+maturin
+pytest
+numpy
