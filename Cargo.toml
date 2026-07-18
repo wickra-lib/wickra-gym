@@ -53,9 +53,12 @@ thiserror = "2"
 # Parallel feature-tensor precompute (feature-gated: off on the sequential WASM
 # path; the reductions stay serial so the tensor is byte-identical either way).
 rayon = "1"
-# The only RNG is the explicitly-seeded episode RNG — never thread_rng — so a
-# seed fully determines a trajectory.
-rand = "0.10"
+# The only RNG is the explicitly-seeded episode RNG (`StdRng`) — never
+# thread_rng/os_rng — so a seed fully determines a trajectory. `std_rng` alone
+# (no default features) keeps `getrandom` out of the dependency tree, which
+# matters for the wasm32 binding: rand 0.10 pulls getrandom 0.4, whose OS
+# backend does not compile for wasm32-unknown-unknown.
+rand = { version = "0.10", default-features = false, features = ["std_rng"] }
 clap = { version = "4", features = ["derive"] }
 # The indicator registry (name + params -> Box<dyn Indicator>) and Candle/CSV
 # reader, reused verbatim for feature extraction. Pinned like wickra-backtest.
