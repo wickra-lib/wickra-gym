@@ -5,7 +5,7 @@
 use std::collections::BTreeMap;
 
 use rand::rngs::StdRng;
-use rand::{Rng, SeedableRng};
+use rand::{RngExt, SeedableRng};
 use serde::Deserialize;
 use serde_json::json;
 
@@ -98,7 +98,7 @@ impl Env {
         // v1: the start offset is always 0 (deterministic); the RNG draw keeps
         // the seed plumbing live for future randomized starts.
         let max_offset: usize = 0;
-        let offset = self.state.rng.gen_range(0..=max_offset);
+        let offset = self.state.rng.random_range(0..=max_offset);
         let bar = self.spec.episode.warmup as usize + offset;
         if bar >= tensor.n_bars {
             return Err(Error::Data("warmup exceeds the loaded dataset".to_string()));
