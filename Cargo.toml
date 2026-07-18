@@ -47,7 +47,7 @@ serde = { version = "1", features = ["derive"] }
 # (byte-identical trajectory) invariant requires.
 serde_json = { version = "1", features = ["float_roundtrip"] }
 # TOML spec files for the CLI (EnvSpec::from_toml / Config::from_toml).
-toml = "0.8"
+toml = "1.1"
 rust_decimal = "1"
 thiserror = "2"
 # Parallel feature-tensor precompute (feature-gated: off on the sequential WASM
@@ -55,7 +55,7 @@ thiserror = "2"
 rayon = "1"
 # The only RNG is the explicitly-seeded episode RNG — never thread_rng — so a
 # seed fully determines a trajectory.
-rand = "0.8"
+rand = "0.10"
 clap = { version = "4", features = ["derive"] }
 # The indicator registry (name + params -> Box<dyn Indicator>) and Candle/CSV
 # reader, reused verbatim for feature extraction. Pinned like wickra-backtest.
@@ -70,7 +70,7 @@ wickra-exchange = { git = "https://github.com/wickra-lib/wickra-exchange", versi
 # C ABI header generation.
 cbindgen = "0.27"
 # Test/dev.
-criterion = "0.5"
+criterion = "0.8"
 proptest = "1"
 
 [workspace.lints.rust]
