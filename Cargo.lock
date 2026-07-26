@@ -2253,7 +2253,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "32497e9a4c7b38532efcdebeef879707aa9f794296a4f0244f6f69e9bc8574bd"
 dependencies = [
  "fastrand",
- "getrandom 0.4.3",
+ "getrandom 0.3.4",
  "once_cell",
  "rustix",
  "windows-sys 0.61.2",
@@ -2715,7 +2715,7 @@ dependencies = [
 [[package]]
 name = "wickra-backtest"
 version = "0.1.0"
-source = "git+https://github.com/wickra-lib/wickra-backtest#496b168c5f15412b3d3becc9b92e1793c61264de"
+source = "git+https://github.com/wickra-lib/wickra-backtest#bd50f9733f875bf839ba5ac06b79ca7147d0f104"
 dependencies = [
  "wickra-backtest-core",
  "wickra-backtest-data",
@@ -2724,7 +2724,7 @@ dependencies = [
 [[package]]
 name = "wickra-backtest-core"
 version = "0.1.0"
-source = "git+https://github.com/wickra-lib/wickra-backtest#496b168c5f15412b3d3becc9b92e1793c61264de"
+source = "git+https://github.com/wickra-lib/wickra-backtest#bd50f9733f875bf839ba5ac06b79ca7147d0f104"
 dependencies = [
  "schemars",
  "serde",
@@ -2736,7 +2736,7 @@ dependencies = [
 [[package]]
 name = "wickra-backtest-data"
 version = "0.1.0"
-source = "git+https://github.com/wickra-lib/wickra-backtest#496b168c5f15412b3d3becc9b92e1793c61264de"
+source = "git+https://github.com/wickra-lib/wickra-backtest#bd50f9733f875bf839ba5ac06b79ca7147d0f104"
 dependencies = [
  "serde_json",
  "wickra-backtest-core",
@@ -2769,7 +2769,7 @@ dependencies = [
 [[package]]
 name = "wickra-exchange"
 version = "0.1.0"
-source = "git+https://github.com/wickra-lib/wickra-exchange#2b2de7646ae8b919f6f00c3fd3d414a6985ba8cc"
+source = "git+https://github.com/wickra-lib/wickra-exchange#83e123e83a80f2f8a30cf7b1a51b6623025bda0a"
 dependencies = [
  "futures-util",
  "reqwest",
@@ -2781,7 +2781,7 @@ dependencies = [
 [[package]]
 name = "wickra-exchange-core"
 version = "0.1.0"
-source = "git+https://github.com/wickra-lib/wickra-exchange#2b2de7646ae8b919f6f00c3fd3d414a6985ba8cc"
+source = "git+https://github.com/wickra-lib/wickra-exchange#83e123e83a80f2f8a30cf7b1a51b6623025bda0a"
 dependencies = [
  "base64",
  "hex",
