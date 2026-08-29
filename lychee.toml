@@ -22,4 +22,6 @@ exclude = [
     "^https?://pypi\\.org/project/wickra-gym",
     "^https?://www\\.npmjs\\.com/package/wickra-gym",
     "^https?://pkg\\.go\\.dev/github\\.com/wickra-lib/wickra-gym-go",
+    "^https?://www\\.nuget\\.org/packages/Wickra\\.Gym",
+    "^https?://central\\.sonatype\\.com/artifact/org\\.wickra/wickra-gym",
 ]

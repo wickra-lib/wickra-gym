@@ -7,12 +7,20 @@
 [![CI](https://raw.githubusercontent.com/wickra-lib/.github/main/profile/badges/wickra-gym/ci.svg)](https://github.com/wickra-lib/wickra-gym/actions/workflows/ci.yml)
 [![CodeQL](https://raw.githubusercontent.com/wickra-lib/.github/main/profile/badges/wickra-gym/codeql.svg)](https://github.com/wickra-lib/wickra-gym/actions/workflows/codeql.yml)
 [![codecov](https://raw.githubusercontent.com/wickra-lib/.github/main/profile/badges/wickra-gym/codecov.svg)](https://codecov.io/gh/wickra-lib/wickra-gym)
+[![GitHub release](https://raw.githubusercontent.com/wickra-lib/.github/main/profile/badges/wickra-gym/release.svg)](https://github.com/wickra-lib/wickra-gym/releases/latest)
+[![crates.io](https://raw.githubusercontent.com/wickra-lib/.github/main/profile/badges/wickra-gym/crates.svg)](https://crates.io/crates/wickra-gym)
+[![PyPI](https://raw.githubusercontent.com/wickra-lib/.github/main/profile/badges/wickra-gym/pypi.svg)](https://pypi.org/project/wickra-gym/)
+[![npm](https://raw.githubusercontent.com/wickra-lib/.github/main/profile/badges/wickra-gym/npm.svg)](https://www.npmjs.com/package/wickra-gym)
+[![NuGet](https://raw.githubusercontent.com/wickra-lib/.github/main/profile/badges/wickra-gym/nuget.svg)](https://www.nuget.org/packages/Wickra.Gym)
+[![Maven Central](https://raw.githubusercontent.com/wickra-lib/.github/main/profile/badges/wickra-gym/maven.svg)](https://central.sonatype.com/artifact/org.wickra/wickra-gym)
+[![Go module](https://raw.githubusercontent.com/wickra-lib/.github/main/profile/badges/wickra-gym/go.svg)](https://pkg.go.dev/github.com/wickra-lib/wickra-gym-go)
+[![R-universe](https://raw.githubusercontent.com/wickra-lib/.github/main/profile/badges/wickra-gym/r-universe.svg)](https://wickra-lib.r-universe.dev)
 [![License: MIT OR Apache-2.0](https://raw.githubusercontent.com/wickra-lib/.github/main/profile/badges/wickra-gym/license.svg)](#license)
 [![OpenSSF Scorecard](https://raw.githubusercontent.com/wickra-lib/.github/main/profile/badges/wickra-gym/scorecard.svg)](https://scorecard.dev/viewer/?uri=github.com/wickra-lib/wickra-gym)
-[![OpenSSF Best Practices](https://raw.githubusercontent.com/wickra-lib/.github/main/profile/badges/wickra-gym/best-practices.svg)](https://www.bestpractices.dev/)
+[![OpenSSF Best Practices](https://raw.githubusercontent.com/wickra-lib/.github/main/profile/badges/wickra-gym/best-practices.svg)](https://www.bestpractices.dev)
 [![Build provenance](https://raw.githubusercontent.com/wickra-lib/.github/main/profile/badges/wickra-gym/provenance.svg)](https://github.com/wickra-lib/wickra-gym/attestations)
-[![Deterministic across 10 languages](https://img.shields.io/badge/deterministic%20across-10%20languages-3b82f6)](#use-in-any-language)
 [![Docs](https://raw.githubusercontent.com/wickra-lib/.github/main/profile/badges/wickra-gym/docs.svg)](https://wickra.org)
+[![Verified across 10 languages](https://raw.githubusercontent.com/wickra-lib/.github/main/profile/badges/wickra-gym/verified.svg)](golden/)
 
 ---
 
@@ -249,3 +257,26 @@ your option.
 agent's backtested performance says nothing about future returns; markets carry
 risk and you are responsible for your own decisions. `wickra-gym` is free
 software you run yourself: no hosted service, no data collection, no warranty.
+
+---
+
+<p align="center">
+  <a href="https://github.com/wickra-lib/wickra-gym">
+    <img alt="GitHub stars" src="https://raw.githubusercontent.com/wickra-lib/.github/main/profile/badges/wickra-gym/stars.svg">
+  </a>
+  <a href="https://github.com/wickra-lib/wickra-gym/network/members">
+    <img alt="GitHub forks" src="https://raw.githubusercontent.com/wickra-lib/.github/main/profile/badges/wickra-gym/forks.svg">
+  </a>
+  <a href="https://github.com/wickra-lib/wickra-gym/issues">
+    <img alt="GitHub issues" src="https://raw.githubusercontent.com/wickra-lib/.github/main/profile/badges/wickra-gym/issues.svg">
+  </a>
+</p>
+
+<p align="center">
+  Built on <a href="https://github.com/wickra-lib/wickra">Wickra</a>. If it saved you time, the cheapest way to say thanks is to ⭐ the repo.
+</p>
+
+<p align="center">
+  <img alt="wickra-gym star history" width="640"
+       src="https://raw.githubusercontent.com/wickra-lib/.github/main/profile/badges/wickra-gym/star-history.svg">
+</p>
