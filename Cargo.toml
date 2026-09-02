@@ -62,8 +62,8 @@ rand = { version = "0.10", default-features = false, features = ["std_rng"] }
 clap = { version = "4", features = ["derive"] }
 # The indicator registry (name + params -> Box<dyn Indicator>) and Candle/CSV
 # reader, reused verbatim for feature extraction. Pinned like wickra-backtest.
-wickra-core = "0.9"
-wickra-data = "0.9"
+wickra-core = "1.0"
+wickra-data = "1.0"
 # The backtest engine supplies fill/PnL semantics for the step() reward. Consumed
 # from git until its first crates.io release (USER-GO gated); a `version` is
 # pinned alongside `git` so it is not a wildcard (cargo-deny bans.wildcards).
