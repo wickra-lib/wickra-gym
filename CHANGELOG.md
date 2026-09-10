@@ -8,6 +8,16 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Fixed
 
+- **Three steps of the `examples` job ran a file that is not here.** Python,
+  Node.js and R each invoked `examples/<lang>/scan.*` -- the screener's file
+  name, left over from the port -- so they died on a missing file before
+  reaching any assertion.
+
+- **Every language step asserted `"symbol":"BBB"`**, a line from the screener's
+  scan report that no example here prints. Each step now matches a string its
+  own example emits, read off the format string rather than guessed: the
+  assertions were checked against a real run of each example.
+
 - **The C++ example now goes through the C++ hull.** It called the C functions
   directly and rebuilt the two-call length protocol by hand -- the very thing
   `wickra_gym.hpp` exists to remove -- which left the shipped C++ surface built

@@ -708,7 +708,7 @@ jobs:
         run: |
           out=$(cargo run -q --manifest-path examples/rust/Cargo.toml)
           echo "$out"
-          echo "$out" | grep -q '"symbol":"BBB"'
+          echo "$out" | grep -q '9.165378'
 
       # `maturin develop` wants a virtualenv; the python job builds a wheel and
       # installs it instead, which needs none. Same route here.
@@ -721,9 +721,9 @@ jobs:
           python -m pip install --require-hashes -r .github/requirements/ci-dev-py3.txt
           ( cd bindings/python && maturin build --release --out dist )
           python -m pip install --no-index --find-links bindings/python/dist wickra-gym
-          out=$(python examples/python/scan.py)
+          out=$(python examples/python/rollout.py)
           echo "$out"
-          echo "$out" | grep -q '"symbol":"BBB"'
+          echo "$out" | grep -q '9.165378'
 
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         id: setup_node_examples
@@ -744,9 +744,9 @@ jobs:
         run: |
           ( cd bindings/node && npm install --no-audit --no-fund && npx napi build --platform --release )
           ( cd examples/node && npm install --no-audit --no-fund )
-          out=$(node examples/node/scan.js)
+          out=$(node examples/node/rollout.js)
           echo "$out"
-          echo "$out" | grep -q '"symbol":"BBB"'
+          echo "$out" | grep -q '9.165378'
 
       # The browser demo embeds an ES module, and nothing else in this repository
       # parses a script inside an HTML file. Extract it and parse-check it, so a
@@ -776,7 +776,7 @@ jobs:
         run: |
           out=$(cd examples/go && go run .)
           echo "$out"
-          echo "$out" | grep -q '"symbol":"BBB"'
+          echo "$out" | grep -q '9.165378'
 
       - uses: actions/setup-java@dd06d9cba3e5552c54d9f8ea23572deb30010f7c # v6.0.0
         with:
@@ -803,7 +803,7 @@ jobs:
         run: |
           out=$(dotnet run --project examples/csharp/Scan)
           echo "$out"
-          echo "$out" | grep -q '"symbol":"BBB"'
+          echo "$out" | grep -q '9.165378'
 
       - uses: r-lib/actions/setup-r@465b7d8e732ca3921382b1674c59bada9cbf3399 # v2.13.0
         with:
@@ -815,9 +815,9 @@ jobs:
           WKGYM_LIB: ${{ github.workspace }}/target/release
         run: |
           R CMD INSTALL bindings/r
-          out=$(Rscript examples/r/scan.R)
+          out=$(Rscript examples/r/rollout.R)
           echo "$out"
-          echo "$out" | grep -q '"symbol":"BBB"'
+          echo "$out" | grep -q '9.165378'
 
   python-wheel-container-smoke:
     name: Python wheel (${{ matrix.manylinux }} smoke)
