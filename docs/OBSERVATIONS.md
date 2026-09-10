@@ -32,7 +32,7 @@ A `Feature` is one scalar observation column, internally tagged by `kind`
 | `microstructure` | `{"field": <MicroField>, "level"?: <u32>}` | `{"kind":"microstructure","field":"imbalance"}` |
 
 - **Indicator names are the registry's PascalCase identifiers** (`Rsi`, `Sma`,
-  `Ema`, `Macd`, …) — the same 514 indicators as
+  `Ema`, `Macd`, …) — the same 497 indicators as
   [`wickra-core`](https://github.com/wickra-lib/wickra). `params` are the
   indicator's constructor arguments; `field` selects a sub-output on a
   multi-output indicator (e.g. `"hist"` on `Macd`) and defaults to the primary

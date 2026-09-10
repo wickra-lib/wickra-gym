@@ -23,7 +23,7 @@ are derived from the spec, so SB3 configures its policy automatically. See
 
 ## Observe a custom indicator
 
-Add any of the 514 registry indicators to the observation by name and params:
+Add any of the 497 registry indicators to the observation by name and params:
 
 ```jsonc
 "observation": { "features": [
