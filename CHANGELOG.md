@@ -8,6 +8,13 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Fixed
 
+- **The CLI was published without ever being run in CI.** `release.yml` builds
+  and attaches `cli-binaries`, and five sibling repositories smoke-test their
+  binary on every push; this one did not, so a CLI that failed to start would
+  have been found by whoever downloaded it. The job runs a committed spec over
+  committed data in both output formats, asserting on real output rather than on
+  the exit code alone.
+
 - **The CI Java example step compiled a file that is not there.** The `examples`
   job was ported from the screener, whose Java example is a single
   `examples/java/Scan.java` built with `javac`. This repository ships a Maven
