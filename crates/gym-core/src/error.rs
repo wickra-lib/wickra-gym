@@ -12,6 +12,19 @@ pub enum Error {
     #[error("unknown indicator: {0}")]
     UnknownIndicator(String),
     /// The spec is structurally invalid (bad field, out-of-range parameter).
+    /// An observation feature names an indicator whose side feed this dataset
+    /// cannot supply. Without this the column would be constant `0.0` for the
+    /// whole episode, indistinguishable from an indicator that is warming up —
+    /// and an agent would train on it as if it meant something.
+    #[error("{indicator} needs the {feed} feed: {why}")]
+    MissingFeed {
+        /// The registry name that needs the feed.
+        indicator: String,
+        /// The feed it consumes.
+        feed: &'static str,
+        /// Why this dataset cannot supply it.
+        why: &'static str,
+    },
     #[error("bad spec: {0}")]
     BadSpec(String),
     /// An action is outside the declared action space.
