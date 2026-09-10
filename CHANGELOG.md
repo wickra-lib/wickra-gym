@@ -8,6 +8,44 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Fixed
 
+- **The CI Java example step compiled a file that is not there.** The `examples`
+  job was ported from the screener, whose Java example is a single
+  `examples/java/Scan.java` built with `javac`. This repository ships a Maven
+  project instead, so the step compiled a missing file and then asserted on
+  output the example never prints. It now builds the binding into the local
+  repository and runs the example through `mvn exec:exec`, the way the example's
+  own javadoc documents -- verified by running it.
+
+- **Dependabot watched directories that do not exist**, so it reported nothing
+  and the silence read as calm. `nuget` pointed at `WickraVerify.Tests`, a
+  project name from another repository, and `pip` did not cover
+  `/.github/requirements`.
+
+- **The examples README claimed byte-identical output that three of them do not
+  produce.** C, C++ and WASM printed a `wickra-gym <version>` banner; Python,
+  Node.js, Rust and Java did not; and C, C++, Go, Java and R echo the raw command
+  JSON where the others format it. All ten print the banner now, and the README
+  says what is actually identical -- the numbers -- rather than the text.
+
+- **`release.yml` overwrote the binding READMEs before packing.** Three steps
+  copied the root README over `bindings/python/README.md` (wheel and sdist) and
+  `bindings/node/README.md`. They date from when the bindings had no README of
+  their own; they do now, one per registry, and `check_readme_links.py` exists to
+  keep their links absolute because a relative link is dead on PyPI and npm. The
+  copy threw that away and shipped the root README, whose links are relative by
+  design. The remaining relative links in the C, C#, Go and WASM READMEs are
+  absolute now.
+
+- **The Python wheel would have shipped without its licence texts.**
+  `bindings/python/` carried neither `LICENSE-MIT` nor `LICENSE-APACHE`, so
+  maturin had nothing to include, while every crate and the release archive
+  carry both.
+
+- **`SECURITY.md` named a support policy for releases that do not exist yet.**
+  It promised fixes for "the latest `0.x` release line" where there is no
+  released line; it now says plainly that nothing is published and names `0.1.0`
+  as the first version that will be.
+
 - **The headline indicator count was the catalogue figure, not the reachable
   one.** 514 is what the `wickra-core` catalogue ships; what a spec can actually
   name is what the shared registry in `wickra-backtest-core` resolves, and that

@@ -11,13 +11,14 @@ trust-boundary breakdown.
 
 ## Supported versions
 
-Until the first stable release, only the latest `0.x` minor line receives
-security fixes.
+Nothing is published yet. Security fixes target `main`, and will carry into
+`0.1.0` -- the version the manifests declare and the first that will be
+released. No earlier version exists to support.
 
 | Version | Supported |
 |---------|-----------|
-| `0.1.0` (upcoming) | :white_check_mark: |
-| older        | :x:       |
+| `main`  | ✅        |
+| `0.1.0` (unreleased) | ✅ |
 
 ## Reporting a vulnerability
 
