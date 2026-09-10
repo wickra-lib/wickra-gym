@@ -8,6 +8,12 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Fixed
 
+- **The C++ example now goes through the C++ hull.** It called the C functions
+  directly and rebuilt the two-call length protocol by hand -- the very thing
+  `wickra_gym.hpp` exists to remove -- which left the shipped C++ surface built
+  by nothing. Verified by running both: the C and C++ examples print
+  byte-identical output.
+
 - **Every C++ hull used the include guard `WICKRA_SCREENER_HPP`.** The C headers
   beside them are guarded correctly; only the `.hpp` files shared one name, so
   including two of the family's headers in the same translation unit dropped the
@@ -17,9 +23,11 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 - **The C++ hull did not compile at all.** It declared `WickraGym* handle_`
   where the C header names the opaque type `WickraGymEnv`. Nothing caught it,
-  because every `examples/c/*.cpp` includes the C header rather than the hull
-  beside it — the shipped C++ surface is built by nothing — and the shared
-  include guard hid the error behind a skipped `#include`.
+  because this repository's only C++ example included the C header rather than
+  the hull beside it, so nothing built the shipped C++ surface — and the
+  shared include guard hid the error behind a skipped `#include`. (The
+  screener builds its hull from both of its C++ examples; the feature store
+  from one. This repository built it from none.)
 
 - **The hull's usage example could not run.** It showed a spec shaped
   `{"universe":[...]}` and `{"cmd":"scan"}`, the screener's, which this core
