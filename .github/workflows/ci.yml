@@ -510,7 +510,8 @@ jobs:
           export WKGYM_INC="${WKGYM_INC//\\//}"
           export WKGYM_LIB="${WKGYM_LIB//\\//}"
           if command -v cygpath >/dev/null 2>&1; then
-            export PATH="$(cygpath -u "$WKGYM_LIB"):$PATH"
+            WKGYM_LIB_UNIX=$(cygpath -u "$WKGYM_LIB")
+            export PATH="$WKGYM_LIB_UNIX:$PATH"
           else
             export LD_LIBRARY_PATH="$WKGYM_LIB:$LD_LIBRARY_PATH"
             export DYLD_LIBRARY_PATH="$WKGYM_LIB:$DYLD_LIBRARY_PATH"
