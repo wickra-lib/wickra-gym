@@ -60,7 +60,7 @@ cargo deny check
 ## Checklist
 
 - [ ] `CHANGELOG.md` updated under `[Unreleased]`
-- [ ] Conditions stay data (a serde `ScanSpec`), never Rust closures
+- [ ] The spec stays data (a serde `EnvSpec`), never Rust closures
 - [ ] No indicator reimplemented here — the registry owns them
 - [ ] An unsupported case is a refusal that names what is missing, not a silent
       zero or an empty result

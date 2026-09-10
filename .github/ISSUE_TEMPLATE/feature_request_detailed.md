@@ -9,7 +9,7 @@ labels: enhancement
 Describe the screen in words first, then show how far the current spec gets you.
 
 ```json
-# the closest ScanSpec you can write now, and where it falls short
+# the closest EnvSpec you can write now, and where it falls short
 ```
 
 **What you would want to write**

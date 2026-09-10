@@ -14,10 +14,10 @@ A clear description of the incorrect behaviour.
 **The spec**
 
 ```json
-# the smallest ScanSpec that shows it
+# the smallest EnvSpec that shows it
 ```
 
-**The universe**
+**The dataset**
 
 ```json
 # the smallest dataset that shows it — a handful of candles, plus any side feeds
@@ -48,4 +48,4 @@ or the same scan in another language.
 - OS and architecture:
 
 **Anything you already ruled out**
-Warmup, a missing side feed, symbols outside the universe, a stale bar.
+Warmup, a missing side feed, rows outside the dataset, a stale bar.

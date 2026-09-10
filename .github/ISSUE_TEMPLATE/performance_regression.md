@@ -14,7 +14,7 @@ labels: performance
 | | Before | After |
 |---|---|---|
 | Version / commit | | |
-| Universe size | | |
+| Dataset size | | |
 | Bars per symbol | | |
 | Distinct indicators in the spec | | |
 | Wall time | | |
@@ -26,11 +26,11 @@ say which, and whether the machine was otherwise idle.
 **The spec**
 
 ```json
-# the ScanSpec you measured
+# the EnvSpec you measured
 ```
 
 **Does it scale differently, or is it a constant factor?**
-Per-symbol throughput should stay roughly flat as the universe grows. A change
+Throughput should stay roughly flat as the dataset grows. A change
 in the *shape* of the curve is a different problem from a change in its height.
 
 **Environment**
