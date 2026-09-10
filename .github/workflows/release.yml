@@ -46,9 +46,14 @@ jobs:
       # that as success so re-runs of the workflow do not fail.
       - name: Publish gym-core (idempotent)
         run: |
-          out=$(cargo publish -p gym-core --token "$CARGO_REGISTRY_TOKEN" 2>&1) && echo "$out" \
-            || (echo "$out" | grep -q "already uploaded\|already exists" && echo "skip: already published" \
-                || (echo "$out"; exit 1))
+          if out=$(cargo publish -p gym-core --token "$CARGO_REGISTRY_TOKEN" 2>&1); then
+            echo "$out"
+          elif printf '%s' "$out" | grep -q "already uploaded\|already exists"; then
+            echo "skip: already published"
+          else
+            echo "$out"
+            exit 1
+          fi
         env:
           CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
 
@@ -57,9 +62,14 @@ jobs:
 
       - name: Publish wickra-gym (idempotent)
         run: |
-          out=$(cargo publish -p wickra-gym --token "$CARGO_REGISTRY_TOKEN" 2>&1) && echo "$out" \
-            || (echo "$out" | grep -q "already uploaded\|already exists" && echo "skip: already published" \
-                || (echo "$out"; exit 1))
+          if out=$(cargo publish -p wickra-gym --token "$CARGO_REGISTRY_TOKEN" 2>&1); then
+            echo "$out"
+          elif printf '%s' "$out" | grep -q "already uploaded\|already exists"; then
+            echo "skip: already published"
+          else
+            echo "$out"
+            exit 1
+          fi
         env:
           CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
 
@@ -259,7 +269,8 @@ jobs:
           fail=0
           publish_dir() {
             local dir=$1
-            local pkg=$(basename "$dir")
+            local pkg
+            pkg=$(basename "$dir")
             local pkgname="wickra-gym-$pkg"
             local existing
             existing=$(npm view "$pkgname@$version" version 2>/dev/null)
@@ -381,9 +392,14 @@ jobs:
       - name: Publish wickra-gym-wasm to npm (idempotent)
         working-directory: bindings/wasm/pkg
         run: |
-          out=$(npm publish --access public --provenance 2>&1) && echo "$out" \
-            || (echo "$out" | grep -q "You cannot publish over" && echo "skip: version already on npm" \
-                || (echo "$out"; exit 1))
+          if out=$(npm publish --access public --provenance 2>&1); then
+            echo "$out"
+          elif printf '%s' "$out" | grep -q "You cannot publish over"; then
+            echo "skip: version already on npm"
+          else
+            echo "$out"
+            exit 1
+          fi
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
@@ -810,7 +826,7 @@ jobs:
           find artifacts -type f -name "*.cdx.json" -exec cp {} release-assets/ \;
           find artifacts -type f -name "*.nupkg" -exec cp {} release-assets/ \;
           ls -lh release-assets/
-          echo "asset-count=$(ls release-assets/ | wc -l)"
+          echo "asset-count=$(find release-assets/ -type f | wc -l)"
       - name: Create / update the draft GitHub Release with assets
         uses: softprops/action-gh-release@efb35369e0ad2afab669f228072c1b0d510eae64 # v3.0.3
         with:

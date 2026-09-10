@@ -8,6 +8,31 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Fixed
 
+- **The napi bump split a crate in two and the build stopped.**
+  `napi-derive-backend` 6.1.3 pulls `convert_case` 0.12 while `napi-derive`
+  3.6.3 still uses 0.11, and two versions of a crate are two unrelated types --
+  so `napi-derive` itself failed to compile, taking the node binding, the clippy
+  job and every `cargo build --workspace` row down with it. Held at 6.1.2, which
+  is what the screener runs.
+
+- **`cargo-deny` was set to warn about duplicated crates, so it noted that split
+  and moved on.** It is an error now. Only four duplicates exist across this
+  workspace and each is a crate part-way through a major release reached through
+  two ecosystems; they are skipped by name with the reason recorded, so a fifth
+  still fails. Verified by putting 6.1.3 back and watching the check fail on
+  `convert_case` before the compiler ever ran.
+
+- **`actionlint` failed on five shell constructs the screener had already
+  fixed.** `a && b || c` is not if-then-else -- when the publish succeeded but
+  the echo failed, the fallback branch ran and reported "already published";
+  `local pkg=$(basename …)` and `export PATH="$(cygpath …)"` hide the command's
+  exit status behind `local`/`export`; and an asset count taken from `ls` breaks
+  on a filename containing a newline. The runner-label config the linter needs
+  for `windows-11-arm` was missing too.
+
+- **A yanked crate was in the lockfile.** `wnaf` 0.14.0, reached through `p256`
+  -> `wickra-exchange-core`, was yanked from crates.io; 0.14.1 is not.
+
 - **Three steps of the `examples` job ran a file that is not here.** Python,
   Node.js and R each invoked `examples/<lang>/scan.*` -- the screener's file
   name, left over from the port -- so they died on a missing file before
