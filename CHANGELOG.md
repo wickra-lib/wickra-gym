@@ -8,6 +8,20 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Fixed
 
+- **The headline indicator count was the catalogue figure, not the reachable
+  one.** 514 is what the `wickra-core` catalogue ships; what a spec can actually
+  name is what the shared registry in `wickra-backtest-core` resolves, and that
+  `build` match has 497 arms. The two are different sets — bar builders emit
+  bars rather than a value per bar, and a handful of indicators the registry
+  does not carry yet — so the observation was advertised over 514 indicators a
+  spec cannot name.
+
+- **The Ecosystem section repeated two claims their own repositories had already
+  corrected**: DARWIN at "millions of backtests per second" across "the
+  514-indicator space", where its benchmark says hundreds of thousands over the
+  registry, and GENOME as "a 514-dim live vector", where the dimension is
+  whatever the spec's feature list names.
+
 - **Indicators that read a side feed produced a column of constant zeros.**
   `IndicatorSet::update` hardcoded the reference series, derivatives tick,
   order book, trades and cross-section to absent, so an indicator needing any
@@ -79,7 +93,7 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   WASM, byte-identical either way), the O(1) `step()`, the `Pnl`/`Sharpe`/
   `LogReturn` rewards over the `wickra-backtest` fill/PnL model, and the
   `command_json` boundary (`load` / `reset` / `step` / `spec` / `version`).
-- Observations over the 514 `wickra-core` indicators plus price and optional
+- Observations over the 497 registry indicators plus price and optional
   order-book / funding / open-interest microstructure, in a fixed canonical
   order.
 - Reference CLI (`wickra-gym`): drive a fixed deterministic policy through an
