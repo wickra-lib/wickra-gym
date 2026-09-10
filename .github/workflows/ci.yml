@@ -763,13 +763,15 @@ jobs:
       - name: Java
         shell: bash
         run: |
-          mvn -f bindings/java/pom.xml -q package -DskipTests
-          javac -cp bindings/java/target/classes examples/java/Scan.java -d examples/java/out
-          out=$(java --enable-native-access=ALL-UNNAMED \
-            -Dnative.lib.dir="$PWD/target/release" \
-            -cp "bindings/java/target/classes:examples/java/out" Scan)
+          # The example is a Maven project that depends on the binding, so the
+          # binding goes into the local repository first. `exec:exec` (not
+          # `exec:java`) is what the pom configures: it forks a JVM that carries
+          # the FFM native-access flag and the native.lib.dir property.
+          mvn -f bindings/java/pom.xml -q install -DskipTests
+          out=$(mvn -f examples/java/pom.xml -q compile exec:exec \
+            -Dnative.lib.dir="$PWD/target/release")
           echo "$out"
-          echo "$out" | grep -q '"symbol":"BBB"'
+          echo "$out" | grep -qE '^step 0: reward'
 
       - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
         with:

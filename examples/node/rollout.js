@@ -21,6 +21,7 @@ function main() {
   env.command(JSON.stringify({ cmd: "load", candles }));
 
   const reset = JSON.parse(env.command(JSON.stringify({ cmd: "reset", seed: 42 })));
+  console.log(`wickra-gym ${env.version()}`);
   console.log("reset observation:", reset.observation);
 
   let equity = 0;

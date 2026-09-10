@@ -59,7 +59,9 @@ public final class Rollout {
 
         try (Env env = new Env(spec)) {
             env.command("{\"cmd\":\"load\",\"candles\":" + candles + "}");
-            System.out.println("reset: " + env.command("{\"cmd\":\"reset\",\"seed\":42}"));
+            String reset = env.command("{\"cmd\":\"reset\",\"seed\":42}");
+            System.out.printf("wickra-gym %s%n", Env.version());
+            System.out.println("reset: " + reset);
 
             double equity = 0.0;
             for (int step = 0; ; step++) {

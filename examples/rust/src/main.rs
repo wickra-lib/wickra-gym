@@ -50,6 +50,7 @@ fn main() {
     env.load(&candles).expect("load candles");
 
     let reset = env.reset(Some(42)).expect("reset");
+    println!("wickra-gym {}", gym_core::version());
     println!("reset observation: {:?}", reset.observation);
 
     // A fixed "always long" policy (discrete action 2 -> target +1).

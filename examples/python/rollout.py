@@ -11,7 +11,7 @@ is byte-identical to the C, Node, Go, C#, Java and R examples on the same seed.
 import json
 from pathlib import Path
 
-from wickra_gym import RawEnv
+from wickra_gym import RawEnv, __version__
 
 DATA = Path(__file__).resolve().parent.parent / "data"
 
@@ -24,6 +24,7 @@ def main() -> None:
     env.command(json.dumps({"cmd": "load", "candles": candles}))
 
     reset = json.loads(env.command(json.dumps({"cmd": "reset", "seed": 42})))
+    print(f"wickra-gym {__version__}")
     print("reset observation:", reset["observation"])
 
     equity = 0.0
