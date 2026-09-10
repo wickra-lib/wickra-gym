@@ -50,7 +50,7 @@ EXPORT = re.compile(r"\bwickra_gym_([a-z0-9_]+)\s*\(")
 # capability, not a hole.
 #
 # Python is checked in its PyO3 source rather than in `__init__.py`: the package
-# file only re-exports `Gym` from the compiled module, so the methods
+# file only re-exports `Env` from the compiled module, so the methods
 # themselves are declared in Rust. Checking the re-export alone would pass a
 # binding that had lost `command`.
 BINDINGS: dict[str, tuple[list[str], dict[str, str]]] = {
@@ -81,9 +81,9 @@ BINDINGS: dict[str, tuple[list[str], dict[str, str]]] = {
         },
     ),
     "csharp": (
-        ["bindings/csharp/WickraGym/Gym.cs"],
+        ["bindings/csharp/WickraGym/Env.cs"],
         {
-            "new": r"(?m)^\s*public Gym\s*\(",
+            "new": r"(?m)^\s*public Env\s*\(",
             "command": r"(?m)^\s*public [^\n]*\bCommand\s*\(",
             "version": r"(?m)^\s*public static [^\n]*\bVersion\s*\(",
         },
@@ -92,24 +92,24 @@ BINDINGS: dict[str, tuple[list[str], dict[str, str]]] = {
         ["bindings/go/wickra.go"],
         {
             "new": r"(?m)^func New\s*\(",
-            "command": r"(?m)^func \([^)]*\*Gym\) Command\s*\(",
+            "command": r"(?m)^func \([^)]*\*Env\) Command\s*\(",
             "version": r"(?m)^func Version\s*\(",
         },
     ),
     "java": (
-        ["bindings/java/src/main/java/org/wickra/gym/Gym.java"],
+        ["bindings/java/src/main/java/org/wickra/gym/Env.java"],
         {
-            "new": r"(?m)^\s*public Gym\s*\(",
+            "new": r"(?m)^\s*public Env\s*\(",
             "command": r"(?m)^\s*public [^\n]*\bcommand\s*\(",
             "version": r"(?m)^\s*public static [^\n]*\bversion\s*\(",
         },
     ),
     "r": (
-        ["bindings/r/R/gym.R", "bindings/r/NAMESPACE"],
+        ["bindings/r/R/env.R", "bindings/r/NAMESPACE"],
         {
-            "new": r"(?m)^wkscreen_new\s*<-\s*function",
-            "command": r"(?m)^wkscreen_command\s*<-\s*function",
-            "version": r"(?m)^wkscreen_version\s*<-\s*function",
+            "new": r"(?m)^wkgym_new\s*<-\s*function",
+            "command": r"(?m)^wkgym_command\s*<-\s*function",
+            "version": r"(?m)^wkgym_version\s*<-\s*function",
         },
     ),
     # The C++ hull is a separate reach over the same header, and it is the one
@@ -117,7 +117,7 @@ BINDINGS: dict[str, tuple[list[str], dict[str, str]]] = {
     "cpp": (
         ["bindings/c/include/wickra_gym.hpp"],
         {
-            "new": r"\bGym\s*\(\s*(?:const\s+)?std::string",
+            "new": r"\bEnv\s*\(\s*(?:const\s+)?std::string",
             "command": r"\bcommand\s*\(",
             "version": r"\bversion\s*\(",
         },

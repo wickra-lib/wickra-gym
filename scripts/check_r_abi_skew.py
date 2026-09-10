@@ -3,7 +3,7 @@
 
 Every other binding is compiled from the same source tree in the same job, so a
 wrapper and the ABI it calls cannot disagree. R is the exception: `src/Makevars`
-takes the header and library from `WKSCREEN_INC` / `WKSCREEN_LIB`, supplied from
+takes the header and library from `WKGYM_INC` / `WKGYM_LIB`, supplied from
 outside, and compiles the hand-written `src/wickra_gym.c` against whatever
 is there. Nothing in the R job proves that the wrapper's calls match the header
 those variables point at -- CI happens to point them at the tree, so they match

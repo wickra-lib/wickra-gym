@@ -7,7 +7,7 @@
 #
 # Self-contained by default: download the prebuilt
 # wickra-gym-c-<triple>.tar.gz release asset matching this package's
-# version. Set WKSCREEN_INC + WKSCREEN_LIB to build against a locally built C ABI
+# version. Set WKGYM_INC + WKGYM_LIB to build against a locally built C ABI
 # instead (the dev override).
 set -e
 
@@ -45,15 +45,15 @@ case "${arch}" in
     dll_machine="arm64"
     ;;
   *)
-    echo "wickra-gym: unsupported Windows arch '${arch}' -- set WKSCREEN_INC/WKSCREEN_LIB"
+    echo "wickra-gym: unsupported Windows arch '${arch}' -- set WKGYM_INC/WKGYM_LIB"
     exit 1
     ;;
 esac
 
-if [ -n "${WKSCREEN_INC}" ] && [ -n "${WKSCREEN_LIB}" ]; then
-  echo "wickra-gym: using the C ABI from WKSCREEN_INC / WKSCREEN_LIB (dev override)"
-  inc="${WKSCREEN_INC}"
-  lib="${WKSCREEN_LIB}"
+if [ -n "${WKGYM_INC}" ] && [ -n "${WKGYM_LIB}" ]; then
+  echo "wickra-gym: using the C ABI from WKGYM_INC / WKGYM_LIB (dev override)"
+  inc="${WKGYM_INC}"
+  lib="${WKGYM_LIB}"
 else
   version=$(sed -n 's/^Version:[[:space:]]*//p' DESCRIPTION)
   url="https://github.com/wickra-lib/wickra-gym/releases/download/v${version}/wickra-gym-c-${triple}.tar.gz"
@@ -118,7 +118,7 @@ BINPREF=$("${R_HOME}/bin/R" CMD config BINPREF 2>/dev/null | tr -d '\r') || BINP
 dlltool_log="src/dlltool.log"
 : > "${dlltool_log}"
 DLLTOOL=""
-for cand in "${WKSCREEN_DLLTOOL}" "${BINPREF}llvm-dlltool" "${BINPREF}dlltool" llvm-dlltool dlltool; do
+for cand in "${WKGYM_DLLTOOL}" "${BINPREF}llvm-dlltool" "${BINPREF}dlltool" llvm-dlltool dlltool; do
   [ -n "${cand}" ] || continue
   echo "wickra-gym: trying ${cand} -m ${dll_machine}" >> "${dlltool_log}"
   if "${cand}" -m "${dll_machine}" --input-def src/wickra_gym.def \
