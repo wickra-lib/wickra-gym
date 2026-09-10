@@ -10,6 +10,7 @@ Description: R bindings for wickra-gym over its C ABI hub: build a
 License: MIT + file LICENSE | Apache License 2.0
 URL: https://github.com/wickra-lib/wickra-gym
 BugReports: https://github.com/wickra-lib/wickra-gym/issues
+Depends: R (>= 2.10)
 Encoding: UTF-8
 NeedsCompilation: yes
 SystemRequirements: the wickra-gym C ABI shared library (WKGYM_LIB) and its

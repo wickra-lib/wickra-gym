@@ -9,6 +9,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::error::{Error, Result};
 use crate::feature::Feature;
+use crate::feeds::{feed_kind, Available, FeedKind};
 
 /// Round to a fixed grid of `1e-8`; non-finite values collapse to `0.0`. Every
 /// observation / reward / info value passes through this before serialization,
@@ -78,6 +79,38 @@ pub struct ObsSpec {
 }
 
 impl ObsSpec {
+    /// Reject the observation columns whose indicator needs a side feed these
+    /// bars cannot supply.
+    ///
+    /// An indicator whose feed is absent resolves, ticks and returns nothing —
+    /// every bar, without complaint — and the tensor collapses a missing value
+    /// to `0.0`, because it cannot carry `NaN`. The column would therefore be
+    /// constant zero for the whole episode, indistinguishable from an indicator
+    /// that is merely warming up, and an agent would train on it as if it meant
+    /// something. Refusing the spec turns that into an error naming the
+    /// indicator, the feed and why this dataset has none.
+    ///
+    /// # Errors
+    /// [`Error::MissingFeed`] for the first column whose feed is absent.
+    pub fn check_feeds(&self, available: Available) -> Result<()> {
+        for feature in &self.features {
+            let Feature::Indicator { name, .. } = feature else {
+                continue;
+            };
+            let Some(kind) = feed_kind(name) else {
+                continue;
+            };
+            if kind != FeedKind::Candle && !available.has(kind) {
+                return Err(Error::MissingFeed {
+                    indicator: name.clone(),
+                    feed: kind.as_str(),
+                    why: kind.why_absent(),
+                });
+            }
+        }
+        Ok(())
+    }
+
     /// The fixed observation-vector length: features, then `4` per book level,
     /// then `2` if funding/OI is included.
     #[must_use]

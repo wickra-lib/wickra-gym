@@ -16,7 +16,7 @@ security fixes.
 
 | Version | Supported |
 |---------|-----------|
-| latest `0.x` | :white_check_mark: |
+| `0.1.0` (upcoming) | :white_check_mark: |
 | older        | :x:       |
 
 ## Reporting a vulnerability

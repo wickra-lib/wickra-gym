@@ -84,6 +84,21 @@ impl Env {
     /// rollout cursor (a fresh `reset` is required before stepping).
     pub fn load(&mut self, candles: &[Candle]) -> Result<()> {
         let tensor = tensor::build(candles, &self.spec.observation)?;
+        // An episode that starts before every indicator is ready hands the agent
+        // a `0.0` that means "not computed yet", not "the market read zero" —
+        // and nothing downstream can tell the two apart. The floor is derived
+        // from the indicators the spec actually names, so it moves with them.
+        let needed = tensor.min_warmup;
+        if (self.spec.episode.warmup as usize) < needed {
+            return Err(Error::BadSpec(format!(
+                concat!(
+                    "episode.warmup is {} but the observation needs {}: below that an ",
+                    "indicator column is 0.0 because nothing has been produced yet, ",
+                    "which an agent cannot tell from a market reading of zero"
+                ),
+                self.spec.episode.warmup, needed
+            )));
+        }
         self.tensor = Some(tensor);
         self.state = RolloutState::new();
         Ok(())

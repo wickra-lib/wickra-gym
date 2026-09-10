@@ -16,6 +16,7 @@ mod config;
 mod env;
 mod error;
 mod feature;
+pub mod feeds;
 mod indicator_set;
 mod reward;
 mod spec;
@@ -25,6 +26,7 @@ pub use config::Config;
 pub use env::{build_tensor, Env};
 pub use error::{Error, Result};
 pub use feature::{Feature, MicroField, PriceField};
+pub use feeds::{bar_feeds, feed_kind, Available, BarFeeds, FeedKind};
 pub use indicator_set::IndicatorSet;
 pub use reward::{running_sharpe, step_reward, RewardState};
 pub use spec::{
@@ -59,9 +61,11 @@ mod tests {
             ] },
             "action_space": { "type": "discrete", "n": 3 },
             "reward": "pnl",
-            "episode": { "max_steps": 100, "warmup": 1 }
+            "episode": { "max_steps": 100, "warmup": 2 }
         }"#;
-        let candles: Vec<Candle> = (0..8)
+        // Nine bars: two are consumed by the warmup Sma(2) needs, leaving the
+        // six steps below plus the reset bar.
+        let candles: Vec<Candle> = (0..9)
             .map(|i| Candle {
                 ts: i,
                 open: 100.0 + i as f64,

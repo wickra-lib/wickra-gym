@@ -1,0 +1,26 @@
+# Keep everything configure stages or the compiler produces out of the R source
+# tarball built by `R CMD build`. The package is source-distributed: configure
+# fetches the C ABI at install time (or takes it from WKSCREEN_INC / WKSCREEN_LIB), so
+# none of these belong in the distributable.
+^src/wickra_gym\.h$
+^src/wickra_gym\.dll$
+^src/wickra_gym\.def$
+^src/libwickra_gym\.dll\.a$
+^src/libwickra_gym\.(so|dylib)$
+^src/wickra-gym-c\.tar\.gz$
+^src/wickra-gym-c$
+^src/Makevars$
+^src/.*\.o$
+^src/wickragym\.(dll|so|dylib)$
+^src/symbols\.rds$
+^src/dlltool\.log$
+^\.gitignore$
+
+# The golden corpus lives at the repository root, outside this package, so
+# tests/golden.R only resolves when run from there -- which CI does explicitly.
+# `R CMD check` runs everything under tests/ from the built tarball, where the
+# corpus does not exist, and that is what r-universe runs on every platform.
+# The streaming block in there stops on a missing corpus by design, arguing that
+# its absence is a broken checkout; that is true in a repository and false in a
+# tarball, and it took 0.1.2 to 0 of 13 platform binaries.
+^tests/golden\.R$

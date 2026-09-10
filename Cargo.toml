@@ -61,19 +61,22 @@ rayon = "1"
 rand = { version = "0.10", default-features = false, features = ["std_rng"] }
 clap = { version = "4", features = ["derive"] }
 # The indicator registry (name + params -> Box<dyn Indicator>) and Candle/CSV
-# reader, reused verbatim for feature extraction. Pinned like wickra-backtest.
-wickra-core = "0.9"
-wickra-data = "0.9"
-# The backtest engine supplies fill/PnL semantics for the step() reward. Consumed
-# from git until its first crates.io release (USER-GO gated); a `version` is
-# pinned alongside `git` so it is not a wildcard (cargo-deny bans.wildcards).
-wickra-backtest = { git = "https://github.com/wickra-lib/wickra-backtest", version = "0.1" }
+# reader, reused verbatim for feature extraction.
+#
+# Held at the same major as the copy `wickra-backtest` resolves, so the tree
+# carries one `wickra-core` and one set of indicator types rather than two that
+# share none at all.
+wickra-core = "1.0"
+wickra-data = "1.0"
+# The backtest engine supplies fill/PnL semantics for the step() reward, and
+# `registry::feed_of` reports which side feed each indicator consumes.
+wickra-backtest = "0.1.4"
 # Optional microstructure feeds (orderbook / funding / OI) behind feature `live`.
-wickra-exchange = { git = "https://github.com/wickra-lib/wickra-exchange", version = "0.1" }
+wickra-exchange = "0.1.3"
 # C ABI header generation.
 cbindgen = "0.27"
 # Test/dev.
-criterion = "0.8"
+criterion = { package = "codspeed-criterion-compat", version = "5.0.1", features = ["html_reports"] }
 proptest = "1"
 
 [workspace.lints.rust]

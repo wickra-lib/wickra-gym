@@ -25,8 +25,9 @@
   "files": [
     "index.js",
     "index.d.ts",
-    "npm",
-    "*.node"
+    "*.node",
+    "LICENSE-MIT",
+    "LICENSE-APACHE"
   ],
   "napi": {
     "name": "wickra-gym",

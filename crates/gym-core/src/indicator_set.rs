@@ -10,6 +10,7 @@ use wickra_backtest::core::registry::{self, BarInput, EvalIndicator};
 
 use crate::error::{Error, Result};
 use crate::feature::Feature;
+use crate::feeds::BarFeeds;
 use crate::spec::{Candle, ObsSpec};
 
 /// Convert a gym [`Candle`] into the backtest engine's candle for feeding the
@@ -70,14 +71,29 @@ impl IndicatorSet {
         Ok(Self { items })
     }
 
+    /// The longest warmup any resolved indicator declares — the number of bars
+    /// that must pass before every indicator column carries a real value.
+    ///
+    /// Below this an observation column is `0.0` because the indicator has not
+    /// produced anything yet, not because the market read zero. An episode that
+    /// starts earlier hands the agent that zero as a feature.
+    #[must_use]
+    pub fn max_warmup(&self) -> usize {
+        self.items
+            .iter()
+            .map(|item| item.indicator.warmup())
+            .max()
+            .unwrap_or(0)
+    }
+
     /// Feed one bar and return the current value per indicator key. A warming-up
     /// indicator (or an absent field) contributes `0.0`.
-    pub fn update(&mut self, candle: &BtCandle) -> BTreeMap<String, f64> {
+    pub fn update(&mut self, candle: &BtCandle, feeds: &BarFeeds) -> BTreeMap<String, f64> {
         let input = BarInput {
             candle,
             reference: None,
-            deriv: None,
-            orderbook: None,
+            deriv: feeds.deriv,
+            orderbook: feeds.orderbook.as_ref(),
             trades: &[],
             cross_section: None,
         };

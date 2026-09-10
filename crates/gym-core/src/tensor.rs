@@ -9,6 +9,7 @@
 
 use crate::error::{Error, Result};
 use crate::feature::{Feature, MicroField, PriceField};
+use crate::feeds::{bar_feeds, Available};
 use crate::indicator_set::{to_bt, IndicatorSet};
 use crate::spec::{round8, Candle, ObsSpec};
 
@@ -22,6 +23,12 @@ pub struct FeatureTensor {
     data: Vec<f64>,
     /// The close price per bar, kept separately for reward computation.
     pub closes: Vec<f64>,
+    /// The number of bars before every indicator column carries a real value —
+    /// the longest warmup the observation's indicators declare.
+    ///
+    /// Below this a column is `0.0` because nothing has been produced yet, which
+    /// an agent cannot tell from a market reading of zero.
+    pub min_warmup: usize,
 }
 
 impl FeatureTensor {
@@ -83,13 +90,16 @@ pub fn build(candles: &[Candle], obs: &ObsSpec) -> Result<FeatureTensor> {
     }
     let dim = obs.feature_dim();
     let n_bars = candles.len();
+    // Refuse a spec whose indicator needs a feed these bars cannot supply,
+    // before any of it is folded into a column of constant zeros.
+    obs.check_feeds(Available::of(candles))?;
     let mut indicators = IndicatorSet::from_obs(obs)?;
     let mut data = Vec::with_capacity(n_bars * dim);
     let mut closes = Vec::with_capacity(n_bars);
 
     for c in candles {
         let bt = to_bt(c);
-        let values = indicators.update(&bt);
+        let values = indicators.update(&bt, &bar_feeds(c));
 
         for f in &obs.features {
             let v = match f {
@@ -118,6 +128,7 @@ pub fn build(candles: &[Candle], obs: &ObsSpec) -> Result<FeatureTensor> {
         dim,
         data,
         closes,
+        min_warmup: indicators.max_warmup(),
     })
 }
 
