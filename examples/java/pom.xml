@@ -33,7 +33,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
-        <version>3.5.0</version>
+        <version>3.6.3</version>
         <configuration>
           <!-- exec:exec spawns a fresh JVM so the FFM native-access flag and
                the native.lib.dir system property take effect. -->
