@@ -310,6 +310,28 @@ jobs:
       - name: Assert wasm reproduces the golden fixtures
         run: node --test bindings/wasm/tests/golden.test.js
 
+  cli:
+    name: CLI smoke (rollout, both formats)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      RUSTFLAGS: "-C debuginfo=0"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/setup-rust
+      - uses: Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6 # v2.9.2
+      - run: cargo build -p wickra-gym
+      # A fixed policy over the committed dataset, in both output formats. The
+      # equity asserted below is the last step of the episode, the same number
+      # the examples in every language print -- so this checks the trajectory,
+      # not merely that the binary starts.
+      - name: Run end-to-end
+        run: |
+          ./target/debug/wickra-gym --spec examples/data/specs/momentum_discrete.json --data examples/data/series/BTCUSDT.csv --policy always-2 --format text | grep -q '9.16537753'
+          ./target/debug/wickra-gym --spec examples/data/specs/momentum_discrete.json --data examples/data/series/BTCUSDT.csv --policy always-2 --format json | grep -q '"trajectory"'
+
   c-abi:
     name: C ABI on ${{ matrix.os }}
     strategy:
