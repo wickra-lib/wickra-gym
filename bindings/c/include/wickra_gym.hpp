@@ -1,4 +1,4 @@
-// Wickra Env — C++ wrapper over the C ABI.
+// Wickra Gym — C++ wrapper over the C ABI.
 //
 // Header-only, C++17, no dependency beyond the standard library and
 // `wickra_gym.h` beside it. Link the same `wickra_gym` library the C
@@ -11,15 +11,15 @@
 //
 //     #include <wickra_gym.hpp>
 //
-//     wickra::Env handle(R"({"universe":["AAA"], ... })");
-//     std::string report = handle.command(R"({"cmd":"scan","data":{...}})");
+//     wickra::Env env(R"({"features":[...],"episode":{...}})");
+//     std::string step = env.command(R"({"cmd":"reset","seed":42})");
 //
 // The gym is data-driven, so this wrapper deliberately stops at strings:
 // the spec and the report are JSON, and which JSON library a caller uses is
 // their choice, not this header's.
 
-#ifndef WICKRA_SCREENER_HPP
-#define WICKRA_SCREENER_HPP
+#ifndef WICKRA_GYM_HPP
+#define WICKRA_GYM_HPP
 
 #include <cstddef>
 #include <cstdint>
@@ -37,7 +37,7 @@ class GymError : public std::runtime_error {
   explicit GymError(const std::string& what) : std::runtime_error(what) {}
 };
 
-/// An owning handle to a gym built from a scan spec.
+/// An owning handle to a gym built from a spec.
 ///
 /// Move-only, because the underlying handle is a unique resource: copying it
 /// would free the same pointer twice.
@@ -109,9 +109,9 @@ class Env {
   static std::string version() { return std::string(wickra_gym_version()); }
 
  private:
-  WickraGym* handle_;
+  WickraGymEnv* handle_;
 };
 
 }  // namespace wickra
 
-#endif  // WICKRA_SCREENER_HPP
+#endif  // WICKRA_GYM_HPP

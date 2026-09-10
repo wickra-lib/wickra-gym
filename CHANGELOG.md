@@ -8,6 +8,34 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Fixed
 
+- **Every C++ hull used the include guard `WICKRA_SCREENER_HPP`.** The C headers
+  beside them are guarded correctly; only the `.hpp` files shared one name, so
+  including two of the family's headers in the same translation unit dropped the
+  second silently. Proven by compiling a file that includes two of them and
+  names a class from each: `'Env' is not a member of 'wickra'`. All seven now
+  compile standalone and together.
+
+- **The C++ hull did not compile at all.** It declared `WickraGym* handle_`
+  where the C header names the opaque type `WickraGymEnv`. Nothing caught it,
+  because every `examples/c/*.cpp` includes the C header rather than the hull
+  beside it — the shipped C++ surface is built by nothing — and the shared
+  include guard hid the error behind a skipped `#include`.
+
+- **The hull's usage example could not run.** It showed a spec shaped
+  `{"universe":[...]}` and `{"cmd":"scan"}`, the screener's, which this core
+  rejects twice over. It now shows this repository's own spec fields and one of
+  its own commands.
+
+- **The issue and pull-request templates asked for a `ScanSpec`**, a type this
+  repository does not have, so a contributor was asked to attach something that
+  does not exist. `GOVERNANCE.md`, `SUPPORT.md` and `CONTRIBUTING.md` carried
+  the same substitution, along with the screener's "condition schema" for a core
+  that has no conditions.
+
+- **The R `configure` scripts still defined `wkscreen_download`**, the last
+  trace of the screener's prefix — the CI-visible half of which already had to
+  be fixed once.
+
 - **The CLI was published without ever being run in CI.** `release.yml` builds
   and attaches `cli-binaries`, and five sibling repositories smoke-test their
   binary on every push; this one did not, so a CLI that failed to start would
