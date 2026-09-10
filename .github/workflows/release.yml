@@ -288,8 +288,6 @@ jobs:
           done
           exit $fail
 
-        working-directory: bindings/node
-
       - name: Publish main package to npm (idempotent)
         working-directory: bindings/node
         env:
