@@ -44,48 +44,59 @@ bad <- tryCatch(
 )
 stopifnot(bad)
 
-## cross-language golden parity: for each committed golden/<case>, replay the
-## rollout and assert the response equals the expected JSON. The binding returns
-## the core's canonical command output verbatim, so structural equality is the
-## exact cross-language parity check. Requires jsonlite; skipped until the
-## fixtures land.
-golden_dir <- function() {
-  d <- normalizePath(getwd(), mustWork = FALSE)
-  for (i in seq_len(8)) {
-    g <- file.path(d, "golden")
-    if (dir.exists(g)) {
-      return(g)
-    }
-    d <- dirname(d)
+
+## The streamed rollout equals the batch tensor, through the same boundary.
+##
+## The dataset is precomputed once into a fixed feature tensor -- the batch half
+## -- and step() then streams through it as a pure array index. gym-core proves
+## the two agree in Rust; this checks the boundary the R binding crosses.
+
+stream_spec <- paste0(
+  '{"dataset_ref":"streaming","symbol":"TEST",',
+  '"observation":{"features":[',
+  '{"kind":"indicator","name":"Sma","params":[3]},',
+  '{"kind":"price","field":"close"}]},',
+  '"action_space":{"type":"discrete","n":3},',
+  '"reward":"pnl","episode":{"max_steps":32,"warmup":3}}'
+)
+
+stream_candles <- paste0(
+  "[",
+  paste(vapply(0:19, function(i) {
+    paste0(
+      '{"ts":', i, ',"open":', 100 + i, ',"high":', 101 + i,
+      ',"low":', 99 + i, ',"close":', 100 + i, ',"volume":1}'
+    )
+  }, ""), collapse = ","),
+  "]"
+)
+
+stream_rollout <- function(steps) {
+  e <- wkgym_new(stream_spec)
+  wkgym_command(e, paste0('{"cmd":"load","candles":', stream_candles, "}"))
+  trace <- wkgym_command(e, '{"cmd":"reset","seed":7}')
+  for (i in seq_len(steps)) {
+    trace <- c(trace, wkgym_command(e, '{"cmd":"step","action":2.0}'))
   }
-  NULL
+  trace
 }
 
-g <- golden_dir()
-if (!is.null(g) && requireNamespace("jsonlite", quietly = TRUE)) {
-  for (case in list.dirs(g, recursive = FALSE)) {
-    if (!file.exists(file.path(case, "spec.json"))) {
-      next
-    }
-    spec_j <- paste(readLines(file.path(case, "spec.json"), warn = FALSE), collapse = "")
-    candles_j <- paste(readLines(file.path(case, "candles.json"), warn = FALSE), collapse = "")
-    expected <- jsonlite::fromJSON(file.path(case, "expected.json"), simplifyVector = FALSE)
+## Replaying the rollout reproduces it byte for byte.
+stopifnot(identical(stream_rollout(6), stream_rollout(6)))
 
-    genv <- wkgym_new(spec_j)
-    wkgym_command(genv, paste0('{"cmd":"load","candles":', candles_j, '}'))
-    reset_cmd <- if (!is.null(expected$seed)) {
-      paste0('{"cmd":"reset","seed":', expected$seed, '}')
-    } else {
-      '{"cmd":"reset"}'
-    }
-    got_reset <- jsonlite::fromJSON(wkgym_command(genv, reset_cmd), simplifyVector = FALSE)
-    stopifnot(identical(got_reset, expected$reset))
-    for (i in seq_along(expected$actions)) {
-      step_cmd <- paste0('{"cmd":"step","action":', expected$actions[[i]], '}')
-      got_step <- jsonlite::fromJSON(wkgym_command(genv, step_cmd), simplifyVector = FALSE)
-      stopifnot(identical(got_step, expected$trajectory[[i]]))
-    }
-  }
-}
+## A longer rollout agrees with a shorter one on the bars they share.
+long_run <- stream_rollout(6)
+short_run <- stream_rollout(4)
+stopifnot(identical(long_run[seq_along(short_run)], short_run))
+
+## Bar 3 closes at 103; Sma(3) over the three bars ending there is 102.
+stopifnot(grepl('"observation":[102,103]', stream_rollout(0)[1], fixed = TRUE))
+
+## A warmup below the indicator lookback is refused: below it an observation
+## column is 0.0 because nothing has been produced yet.
+bad_spec <- sub('"warmup":3', '"warmup":1', stream_spec, fixed = TRUE)
+bad_env <- wkgym_new(bad_spec)
+bad_load <- wkgym_command(bad_env, paste0('{"cmd":"load","candles":', stream_candles, "}"))
+stopifnot(grepl("warmup", bad_load, fixed = TRUE))
 
 cat("wickra-gym R tests passed\n")

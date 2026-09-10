@@ -4,7 +4,9 @@
   "description": "Native binding for wickra-gym (linux-arm64-gnu). Installed automatically as an optional dependency of wickra-gym on matching platforms.",
   "main": "wickra-gym.linux-arm64-gnu.node",
   "files": [
-    "wickra-gym.linux-arm64-gnu.node"
+    "wickra-gym.linux-arm64-gnu.node",
+    "LICENSE-MIT",
+    "LICENSE-APACHE"
   ],
   "license": "MIT OR Apache-2.0",
   "engines": {

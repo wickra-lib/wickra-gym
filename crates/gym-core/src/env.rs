@@ -91,8 +91,12 @@ impl Env {
         let needed = tensor.min_warmup;
         if (self.spec.episode.warmup as usize) < needed {
             return Err(Error::BadSpec(format!(
-                "episode.warmup is {} but the observation needs {needed}: below that                  an indicator column is 0.0 because nothing has been produced yet,                  which an agent cannot tell from a market reading of zero",
-                self.spec.episode.warmup
+                concat!(
+                    "episode.warmup is {} but the observation needs {}: below that an ",
+                    "indicator column is 0.0 because nothing has been produced yet, ",
+                    "which an agent cannot tell from a market reading of zero"
+                ),
+                self.spec.episode.warmup, needed
             )));
         }
         self.tensor = Some(tensor);

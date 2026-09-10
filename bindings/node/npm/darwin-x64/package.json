@@ -4,7 +4,9 @@
   "description": "Native binding for wickra-gym (darwin-x64). Installed automatically as an optional dependency of wickra-gym on matching platforms.",
   "main": "wickra-gym.darwin-x64.node",
   "files": [
-    "wickra-gym.darwin-x64.node"
+    "wickra-gym.darwin-x64.node",
+    "LICENSE-MIT",
+    "LICENSE-APACHE"
   ],
   "license": "MIT OR Apache-2.0",
   "engines": {

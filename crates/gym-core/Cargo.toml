@@ -12,6 +12,12 @@ keywords.workspace = true
 categories.workspace = true
 description = "Deterministic core of wickra-gym: precompute a candle dataset into a fixed feature tensor once, then step a Gymnasium-style RL environment in O(1) with byte-identical trajectories."
 
+[package.metadata.docs.rs]
+# Document every feature so an optional surface is not missing from the
+# reference. docs.rs builds on nightly and sets the `docsrs` cfg, which is what
+# makes the feature badges appear.
+all-features = true
+
 [dependencies]
 serde.workspace = true
 serde_json.workspace = true

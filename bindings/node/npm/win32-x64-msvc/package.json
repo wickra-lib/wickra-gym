@@ -4,7 +4,9 @@
   "description": "Native binding for wickra-gym (win32-x64-msvc). Installed automatically as an optional dependency of wickra-gym on matching platforms.",
   "main": "wickra-gym.win32-x64-msvc.node",
   "files": [
-    "wickra-gym.win32-x64-msvc.node"
+    "wickra-gym.win32-x64-msvc.node",
+    "LICENSE-MIT",
+    "LICENSE-APACHE"
   ],
   "license": "MIT OR Apache-2.0",
   "engines": {

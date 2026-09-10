@@ -1,0 +1,13 @@
+# Python 3.10+ dev/test tooling for the ci.yml python job (covers the 3.11 /
+# 3.12 / 3.13 matrix rows) and for the Python step of the examples job, which
+# uses the runner's own interpreter.
+#
+# The gym extension returns observations as numpy arrays, so numpy is required.
+# `gymnasium` is the optional [gym] extra -- the gymnasium.Env test skips
+# cleanly when it is absent, so it is installed separately in the gymnasium CI
+# leg rather than pinned here.
+#
+# Locked output: ci-dev-py3.txt. Refresh via scripts/update-lockfiles.sh.
+maturin
+pytest
+numpy

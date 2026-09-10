@@ -49,6 +49,26 @@ The core (`gym-core`) is a JSON-over-C-ABI data API usable in ten languages, and
 Python additionally ships a real **`gymnasium.Env` subclass** as its primary
 consumer.
 
+```python
+import json, wickra_gym
+
+env = wickra_gym.GymEnv(json.dumps({
+    "dataset_ref": "demo", "symbol": "BTCUSDT",
+    "observation": {"features": [
+        {"kind": "indicator", "name": "Rsi", "params": [14]},
+        {"kind": "price", "field": "close"}]},
+    "action_space": {"type": "discrete", "n": 3},
+    "reward": "pnl",
+    "episode": {"max_steps": 256, "warmup": 14},
+}))
+obs, info = env.reset(seed=7)
+obs, reward, terminated, truncated, info = env.step(2)
+```
+
+Every step is a pure array index into a tensor precomputed once, so a
+`(seed, policy)` pair fully determines the trajectory — in any of the ten
+languages, byte for byte.
+
 ## Determinism is the product
 
 - **O(1) steps** — the dataset is precomputed once to a fixed feature tensor;
@@ -210,22 +230,45 @@ fuzz/                      cargo-fuzz targets (spec/command/tensor/step)
 docs/                      observations, actions/rewards, gymnasium, microstructure
 ```
 
-## Building from source
+## Building everything from source
 
 ```bash
-cargo build --workspace
-cargo test --workspace --all-features
+cargo build --workspace --all-features                 # Rust core + CLI + C ABI
+(cd bindings/python && maturin develop --release)      # Python
+(cd bindings/node   && npm ci && npm run build)        # Node
+(cd bindings/wasm   && wasm-pack build --target web)   # WASM
+(cd bindings/csharp && dotnet build)                   # C#
+(cd bindings/go     && go build ./...)                 # Go
+(cd bindings/java   && mvn -q package)                 # Java
+R CMD INSTALL bindings/r                               # R
 ```
 
-Each binding builds with its own toolchain; see `bindings/<lang>/README.md`. The
-C-ABI consumers (C/C++, C#, Go, Java, R) need the C ABI library first:
-`cargo build --release -p wickra-gym-c`.
+The C-ABI consumers (C/C++, C#, Go, Java, R) need the C ABI library first —
+`cargo build --release -p wickra-gym-c` — on the loader path.
+
+## Testing
+
+```bash
+cargo test --workspace --all-features
+cargo clippy --workspace --all-targets --all-features -- -D warnings
+cargo fmt --all --check
+```
+
+Every binding replays the same golden rollouts from [`golden/`](golden/) and
+must produce the identical bytes; that corpus is the cross-language contract,
+not a per-language approximation. `python scripts/check_binding_surface.py`
+asserts the ten surfaces stayed in step.
 
 ## Requirements
 
-Rust **1.86** (workspace) / **1.88** (Node binding). Per-binding toolchains:
-Python 3.9+ (Gymnasium needs 3.10+), Node.js 22+, .NET 8, JDK 22+, Go 1.23+, R
-release, and a C11/C++14 compiler with CMake for the C example.
+- **Rust 1.86+** — the workspace MSRV; the Node binding needs **Rust 1.88**.
+- **Python 3.9+** — the Python binding (the `gymnasium.Env` subclass needs 3.10+).
+- **Node 22+** — the Node binding.
+- **Go 1.23+** — the Go binding.
+- **Java 22+** — the Java binding.
+- **R 2.10+** — the R package.
+- **.NET 8+** — the C# binding.
+- A **C11 / C++17** compiler with CMake for the C and C++ examples.
 
 ## Benchmarks
 
@@ -245,6 +288,41 @@ audit.
 
 Report vulnerabilities per [SECURITY.md](SECURITY.md). The threat model is in
 [THREAT_MODEL.md](THREAT_MODEL.md).
+
+## Ecosystem
+
+Part of the [Wickra](https://github.com/wickra-lib/wickra) family — each one a
+data-driven core with a CLI and the same ten-language binding surface:
+
+- [**wickra**](https://github.com/wickra-lib/wickra) — main library (Rust core + Python / Node.js / WASM bindings + a C ABI for C / C++ / C# / Go / Java / R)
+- [**wickra-playground**](https://github.com/wickra-lib/wickra-playground) — a polyglot strategy playground: one StrategySpec live side by side in Python, Rust, JS and Go, entirely in the browser
+- [**wickra-exchange**](https://github.com/wickra-lib/wickra-exchange) — unified market-data + execution across ten crypto exchanges
+- [**wickra-backtest**](https://github.com/wickra-lib/wickra-backtest) — event-driven backtester over the Wickra core
+- [**wickra-terminal**](https://github.com/wickra-lib/wickra-terminal) — the trading terminal: a TUI and a browser renderer over the stack
+- [**wickra-xray**](https://github.com/wickra-lib/wickra-xray) — market-microstructure explorer: footprint, order-book heatmap, liquidation map, funding/OI divergence
+- [**wickra-radar**](https://github.com/wickra-lib/wickra-radar) — perp-universe alert radar: OI delta, funding flip, book imbalance, liquidation clusters, OI/price divergence
+- [**wickra-copilot**](https://github.com/wickra-lib/wickra-copilot) — local market copilot grounded in real order-book, liquidation and funding microstructure
+- [**wickra-shazam**](https://github.com/wickra-lib/wickra-shazam) — match an asset's current microstructure fingerprint against its entire history
+- [**wickra-benchmark**](https://github.com/wickra-lib/wickra-benchmark) — reproducible, golden-verified benchmark suite — recompute any (strategy, dataset, report) in ten languages and confirm it byte-for-byte
+- [**wickra-strategy-ci**](https://github.com/wickra-lib/wickra-strategy-ci) — Jest for trading strategies: golden-pin the report, catch regressions in CI, property-test against fuzzed data
+- [**wickra-verify**](https://github.com/wickra-lib/wickra-verify) — confirm or refute a claimed backtest report against its strategy and data, in ten languages
+- [**wickra-proof**](https://github.com/wickra-lib/wickra-proof) — Proof-of-Backtest: deterministic (spec, data) → report + blake3 hash, recomputable byte-for-byte in ten languages
+- [**wickra-zk**](https://github.com/wickra-lib/wickra-zk) — prove a backtest zero-knowledge — on-chain-verifiable performance without revealing the data or the strategy
+- [**wickra-impact**](https://github.com/wickra-lib/wickra-impact) — the backtester that knows you would have moved the market: agent-based fills on the real historical L2 order book
+- [**wickra-darwin**](https://github.com/wickra-lib/wickra-darwin) — evolutionary strategy search at millions of backtests per second, mutating and crossing JSON specs across the 514-indicator space
+- [**wickra-feature-store**](https://github.com/wickra-lib/wickra-feature-store) — OHLCV and microstructure streams into ML-ready feature matrices over 514 O(1) streaming indicators
+- [**wickra-genome**](https://github.com/wickra-lib/wickra-genome) — a vector database of the whole market: every asset a 514-dim live vector, for similarity search, clustering and anomaly detection
+- [**wickra-timemachine**](https://github.com/wickra-lib/wickra-timemachine) — scrub the whole market like a video — every symbol, full order book, rewound to any moment via deterministic re-fold
+- [**wickra-synth**](https://github.com/wickra-lib/wickra-synth) — deterministic synthetic market microstructure: OHLCV, order book, trades and funding from a single seed
+- [**wickra-compile**](https://github.com/wickra-lib/wickra-compile) — compile a strategy spec into a standalone deployable: a WASM module, a self-contained binary, or a `no_std` artifact
+- [**wickra-embed**](https://github.com/wickra-lib/wickra-embed) — allocation-free, `no_std` streaming indicators for bare-metal and HFT, byte-for-byte identical to the core
+- [**wickra-pico**](https://github.com/wickra-lib/wickra-pico) — the O(1) indicator core running bare-metal on a $5 Raspberry Pi Pico — the LED blinks on the EMA cross
+
+The screener's own guides live in [`docs/`](docs/) beside the code; its site,
+with the in-browser demo and the benchmark figures, is at
+[screener.wickra.org](https://screener.wickra.org). The indicator library's
+reference is at [docs.wickra.org](https://docs.wickra.org) and the org landing
+page at [wickra.org](https://wickra.org).
 
 ## License
 

@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>wickra-gym WASM — a deterministic rollout</title>
+  <style>
+    body { font-family: ui-sans-serif, system-ui, sans-serif; max-width: 900px; margin: 2rem auto; padding: 0 1rem; color: #1d1d1d; }
+    h1 { margin-bottom: .25rem; }
+    .meta { color: #666; margin-top: 0; }
+    table { border-collapse: collapse; width: 100%; margin-top: 1rem; font-variant-numeric: tabular-nums; }
+    th, td { border: 1px solid #ddd; padding: .5rem .75rem; text-align: right; }
+    th:first-child, td:first-child { text-align: left; }
+    th { background: #fafafa; }
+    code { background: #f4f4f4; padding: .1rem .25rem; border-radius: .2rem; font-size: .9em; }
+    pre { background: #f6f8fa; padding: .75rem; border-radius: .3rem; overflow-x: auto; }
+    button { padding: .5rem 1rem; }
+    #status { margin-top: 1rem; color: #666; }
+  </style>
+</head>
+<body>
+  <h1>wickra-gym WASM — a deterministic rollout</h1>
+  <p class="meta">
+    The same example every other language carries: load a small candle dataset,
+    reset with a fixed seed and take six steps of the same action, then show the
+    observation and reward per step. The dataset is precomputed once into a fixed
+    feature tensor, so every <code>step()</code> is a pure array index — which is
+    why the same <code>(seed, policy)</code> pair yields the identical trajectory
+    here and in <code>examples/node/rollout.js</code>, byte for byte.
+  </p>
+
+  <p><button id="go" disabled>Run rollout</button></p>
+  <p id="status">Loading WASM module…</p>
+
+  <table id="steps" hidden>
+    <thead><tr><th>Step</th><th>Sma(3)</th><th>Close</th><th>Reward</th></tr></thead>
+    <tbody></tbody>
+  </table>
+
+  <pre id="raw" hidden></pre>
+
+  <script type="module">
+    import init, { Env, version }
+      from "../../bindings/wasm/pkg/wickra_gym_wasm.js";
+
+    const SPEC = JSON.stringify({
+      dataset_ref: "demo",
+      symbol: "TEST",
+      observation: {
+        features: [
+          { kind: "indicator", name: "Sma", params: [3] },
+          { kind: "price", field: "close" },
+        ],
+      },
+      action_space: { type: "discrete", n: 3 },
+      reward: "pnl",
+      // Sma(3) needs three bars; the core refuses a warmup below what the
+      // observation's indicators declare, because an earlier start would show a
+      // 0.0 that means "not computed yet".
+      episode: { max_steps: 32, warmup: 3 },
+    });
+
+    const CANDLES = Array.from({ length: 20 }, (_, i) => ({
+      ts: i,
+      open: 100.0 + i,
+      high: 101.0 + i,
+      low: 99.0 + i,
+      close: 100.0 + i,
+      volume: 1.0,
+    }));
+
+    const STEPS = 6;
+
+    const status = document.getElementById("status");
+    const go = document.getElementById("go");
+
+    function run() {
+      // A fresh environment per run: it carries episode state, so reusing one
+      // across clicks would continue the previous rollout rather than start a
+      // new one, and the table would not match the seed on screen.
+      const env = new Env(SPEC);
+      env.command(JSON.stringify({ cmd: "load", candles: CANDLES }));
+
+      const reset = JSON.parse(env.command(JSON.stringify({ cmd: "reset", seed: 7 })));
+      const rows = [{ step: 0, observation: reset.observation, reward: null }];
+      for (let i = 1; i <= STEPS; i++) {
+        const out = JSON.parse(env.command(JSON.stringify({ cmd: "step", action: 2.0 })));
+        rows.push({ step: i, observation: out.observation, reward: out.reward });
+      }
+
+      const body = document.querySelector("#steps tbody");
+      body.replaceChildren();
+      for (const row of rows) {
+        const tr = document.createElement("tr");
+        const cells = [row.step, row.observation[0], row.observation[1],
+                       row.reward === null ? "—" : row.reward];
+        for (const cell of cells) {
+          const td = document.createElement("td");
+          td.textContent = String(cell);
+          tr.append(td);
+        }
+        body.append(tr);
+      }
+      document.getElementById("steps").hidden = false;
+
+      const raw = document.getElementById("raw");
+      raw.textContent = JSON.stringify(rows, null, 2);
+      raw.hidden = false;
+
+      status.textContent =
+        `${STEPS} steps from seed 7 — wickra-gym ${version()}.`;
+    }
+
+    await init();
+    status.textContent = `Module ready — wickra-gym ${version()}.`;
+    go.disabled = false;
+    go.addEventListener("click", () => {
+      try {
+        run();
+      } catch (err) {
+        status.textContent = `Error: ${err}`;
+      }
+    });
+  </script>
+</body>
+</html>

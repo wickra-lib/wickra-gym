@@ -47,6 +47,7 @@ Each example is self-contained. Build the core artifact it needs first.
 | C# | `cargo build --release -p wickra-gym-c` | `dotnet run --project csharp/Rollout` |
 | Java | `cargo build --release -p wickra-gym-c` then `(cd ../bindings/java && mvn -q install -DskipTests)` | `mvn -q -f java compile exec:exec` |
 | R | `R CMD INSTALL ../bindings/r` | `Rscript r/rollout.R` |
+| WASM | `wasm-pack build bindings/wasm --target web` | serve the repository root, then open `examples/wasm/rollout.html` |
 
 ## Notes
 
