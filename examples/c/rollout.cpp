@@ -1,32 +1,27 @@
-// A minimal C++ example over the wickra-gym C ABI: load a spec and its candle
-// dataset, then drive a fixed long policy and print each step. DATA_DIR is
-// injected by CMake.
+// A minimal C++ example: load a spec and its candle dataset, then drive a fixed
+// long policy and print each step. DATA_DIR is injected by CMake.
+//
+// This goes through `wickra_gym.hpp`, the C++ hull shipped beside the C header,
+// because that hull is what a C++ caller is meant to use: it owns and frees the
+// handle, runs the two-call length protocol behind `wickra_gym_command` for you
+// -- the core carries the produced-but-undelivered response between the two
+// calls, so a mutating `step` runs once, not twice -- and turns a refusal into
+// an exception rather than a negative integer that is easy to ignore. Calling
+// the C functions directly from C++ works too, but then the hull would be
+// shipped without anything building it, which is how it came to reference a
+// type that does not exist.
 #include <cstdio>
 #include <fstream>
 #include <sstream>
 #include <string>
 
-#include "wickra_gym.h"
+#include "wickra_gym.hpp"
 
 static std::string slurp(const std::string &path) {
     std::ifstream f(path, std::ios::binary);
     std::ostringstream ss;
     ss << f.rdbuf();
     return ss.str();
-}
-
-// Run a command via the length-out protocol; the core caches the not-yet-
-// delivered response so the delivering call reuses it (steps run once).
-static std::string run(WickraGymEnv *env, const std::string &cmd) {
-    int len = wickra_gym_command(env, cmd.c_str(), nullptr, 0);
-    if (len < 0) {
-        return {};
-    }
-    std::string buf(static_cast<size_t>(len) + 1, '\0');
-    // std::string::data() is const before C++17; &buf[0] gives a writable ptr.
-    wickra_gym_command(env, cmd.c_str(), &buf[0], buf.size());
-    buf.resize(static_cast<size_t>(len));
-    return buf;
 }
 
 int main() {
@@ -38,36 +33,38 @@ int main() {
         return 1;
     }
 
-    WickraGymEnv *env = wickra_gym_new(spec.c_str());
-    if (!env) {
-        std::fprintf(stderr, "invalid spec\n");
+    int steps = 0;
+    try {
+        wickra::Env env(spec);
+        env.command("{\"cmd\":\"load\",\"candles\":" + candles + "}");
+        std::printf("wickra-gym %s\n", wickra::Env::version().c_str());
+        std::printf("reset: %s\n", env.command("{\"cmd\":\"reset\",\"seed\":42}").c_str());
+
+        for (;;) {
+            const std::string step = env.command("{\"cmd\":\"step\",\"action\":2}");
+            // An in-band refusal: the ABI answered, the core declined. That is a
+            // response rather than an error, so the hull does not throw on it.
+            if (step.find("\"ok\":false") != std::string::npos) {
+                std::fprintf(stderr, "the environment refused a step: %s\n", step.c_str());
+                return 1;
+            }
+            std::printf("step %d: %s\n", steps, step.c_str());
+            const bool done = step.find("\"terminated\":true") != std::string::npos ||
+                              step.find("\"truncated\":true") != std::string::npos;
+            ++steps;
+            if (done) {
+                break;
+            }
+        }
+    } catch (const wickra::GymError &err) {
+        // Every failure arrives here: a spec the core rejects, a command it does
+        // not know, a response that changed length between the two ABI calls.
+        std::fprintf(stderr, "%s\n", err.what());
         return 1;
     }
 
-    run(env, "{\"cmd\":\"load\",\"candles\":" + candles + "}");
-    std::printf("wickra-gym %s\n", wickra_gym_version());
-    std::printf("reset: %s\n", run(env, "{\"cmd\":\"reset\",\"seed\":42}").c_str());
-
-    int steps = 0;
-    bool ok = true;
-    for (;;) {
-        const std::string step = run(env, "{\"cmd\":\"step\",\"action\":2}");
-        if (step.empty() || step.find("\"ok\":false") != std::string::npos) {
-            ok = false;
-            break;
-        }
-        std::printf("step %d: %s\n", steps, step.c_str());
-        const bool done = step.find("\"terminated\":true") != std::string::npos ||
-                          step.find("\"truncated\":true") != std::string::npos;
-        ++steps;
-        if (done) {
-            break;
-        }
-    }
-
-    wickra_gym_free(env);
-    if (!ok || steps == 0) {
-        std::fprintf(stderr, "rollout failed\n");
+    if (steps == 0) {
+        std::fprintf(stderr, "the episode ended before its first step\n");
         return 1;
     }
     return 0;
