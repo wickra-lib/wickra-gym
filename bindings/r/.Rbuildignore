@@ -1,6 +1,6 @@
 # Keep everything configure stages or the compiler produces out of the R source
 # tarball built by `R CMD build`. The package is source-distributed: configure
-# fetches the C ABI at install time (or takes it from WKSCREEN_INC / WKSCREEN_LIB), so
+# fetches the C ABI at install time (or takes it from WKGYM_INC / WKGYM_LIB), so
 # none of these belong in the distributable.
 ^src/wickra_gym\.h$
 ^src/wickra_gym\.dll$

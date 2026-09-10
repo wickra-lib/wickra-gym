@@ -787,8 +787,8 @@ jobs:
       - name: R
         shell: bash
         env:
-          WKSCREEN_INC: ${{ github.workspace }}/bindings/c/include
-          WKSCREEN_LIB: ${{ github.workspace }}/target/release
+          WKGYM_INC: ${{ github.workspace }}/bindings/c/include
+          WKGYM_LIB: ${{ github.workspace }}/target/release
         run: |
           R CMD INSTALL bindings/r
           out=$(Rscript examples/r/scan.R)

@@ -1,4 +1,4 @@
-// Wickra Gym — C++ wrapper over the C ABI.
+// Wickra Env — C++ wrapper over the C ABI.
 //
 // Header-only, C++17, no dependency beyond the standard library and
 // `wickra_gym.h` beside it. Link the same `wickra_gym` library the C
@@ -11,7 +11,7 @@
 //
 //     #include <wickra_gym.hpp>
 //
-//     wickra::Gym handle(R"({"universe":["AAA"], ... })");
+//     wickra::Env handle(R"({"universe":["AAA"], ... })");
 //     std::string report = handle.command(R"({"cmd":"scan","data":{...}})");
 //
 // The gym is data-driven, so this wrapper deliberately stops at strings:
@@ -41,28 +41,28 @@ class GymError : public std::runtime_error {
 ///
 /// Move-only, because the underlying handle is a unique resource: copying it
 /// would free the same pointer twice.
-class Gym {
+class Env {
  public:
   /// Build a gym from a spec JSON string.
   ///
   /// Throws `GymError` if the spec is not valid JSON or not a valid spec.
-  explicit Gym(const std::string& spec_json)
+  explicit Env(const std::string& spec_json)
       : handle_(wickra_gym_new(spec_json.c_str())) {
     if (handle_ == nullptr) {
       throw GymError("wickra_gym_new rejected the spec");
     }
   }
 
-  ~Gym() { wickra_gym_free(handle_); }
+  ~Env() { wickra_gym_free(handle_); }
 
-  Gym(const Gym&) = delete;
-  Gym& operator=(const Gym&) = delete;
+  Env(const Env&) = delete;
+  Env& operator=(const Env&) = delete;
 
-  Gym(Gym&& other) noexcept : handle_(other.handle_) {
+  Env(Env&& other) noexcept : handle_(other.handle_) {
     other.handle_ = nullptr;
   }
 
-  Gym& operator=(Gym&& other) noexcept {
+  Env& operator=(Env&& other) noexcept {
     if (this != &other) {
       wickra_gym_free(handle_);
       handle_ = other.handle_;
