@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
  *
  * <p>The dataset is precomputed once into a fixed feature tensor — that is the
  * batch half — and {@code step()} then streams through it as a pure array index.
- * {@code gym-core} proves the two agree in Rust, but that says nothing about the
+ * {@code wickra-gym-core} proves the two agree in Rust, but that says nothing about the
  * boundary this binding crosses: a binding that mis-serialised an observation
  * row, or truncated it, would hand back numbers that look plausible and are not
  * the tensor's.

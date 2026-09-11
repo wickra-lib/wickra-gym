@@ -1,6 +1,6 @@
 # Architecture
 
-`wickra-gym` is a small deterministic Rust core (`gym-core`) exposed as a
+`wickra-gym` is a small deterministic Rust core (`wickra-gym-core`) exposed as a
 JSON-over-C-ABI data API in ten languages, plus a reference CLI (a rollout
 runner) and — for Python — a real `gymnasium.Env` subclass.
 
@@ -21,7 +21,7 @@ fuzz/                  cargo-fuzz targets (spec parse, command_json, tensor buil
 
 The core carries no configuration of its own: an environment is fully described
 by a JSON **spec** (observation features, action space, reward kind, episode
-parameters), a candle dataset, and a seed. `gym-core` exposes a single
+parameters), a candle dataset, and a seed. `wickra-gym-core` exposes a single
 `command_json` entry point that every binding forwards verbatim:
 
 | `cmd`     | Payload                       | Response |

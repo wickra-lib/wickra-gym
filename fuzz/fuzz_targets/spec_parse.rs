@@ -2,7 +2,7 @@
 //! Fuzz spec parsing/validation. Arbitrary bytes handed to `EnvSpec::from_json`
 //! must never panic — a malformed or invalid spec is an `Err`, never a crash.
 
-use gym_core::EnvSpec;
+use wickra_gym_core::EnvSpec;
 use libfuzzer_sys::fuzz_target;
 
 fuzz_target!(|data: &[u8]| {

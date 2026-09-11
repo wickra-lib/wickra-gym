@@ -3,7 +3,7 @@
 //! stream (one action per input byte). No action ever panics; stepping past the
 //! end of the episode returns an error, never a crash.
 
-use gym_core::{Candle, Env};
+use wickra_gym_core::{Candle, Env};
 use libfuzzer_sys::fuzz_target;
 
 const SPEC: &str = r#"{

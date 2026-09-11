@@ -3,7 +3,7 @@
  *
  * The dataset is precomputed once into a fixed feature tensor — that is the
  * batch half — and `step` then streams through it as a pure array index.
- * `gym-core` proves the two agree in Rust, but that says nothing about the
+ * `wickra-gym-core` proves the two agree in Rust, but that says nothing about the
  * boundary a C caller crosses: every reach behind this ABI asks for the response
  * length first and reads it second, so a command that is not a pure function of
  * its payload runs twice per call. `step` is exactly that — it advances the

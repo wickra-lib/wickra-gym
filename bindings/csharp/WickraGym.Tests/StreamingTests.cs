@@ -11,7 +11,7 @@ namespace WickraGym.Tests;
 ///
 /// The dataset is precomputed once into a fixed feature tensor — that is the
 /// batch half — and <c>step()</c> then streams through it as a pure array index.
-/// <c>gym-core</c> proves the two agree in Rust, but that says nothing about the
+/// <c>wickra-gym-core</c> proves the two agree in Rust, but that says nothing about the
 /// boundary this binding crosses: a binding that mis-serialised an observation
 /// row, or truncated it, would hand back numbers that look plausible and are not
 /// the tensor's.

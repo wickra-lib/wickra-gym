@@ -38,7 +38,7 @@ similar_names = "allow"
 needless_pass_by_value = "allow"
 
 [dependencies]
-gym-core = { workspace = true }
+wickra-gym-core = { workspace = true }
 napi = { version = "3.9", features = ["napi8"] }
 napi-derive = "3.5"
 

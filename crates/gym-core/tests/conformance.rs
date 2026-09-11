@@ -1,7 +1,9 @@
 //! Data-model conformance: serde round-trips of every wire enum, the canonical
 //! `Feature::key` format, `feature_keys` ordering, and spec-validation errors.
 
-use gym_core::{ActionSpace, EnvSpec, Error, Feature, MicroField, ObsSpec, PriceField, RewardKind};
+use wickra_gym_core::{
+    ActionSpace, EnvSpec, Error, Feature, MicroField, ObsSpec, PriceField, RewardKind,
+};
 
 fn round_trip<T>(value: &T)
 where

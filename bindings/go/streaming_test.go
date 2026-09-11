@@ -3,7 +3,7 @@ package wickra
 // The streamed rollout equals the batch tensor, through the command boundary.
 //
 // The dataset is precomputed once into a fixed feature tensor -- that is the batch
-// half -- and `step()` then streams through it as a pure array index. `gym-core`
+// half -- and `step()` then streams through it as a pure array index. `wickra-gym-core`
 // proves the two agree in Rust, but that says nothing about the boundary this
 // binding crosses: a binding that mis-serialised an observation row, or truncated
 // it, would hand back numbers that look plausible and are not the tensor's.

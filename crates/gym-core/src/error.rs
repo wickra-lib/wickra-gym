@@ -1,8 +1,8 @@
-//! The error type for gym-core. Domain errors travel in-band across the FFI
+//! The error type for wickra-gym-core. Domain errors travel in-band across the FFI
 //! boundary as `{"ok":false,"error":...}` JSON; only unusable FFI arguments and
 //! caught panics are signalled out of band (see the C ABI hub).
 
-/// A gym-core error.
+/// A wickra-gym-core error.
 #[derive(Debug, thiserror::Error)]
 pub enum Error {
     /// A spec, candle payload or command envelope failed to parse.
@@ -44,5 +44,5 @@ pub enum Error {
     EpisodeDone,
 }
 
-/// The gym-core result type.
+/// The wickra-gym-core result type.
 pub type Result<T> = core::result::Result<T, Error>;

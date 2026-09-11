@@ -21,5 +21,5 @@ crate-type = ["cdylib"]
 workspace = true
 
 [dependencies]
-gym-core = { workspace = true }
+wickra-gym-core = { workspace = true }
 pyo3 = { version = "0.29", features = ["extension-module", "abi3-py39"] }

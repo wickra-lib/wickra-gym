@@ -1,7 +1,7 @@
 //! The wickra-gym C ABI — the hub every C-capable language links against.
 //!
 //! The surface is deliberately tiny and JSON-shaped, exactly like
-//! [`gym_core::Env::command_json`]: create an environment handle from a spec
+//! [`wickra_gym_core::Env::command_json`]: create an environment handle from a spec
 //! JSON, drive it with command JSONs (`load`, `reset`, `step`, `spec`,
 //! `version`) and read back response JSONs, then free the handle. No result type
 //! crosses the boundary by value — the handle is opaque and payloads are always
@@ -34,7 +34,7 @@ use core::ffi::{c_char, CStr};
 use std::panic::{catch_unwind, AssertUnwindSafe};
 use std::ptr;
 
-use gym_core::Env;
+use wickra_gym_core::Env;
 
 /// A required pointer argument (`handle` or `cmd_json`) was null.
 pub const WICKRA_GYM_ERR_NULL: i32 = -1;

@@ -15,7 +15,7 @@ name = "rollout"
 path = "src/main.rs"
 
 [dependencies]
-gym-core = { workspace = true }
+wickra-gym-core = { workspace = true }
 serde_json = { workspace = true }
 # The canonical candle ingestion path: read a CSV series (same reader the CLI
 # uses) and map into gym candles.

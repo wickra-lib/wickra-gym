@@ -5,7 +5,7 @@
 //! malformed data all come back in-band as `{"ok":false,...}` (or a valid
 //! result), never a crash. Any returned response is re-parseable JSON.
 
-use gym_core::Env;
+use wickra_gym_core::Env;
 use libfuzzer_sys::fuzz_target;
 use serde_json::Value;
 

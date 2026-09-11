@@ -1,5 +1,5 @@
-//! Python bindings for wickra-gym — a thin wrapper over the `gym-core` command
-//! surface. `RawEnv` forwards command JSONs to [`gym_core::Env::command_json`]
+//! Python bindings for wickra-gym — a thin wrapper over the `wickra-gym-core` command
+//! surface. `RawEnv` forwards command JSONs to [`wickra_gym_core::Env::command_json`]
 //! verbatim; the real `gymnasium.Env` subclass lives in Python
 //! (`wickra_gym.WickraGymEnv`), keeping the byte-identical cross-language JSON
 //! boundary as the single source of truth.
@@ -9,14 +9,14 @@ use pyo3::prelude::*;
 /// A raw environment handle: create from a spec JSON, then drive it with command
 /// JSONs (`load`, `reset`, `step`, `spec`, `version`).
 #[pyclass(unsendable)]
-struct RawEnv(gym_core::Env);
+struct RawEnv(wickra_gym_core::Env);
 
 #[pymethods]
 impl RawEnv {
     /// Construct from an [`EnvSpec`] JSON string.
     #[new]
     fn new(spec_json: &str) -> PyResult<Self> {
-        gym_core::Env::new(spec_json)
+        wickra_gym_core::Env::new(spec_json)
             .map(RawEnv)
             .map_err(|e| pyo3::exceptions::PyValueError::new_err(e.to_string()))
     }
@@ -28,10 +28,10 @@ impl RawEnv {
             .map_err(|e| pyo3::exceptions::PyRuntimeError::new_err(e.to_string()))
     }
 
-    /// The gym-core version.
+    /// The wickra-gym-core version.
     #[staticmethod]
     fn version() -> &'static str {
-        gym_core::version()
+        wickra_gym_core::version()
     }
 }
 
@@ -39,6 +39,6 @@ impl RawEnv {
 #[pymodule]
 fn _wickra_gym(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_class::<RawEnv>()?;
-    m.add("__version__", gym_core::version())?;
+    m.add("__version__", wickra_gym_core::version())?;
     Ok(())
 }

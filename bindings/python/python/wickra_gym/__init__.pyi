@@ -17,7 +17,7 @@ class RawEnv:
     def version() -> str: ...
 
 class WickraGymEnv:
-    """A Gymnasium environment backed by gym-core (requires ``gymnasium``)."""
+    """A Gymnasium environment backed by wickra-gym-core (requires ``gymnasium``)."""
 
     metadata: dict[str, list[str]]
     observation_space: Any

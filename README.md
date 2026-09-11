@@ -45,7 +45,7 @@ The reward draws on the [`wickra-backtest`](https://github.com/wickra-lib/wickra
 fill/PnL model, and the only source of randomness is an explicitly-seeded episode
 RNG — so a `(seed, policy)` pair fully determines a trajectory.
 
-The core (`gym-core`) is a JSON-over-C-ABI data API usable in ten languages, and
+The core (`wickra-gym-core`) is a JSON-over-C-ABI data API usable in ten languages, and
 Python additionally ships a real **`gymnasium.Env` subclass** as its primary
 consumer.
 
@@ -207,7 +207,7 @@ precompute. One runnable example per language lives under
 
 | Language | Binding | Package |
 | -------- | ------- | ------- |
-| Rust | `gym-core` (native) | crates.io |
+| Rust | `wickra-gym-core` (native) | crates.io |
 | Python | PyO3 (native) + `gymnasium.Env` | PyPI |
 | Node.js | napi (native) | npm |
 | WASM | wasm-bindgen (native) | npm |

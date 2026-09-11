@@ -3,7 +3,7 @@
 //! length) with a fixed price/microstructure observation must build without a
 //! panic — non-finite prices collapse to `0.0`, missing columns to `0.0`.
 
-use gym_core::{build_tensor, Candle, Feature, MicroField, ObsSpec, PriceField};
+use wickra_gym_core::{build_tensor, Candle, Feature, MicroField, ObsSpec, PriceField};
 use libfuzzer_sys::fuzz_target;
 
 fuzz_target!(|data: &[u8]| {

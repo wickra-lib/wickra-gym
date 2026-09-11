@@ -5,7 +5,7 @@ direction, not commitments or dates.
 
 ## Now (0.1.x) — foundation
 
-- The deterministic `gym-core`: feature extraction, the O(1) `FeatureTensor`,
+- The deterministic `wickra-gym-core`: feature extraction, the O(1) `FeatureTensor`,
   the observation/action/reward specs, and the seeded environment lifecycle.
 - The reference CLI (rollout runner) and the ten-language binding surface, with
   Python's `gymnasium.Env` subclass.

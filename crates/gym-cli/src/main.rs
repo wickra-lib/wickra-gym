@@ -1,4 +1,4 @@
-//! `wickra-gym` — the reference rollout runner over `gym-core`.
+//! `wickra-gym` — the reference rollout runner over `wickra-gym-core`.
 
 mod args;
 mod run;
