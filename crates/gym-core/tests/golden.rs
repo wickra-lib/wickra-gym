@@ -5,8 +5,8 @@
 use std::fs;
 use std::path::{Path, PathBuf};
 
-use gym_core::{Candle, Env};
 use serde_json::Value;
+use wickra_gym_core::{Candle, Env};
 
 fn golden_root() -> PathBuf {
     Path::new(env!("CARGO_MANIFEST_DIR")).join("../../golden")

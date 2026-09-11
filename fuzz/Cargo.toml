@@ -10,7 +10,7 @@ cargo-fuzz = true
 [dependencies]
 libfuzzer-sys = "0.4"
 serde_json = "1"
-gym-core = { path = "../crates/gym-core" }
+wickra-gym-core = { path = "../crates/gym-core" }
 
 # Detach from the parent workspace — cargo-fuzz builds this crate on its own with
 # sanitizer flags on a nightly toolchain.

@@ -38,4 +38,4 @@ cast_possible_wrap = "allow"
 similar_names = "allow"
 
 [dependencies]
-gym-core = { workspace = true }
+wickra-gym-core = { workspace = true }

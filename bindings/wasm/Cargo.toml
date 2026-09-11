@@ -30,10 +30,10 @@ workspace = true
 # the feature-tensor precompute sequentially (no rayon thread pool in a browser
 # sandbox), which is byte-identical to the native parallel run — the exact
 # cross-language golden check.
-gym-core = { path = "../../crates/gym-core", version = "0.1.0", default-features = false }
+wickra-gym-core = { path = "../../crates/gym-core", version = "0.1.0", default-features = false }
 wasm-bindgen = "0.2"
 
-# gym-core's seeded episode RNG (via `rand`) pulls in `getrandom`, which needs
+# wickra-gym-core's seeded episode RNG (via `rand`) pulls in `getrandom`, which needs
 # its JS-backed entropy source to compile for `wasm32-unknown-unknown`. The RNG
 # is only ever seeded explicitly (never from entropy), so this backend is never
 # actually called — it only satisfies the build.

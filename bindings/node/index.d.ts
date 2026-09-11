@@ -9,6 +9,6 @@ export declare class Env {
   constructor(specJson: string)
   /** Apply a command JSON and return the response JSON string. */
   command(cmdJson: string): string
-  /** The gym-core version. */
+  /** The wickra-gym-core version. */
   version(): string
 }

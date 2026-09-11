@@ -4,9 +4,9 @@
 use std::fmt::Write as _;
 use std::path::Path;
 
-use gym_core::{Candle, EnvSpec, ResetResult, StepResult};
 use serde::Serialize;
 use wickra_data::csv::CandleReader;
+use wickra_gym_core::{Candle, EnvSpec, ResetResult, StepResult};
 
 use crate::args::{Args, Format};
 
@@ -68,7 +68,7 @@ pub fn run(args: &Args) -> Result<String, String> {
     let spec_json = serde_json::to_string(&spec).map_err(|e| e.to_string())?;
     let candles = load_candles(&args.data)?;
 
-    let mut env = gym_core::Env::new(&spec_json).map_err(|e| e.to_string())?;
+    let mut env = wickra_gym_core::Env::new(&spec_json).map_err(|e| e.to_string())?;
     env.load(&candles).map_err(|e| e.to_string())?;
     let reset = env.reset(args.seed).map_err(|e| e.to_string())?;
 

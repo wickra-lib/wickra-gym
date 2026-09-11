@@ -123,12 +123,12 @@ jobs:
         uses: taiki-e/install-action@e67fa11c4b9316fa714ddf0abed07a0c3143b95b # v2.87.4
         with:
           tool: cargo-llvm-cov
-      # The moat lives in gym-core: the feature tensor, the deterministic step,
+      # The moat lives in wickra-gym-core: the feature tensor, the deterministic step,
       # and the reward. Measure it in isolation so patch coverage tracks the core.
       - name: Generate coverage (lcov)
         run: >
           cargo llvm-cov
-          -p gym-core
+          -p wickra-gym-core
           --lcov --output-path lcov.info
       - name: Upload to Codecov
         uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7.0.0
@@ -649,7 +649,7 @@ jobs:
         run: |
           set -euo pipefail
           published=()
-          for crate in gym-core wickra-gym; do
+          for crate in wickra-gym-core wickra-gym; do
             code=$(curl -sS -o /dev/null -w "%{http_code}" \
               -H "User-Agent: wickra-gym-ci" \
               "https://crates.io/api/v1/crates/$crate")

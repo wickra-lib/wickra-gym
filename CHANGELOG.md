@@ -8,6 +8,23 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Fixed
 
+- **The core crate carried a name the release could not upload.** `gym-core`
+  is outside the org's crates.io token scope, which creates new crates under
+  the `wickra-` prefix only, and it is taken besides: `gym-core` 0.1.0 belongs
+  to gym-rs, an unrelated project. `cargo publish` on it returns 403 at upload
+  while `--dry-run` passes, and because the publish jobs run in parallel the
+  release would have landed on PyPI, npm, NuGet, Maven Central and the Go
+  mirror without ever reaching crates.io. The core is now `wickra-gym-core`,
+  the shape of every released sibling. The directory keeps its name; only the
+  package and the `wickra_gym_core` path moved. The same audit ran across the
+  family (xray paid for this with its first tag).
+
+- **`release.yml` copied the CLI's SBOM from a directory that does not
+  exist.** It read `crates/wickra-gym/wickra-gym.cdx.json`; the crate lives in
+  `crates/gym-cli/`. The `cp` sits after both uploads, so the job would have
+  failed with the crates already published and no `.crate` or SBOM attached to
+  the GitHub Release.
+
 - **The napi bump split a crate in two and the build stopped.**
   `napi-derive-backend` 6.1.3 pulls `convert_case` 0.12 while `napi-derive`
   3.6.3 still uses 0.11, and two versions of a crate are two unrelated types --
@@ -204,7 +221,7 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Added
 
-- `gym-core`: the deterministic environment — `EnvSpec`/`ObsSpec`/`Feature`, the
+- `wickra-gym-core`: the deterministic environment — `EnvSpec`/`ObsSpec`/`Feature`, the
   O(1)-per-bar `FeatureTensor` precompute (parallel via rayon, sequential on
   WASM, byte-identical either way), the O(1) `step()`, the `Pnl`/`Sharpe`/
   `LogReturn` rewards over the `wickra-backtest` fill/PnL model, and the

@@ -15,7 +15,7 @@
 //! These tests pin both halves: the feed a bar carries reaches the indicator,
 //! and a feed no bar carries is refused by name rather than zeroed.
 
-use gym_core::{build_tensor, Candle, Error, ObsSpec};
+use wickra_gym_core::{build_tensor, Candle, Error, ObsSpec};
 
 const BARS: usize = 80;
 
@@ -78,7 +78,7 @@ fn spec_for(name: &str, params: &[f64]) -> ObsSpec {
 }
 
 /// The indicator column of every row, which is column 0 of each observation.
-fn indicator_column(tensor: &gym_core::FeatureTensor) -> Vec<f64> {
+fn indicator_column(tensor: &wickra_gym_core::FeatureTensor) -> Vec<f64> {
     (0..tensor.n_bars).map(|bar| tensor.row(bar)[0]).collect()
 }
 

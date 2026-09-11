@@ -4,11 +4,11 @@
 //! scheduling overhead.
 
 use criterion::{criterion_group, criterion_main, BatchSize, BenchmarkId, Criterion, Throughput};
-use gym_core::{
+use std::hint::black_box;
+use wickra_gym_core::{
     build_tensor, ActionSpace, Candle, Env, EnvSpec, EpisodeSpec, Feature, ObsSpec, PriceField,
     RewardKind,
 };
-use std::hint::black_box;
 
 fn make_spec(dim: usize, max_steps: u32) -> String {
     let features = (0..dim)

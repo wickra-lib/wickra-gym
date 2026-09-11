@@ -1,6 +1,6 @@
 # Benchmarks
 
-Micro-benchmarks for `gym-core`, measured with
+Micro-benchmarks for `wickra-gym-core`, measured with
 [criterion](https://github.com/bheisler/criterion.rs) via the `gym-bench` crate:
 
 ```bash

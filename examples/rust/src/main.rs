@@ -11,8 +11,8 @@
 
 use std::path::Path;
 
-use gym_core::{Candle, Env};
 use wickra_data::csv::CandleReader;
+use wickra_gym_core::{Candle, Env};
 
 /// Read a candle CSV via `wickra-data` and map into gym candles (OHLCV only;
 /// microstructure columns are absent and default to `0.0`).
@@ -50,7 +50,7 @@ fn main() {
     env.load(&candles).expect("load candles");
 
     let reset = env.reset(Some(42)).expect("reset");
-    println!("wickra-gym {}", gym_core::version());
+    println!("wickra-gym {}", wickra_gym_core::version());
     println!("reset observation: {:?}", reset.observation);
 
     // A fixed "always long" policy (discrete action 2 -> target +1).

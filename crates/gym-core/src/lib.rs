@@ -1,4 +1,4 @@
-//! # gym-core
+//! # wickra-gym-core
 //!
 //! The deterministic core of `wickra-gym`: a Gymnasium-compatible, O(1)-step
 //! backtest environment. A JSON [`EnvSpec`] (observation features, action space,
@@ -35,7 +35,7 @@ pub use spec::{
 };
 pub use tensor::FeatureTensor;
 
-/// The gym-core crate version.
+/// The wickra-gym-core crate version.
 #[must_use]
 pub fn version() -> &'static str {
     env!("CARGO_PKG_VERSION")

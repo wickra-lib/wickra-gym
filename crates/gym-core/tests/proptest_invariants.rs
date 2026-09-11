@@ -4,10 +4,10 @@
 //! no later than `max_steps`, and stepping after the episode is done yields an
 //! error (never a panic).
 
-use gym_core::{
+use proptest::prelude::*;
+use wickra_gym_core::{
     ActionSpace, Candle, Env, EnvSpec, EpisodeSpec, Feature, ObsSpec, PriceField, RewardKind,
 };
-use proptest::prelude::*;
 
 fn price_field(i: u8) -> PriceField {
     match i % 5 {

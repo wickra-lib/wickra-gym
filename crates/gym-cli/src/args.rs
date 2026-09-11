@@ -4,7 +4,7 @@ use std::path::PathBuf;
 
 use clap::{Parser, ValueEnum};
 
-/// Drive a fixed deterministic policy through a gym-core environment.
+/// Drive a fixed deterministic policy through a wickra-gym-core environment.
 #[derive(Parser, Debug)]
 #[command(name = "wickra-gym", version, about)]
 pub struct Args {

@@ -7,7 +7,7 @@
 //! against the same committed golden fixtures, so a divergence in either path
 //! fails. Within a single build, this test pins that repeated runs are identical.
 
-use gym_core::{Candle, Env};
+use wickra_gym_core::{Candle, Env};
 
 const SPEC: &str = r#"{
     "dataset_ref": "det", "symbol": "S",

@@ -20,7 +20,7 @@ cargo fmt --all
 cargo clippy --workspace --all-targets --all-features -- -D warnings
 cargo clippy --workspace --all-targets --no-default-features -- -D warnings
 cargo test --workspace --all-features 2>&1 | grep "test result:"
-cargo test -p gym-core --no-default-features 2>&1 | grep "test result:"
+cargo test -p wickra-gym-core --no-default-features 2>&1 | grep "test result:"
 cargo deny check
 ```
 

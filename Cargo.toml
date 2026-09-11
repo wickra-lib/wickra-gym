@@ -2,7 +2,7 @@
 # A Gymnasium-compatible, microstructure-aware backtest environment with O(1)
 # steps: the whole dataset is precomputed once (O(1) per bar) into a fixed
 # feature tensor, so step() is a pure array index — fast, deterministic RL
-# rollouts. The core (`gym-core`) is exposed as a JSON-over-C-ABI data API in ten
+# rollouts. The core (`wickra-gym-core`) is exposed as a JSON-over-C-ABI data API in ten
 # languages: a Rust core with native Python/Node/WASM bindings plus a C ABI hub
 # for C/C++/C#/Go/Java/R, and a real gymnasium.Env subclass as the Python
 # consumer.
@@ -39,7 +39,7 @@ categories = ["finance", "science", "command-line-utilities"]
 
 [workspace.dependencies]
 # Workspace-internal core, referenced by the CLI, bench and bindings.
-gym-core = { version = "0.1.0", path = "crates/gym-core" }
+wickra-gym-core = { version = "0.1.0", path = "crates/gym-core" }
 # Serialization — the data-driven boundary (spec/observation/step as JSON).
 serde = { version = "1", features = ["derive"] }
 # `float_roundtrip` makes serde_json's float parser correctly rounded: a float

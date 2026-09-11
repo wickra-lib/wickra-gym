@@ -1,7 +1,7 @@
 # Wickra Gym — C ABI
 
 The C ABI is the hub every C-capable language (C, C++, C#, Go, Java, R) links
-against. It exposes `gym-core` — a deterministic, Gymnasium-compatible backtest
+against. It exposes `wickra-gym-core` — a deterministic, Gymnasium-compatible backtest
 environment — as a tiny, JSON-shaped surface built as both a `cdylib` (dynamic
 library) and a `staticlib`.
 

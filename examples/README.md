@@ -56,7 +56,7 @@ Each example is self-contained. Build the core artifact it needs first.
 
 ## Notes
 
-- **Rust** uses `gym-core` directly (the in-process API); every other example
+- **Rust** uses `wickra-gym-core` directly (the in-process API); every other example
   goes through the C ABI or a native binding via the JSON command surface.
 - **`python/gymnasium_ppo.py`** builds a real `gymnasium.Env`
   (`WickraGym-v0`), runs one episode with a random policy, then trains a tiny

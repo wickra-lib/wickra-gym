@@ -27,7 +27,7 @@ except ImportError:  # RawEnv works without gymnasium; the Env subclass needs it
 if gym is not None:
 
     class WickraGymEnv(gym.Env):
-        """A Gymnasium environment backed by the deterministic gym-core."""
+        """A Gymnasium environment backed by the deterministic wickra-gym-core."""
 
         metadata = {"render_modes": []}
 

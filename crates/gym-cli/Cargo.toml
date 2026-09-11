@@ -1,6 +1,6 @@
 [package]
 name = "wickra-gym"
-description = "Reference command-line rollout runner over gym-core: load a spec + candle dataset, drive a fixed deterministic policy through the environment, and print the trajectory as an aligned table or golden-format JSON."
+description = "Reference command-line rollout runner over wickra-gym-core: load a spec + candle dataset, drive a fixed deterministic policy through the environment, and print the trajectory as an aligned table or golden-format JSON."
 version.workspace = true
 edition.workspace = true
 rust-version.workspace = true
@@ -27,7 +27,7 @@ all-features = true
 
 [dependencies]
 # The deterministic environment core (spec, feature tensor, rollout).
-gym-core.workspace = true
+wickra-gym-core.workspace = true
 # Candle CSV loading, shared with the rest of the ecosystem.
 wickra-data.workspace = true
 serde.workspace = true

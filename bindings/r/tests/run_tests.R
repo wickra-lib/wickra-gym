@@ -48,7 +48,7 @@ stopifnot(bad)
 ## The streamed rollout equals the batch tensor, through the same boundary.
 ##
 ## The dataset is precomputed once into a fixed feature tensor -- the batch half
-## -- and step() then streams through it as a pure array index. gym-core proves
+## -- and step() then streams through it as a pure array index. wickra-gym-core proves
 ## the two agree in Rust; this checks the boundary the R binding crosses.
 
 stream_spec <- paste0(
