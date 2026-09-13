@@ -16,4 +16,4 @@ NeedsCompilation: yes
 SystemRequirements: the wickra-gym C ABI shared library (WKGYM_LIB) and its
     header (WKGYM_INC).
 Suggests: jsonlite
-RoxygenNote: 7.3.2
+Config/roxygen2/version: 8.0.0

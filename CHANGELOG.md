@@ -34,6 +34,15 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   pytest-only constructs); 3.10 and up run them under pytest as before. The
   gymnasium step installs from a hash-locked `ci-gymnasium.txt` instead of an
   unpinned `pip install gymnasium`.
+- **The R package builds for WebAssembly on r-universe.** `configure`
+  refused the wasm target outright, which would have left the `wasm-release`
+  job red on every build. The r-universe wasm image ships cargo and
+  emscripten, so `configure` now builds the C ABI staticlib from the release
+  tag's source for `wasm32-unknown-emscripten` right there and links it into
+  the package object, the way the released siblings do.
+- **The exported R functions are documented.** `wkgym_new`, `wkgym_command`
+  and `wkgym_version` carried roxygen comments but no generated `man/` pages,
+  which `R CMD check` reports as a WARNING on every platform.
 - **The core crate carried a name the release could not upload.** `gym-core`
   is outside the org's crates.io token scope, which creates new crates under
   the `wickra-` prefix only, and it is taken besides: `gym-core` 0.1.0 belongs
