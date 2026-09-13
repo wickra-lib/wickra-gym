@@ -15,6 +15,17 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   the locked CLI, so the in-sync check failed on every Node job; it is
   regenerated. The Examples job pointed `dotnet run` at a project directory
   that does not exist (`Rollout` is the project).
+- **The Maven Central publish is idempotent, and waits as long as Central
+  takes.** A sibling's first release deployed successfully and still went red:
+  Central published after the plugin's default 30-minute wait had expired,
+  and a rerun could only fail on the duplicate. The release workflow now skips
+  a version already on Central, the plugin waits up to two hours
+  (`waitMaxTime`), and the job has the budget for it.
+- **The engine pins are exact** (`wickra-backtest = "=0.1.4"`, and the
+  exchange client where it is used), as the released siblings pin them, so a
+  newer patch on one side cannot leave two copies of the engine in one graph.
+- zizmor's `self-repository` note is a documented policy (`.github/zizmor.yml`)
+  rather than an open alert per workflow; uv 0.12.13 for the lockfile script.
 - **The core crate carried a name the release could not upload.** `gym-core`
   is outside the org's crates.io token scope, which creates new crates under
   the `wickra-` prefix only, and it is taken besides: `gym-core` 0.1.0 belongs
