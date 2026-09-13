@@ -8,6 +8,13 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Fixed
 
+- **CI is green again.** The R streaming test matched `"observation":[102,103]`
+  against an envelope that prints floats with their fraction
+  (`[102.0,103.0]`, as the Java test already expects), so the R job failed on
+  every platform. The napi glue (`bindings/node/index.js`) was stale against
+  the locked CLI, so the in-sync check failed on every Node job; it is
+  regenerated. The Examples job pointed `dotnet run` at a project directory
+  that does not exist (`Rollout` is the project).
 - **The core crate carried a name the release could not upload.** `gym-core`
   is outside the org's crates.io token scope, which creates new crates under
   the `wickra-` prefix only, and it is taken besides: `gym-core` 0.1.0 belongs

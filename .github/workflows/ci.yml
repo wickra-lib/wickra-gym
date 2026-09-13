@@ -772,6 +772,7 @@ jobs:
       - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
           go-version: "1.23"
+          cache: false # no go.sum at the root; the example has no dependencies to cache
       - name: Go
         shell: bash
         run: |
@@ -802,7 +803,7 @@ jobs:
       - name: C#
         shell: bash
         run: |
-          out=$(dotnet run --project examples/csharp/Scan)
+          out=$(dotnet run --project examples/csharp/Rollout)
           echo "$out"
           echo "$out" | grep -q '9.165378'
 

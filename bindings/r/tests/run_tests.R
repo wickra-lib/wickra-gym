@@ -89,8 +89,10 @@ long_run <- stream_rollout(6)
 short_run <- stream_rollout(4)
 stopifnot(identical(long_run[seq_along(short_run)], short_run))
 
-## Bar 3 closes at 103; Sma(3) over the three bars ending there is 102.
-stopifnot(grepl('"observation":[102,103]', stream_rollout(0)[1], fixed = TRUE))
+## Bar 3 closes at 103; Sma(3) over the three bars ending there is 102. The
+## observation is a float vector, and the envelope prints floats with their
+## fraction (`102.0`), so the match is on the canonical bytes.
+stopifnot(grepl('"observation":[102.0,103.0]', stream_rollout(0)[1], fixed = TRUE))
 
 ## A warmup below the indicator lookback is refused: below it an observation
 ## column is 0.0 because nothing has been produced yet.
