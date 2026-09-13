@@ -14,8 +14,8 @@ library(wickragym)
 ## cross-language golden parity: for each committed golden/<case>, replay the
 ## rollout and assert the response equals the expected JSON. The binding returns
 ## the core's canonical command output verbatim, so structural equality is the
-## exact cross-language parity check. Requires jsonlite; skipped until the
-## fixtures land.
+## exact cross-language parity check. Requires jsonlite.
+## The corpus is found by walking up from the working directory.
 golden_dir <- function() {
   d <- normalizePath(getwd(), mustWork = FALSE)
   for (i in seq_len(8)) {
@@ -29,7 +29,8 @@ golden_dir <- function() {
 }
 
 g <- golden_dir()
-if (!is.null(g) && requireNamespace("jsonlite", quietly = TRUE)) {
+stopifnot(requireNamespace("jsonlite", quietly = TRUE))
+if (!is.null(g)) {
   for (case in list.dirs(g, recursive = FALSE)) {
     if (!file.exists(file.path(case, "spec.json"))) {
       next

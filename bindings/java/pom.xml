@@ -165,6 +165,10 @@
                    after validation is invisible to this workflow. A green Maven
                    job should mean the jar is public. -->
               <waitUntil>published</waitUntil>
+              <!-- Central publishes when it gets to it: a sibling's first
+                   deployment was validated in minutes and published after the
+                   plugin's default 30-minute wait had expired. Two hours. -->
+              <waitMaxTime>7200</waitMaxTime>
             </configuration>
           </plugin>
         </plugins>

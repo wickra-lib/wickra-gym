@@ -8,6 +8,47 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Fixed
 
+- **CI is green again.** The R streaming test matched `"observation":[102,103]`
+  against an envelope that prints floats with their fraction
+  (`[102.0,103.0]`, as the Java test already expects), so the R job failed on
+  every platform. The napi glue (`bindings/node/index.js`) was stale against
+  the locked CLI, so the in-sync check failed on every Node job; it is
+  regenerated. The Examples job pointed `dotnet run` at a project directory
+  that does not exist (`Rollout` is the project).
+- **The Maven Central publish is idempotent, and waits as long as Central
+  takes.** A sibling's first release deployed successfully and still went red:
+  Central published after the plugin's default 30-minute wait had expired,
+  and a rerun could only fail on the duplicate. The release workflow now skips
+  a version already on Central, the plugin waits up to two hours
+  (`waitMaxTime`), and the job has the budget for it.
+- **The engine pins are exact** (`wickra-backtest = "=0.1.4"`, and the
+  exchange client where it is used), as the released siblings pin them, so a
+  newer patch on one side cannot leave two copies of the engine in one graph.
+- zizmor's `self-repository` note is a documented policy (`.github/zizmor.yml`)
+  rather than an open alert per workflow; uv 0.12.13 for the lockfile script.
+- **The Python 3.9 CI row runs without pytest.** pytest 9.x requires 3.10,
+  so that row could only pin 8.4.2, below the fix for GHSA-6w46-j5rx-g56g
+  with no backport. The 3.9 lock carries maturin only, and the row runs the
+  same test modules through `bindings/python/tests/run_without_pytest.py`
+  (plain functions, plain asserts; the golden and smoke tests drop their
+  pytest-only constructs); 3.10 and up run them under pytest as before. The
+  gymnasium step installs from a hash-locked `ci-gymnasium.txt` instead of an
+  unpinned `pip install gymnasium`.
+- **The R golden parity test runs instead of skipping.** It needed jsonlite
+  and skipped itself silently when the package was absent, which it always
+  was on CI; both R jobs install jsonlite now (the example needs it too) and
+  the test requires it. osv-scanner runs with `--no-resolve`, since the Java
+  example's dependency on the unpublished org.wickra artefact cannot be
+  resolved from Maven Central until the release exists.
+- **The R package builds for WebAssembly on r-universe.** `configure`
+  refused the wasm target outright, which would have left the `wasm-release`
+  job red on every build. The r-universe wasm image ships cargo and
+  emscripten, so `configure` now builds the C ABI staticlib from the release
+  tag's source for `wasm32-unknown-emscripten` right there and links it into
+  the package object, the way the released siblings do.
+- **The exported R functions are documented.** `wkgym_new`, `wkgym_command`
+  and `wkgym_version` carried roxygen comments but no generated `man/` pages,
+  which `R CMD check` reports as a WARNING on every platform.
 - **The core crate carried a name the release could not upload.** `gym-core`
   is outside the org's crates.io token scope, which creates new crates under
   the `wickra-` prefix only, and it is taken besides: `gym-core` 0.1.0 belongs

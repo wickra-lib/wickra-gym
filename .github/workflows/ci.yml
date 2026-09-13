@@ -194,7 +194,8 @@ jobs:
       # Hash-locked rather than unpinned names: an unpinned `pip install` is a
       # fetch of whatever the index serves that minute, which is exactly what
       # the locked file exists to prevent. 3.9 resolves separately because
-      # pytest and iniconfig both dropped it.
+      # the wheels have to exist for the interpreter that installs them, and it
+      # carries no pytest (see ci-dev-py39.in).
       - name: Install the locked build/test tooling
         shell: bash
         run: |
@@ -208,16 +209,28 @@ jobs:
         working-directory: bindings/python
       - run: pip install --no-index --find-links bindings/python/dist wickra-gym
       # Without gymnasium the RawEnv command surface must fully work; the real
-      # gymnasium.Env contract test skips itself (pytest.importorskip).
+      # gymnasium.Env contract test skips itself (pytest.importorskip). 3.10 and
+      # up run the suite under pytest. The 3.9 row cannot: pytest 9.x requires
+      # 3.10, so pinning it there would mean carrying a version below the fix
+      # for GHSA-6w46-j5rx-g56g with no backport. It runs the same modules
+      # through run_without_pytest.py -- plain functions, plain asserts; the
+      # gymnasium contract test is not among them, since gymnasium needs 3.10.
       - name: Test without Gymnasium
-        run: pytest bindings/python/tests -q
+        shell: bash
+        run: |
+          if [ "${{ matrix.python-version }}" = "3.9" ]; then
+            python bindings/python/tests/run_without_pytest.py
+          else
+            pytest bindings/python/tests -q
+          fi
       # With Gymnasium the WickraGymEnv subclass and its env contract are
       # exercised. Gymnasium requires Python >= 3.10, so skip it on 3.9 (the
-      # RawEnv path above already covers that interpreter).
+      # RawEnv path above already covers that interpreter). Hash-locked like
+      # everything else this job installs.
       - name: Test with Gymnasium
         if: matrix.python-version != '3.9'
         run: |
-          pip install gymnasium
+          python -m pip install --require-hashes -r .github/requirements/ci-gymnasium.txt
           pytest bindings/python/tests -q
 
   node:
@@ -501,6 +514,11 @@ jobs:
         with:
           r-version: "release"
           use-public-rspm: true
+      # jsonlite is what the golden parity test (tests/golden.R) and the R
+      # example decode the envelope with. Without it the parity test used to
+      # skip itself silently; it is a hard requirement of the test now.
+      - name: Install jsonlite (a binary from the public RSPM mirror)
+        run: Rscript -e 'install.packages("jsonlite")'
       - name: Install and test the R binding
         shell: bash
         # github.workspace is a backslash path on Windows; Makevars(.win) (sh) and
@@ -533,10 +551,21 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: taiki-e/install-action@e67fa11c4b9316fa714ddf0abed07a0c3143b95b # v2.87.4
+      # `--no-resolve`: examples/java/pom.xml depends on the org.wickra artefact
+      # at the version in the tree, which does not exist on Maven Central until
+      # the release publishes it (the Examples job installs it locally first).
+      # Without the flag every version bump fails this job on a lookup for the
+      # artefact the bump exists to create. Everything pinned in a lockfile is
+      # still scanned in full and transitively, because a lockfile needs no
+      # resolution.
+      - name: osv-scanner
+        uses: google/osv-scanner-action/osv-scanner-action@6e4298ebc4db23e847df9b2e2de2939d6f066c67 # v2.5.1
         with:
-          tool: osv-scanner
-      - run: osv-scanner scan source --recursive .
+          scan-args: |-
+            --recursive
+            --no-resolve
+            --config=osv-scanner.toml
+            ./
 
   # Advisory, never blocking. links.yml stays the authoritative run: external
   # link rot is non-deterministic, so a third-party outage must not be able to
@@ -772,6 +801,7 @@ jobs:
       - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
           go-version: "1.23"
+          cache: false # no go.sum at the root; the example has no dependencies to cache
       - name: Go
         shell: bash
         run: |
@@ -802,13 +832,15 @@ jobs:
       - name: C#
         shell: bash
         run: |
-          out=$(dotnet run --project examples/csharp/Scan)
+          out=$(dotnet run --project examples/csharp/Rollout)
           echo "$out"
           echo "$out" | grep -q '9.165378'
 
       - uses: r-lib/actions/setup-r@465b7d8e732ca3921382b1674c59bada9cbf3399 # v2.13.0
         with:
           use-public-rspm: true
+      - name: Install jsonlite, which the R example decodes the envelope with
+        run: Rscript -e 'install.packages("jsonlite")'
       - name: R
         shell: bash
         env:

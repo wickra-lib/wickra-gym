@@ -585,7 +585,11 @@ jobs:
   # GPG_PASSPHRASE). The pom version must match the release tag.
   java-publish:
     name: Publish to Maven Central
-    timeout-minutes: 45
+    # Central validates in minutes and publishes when it gets to it: a sibling's
+    # first deployment was accepted and then took longer than the plugin's
+    # default 30-minute wait to publish, which failed the job while the
+    # artifact went live anyway. The pom waits up to two hours; this allows it.
+    timeout-minutes: 150
     needs: [gate, c-abi-build]
     runs-on: ubuntu-latest
     environment: release
@@ -634,12 +638,38 @@ jobs:
           server-password: CENTRAL_PASSWORD
           gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
           gpg-passphrase: GPG_PASSPHRASE
+      # Idempotent, like the npm and PyPI steps: a version that is already on
+      # the repository is not deployed again. Central refuses a second
+      # deployment of the same version, so without this check a re-run of a
+      # release whose Maven step timed out -- while Central went on to publish
+      # the bundle it had accepted, which is what happened to wickra-proof's
+      # first release -- fails a second time on a duplicate, and the jobs
+      # behind it (assets, provenance, the GitHub Release) never run.
+      - name: Skip the deploy when this version is already on Maven Central
+        id: central
+        shell: bash
+        run: |
+          version=$(mvn -B -q -f bindings/java help:evaluate -Dexpression=project.version -DforceStdout)
+          url="https://repo1.maven.org/maven2/org/wickra/wickra-gym/${version}/wickra-gym-${version}.pom"
+          if curl -sSf -o /dev/null "$url"; then
+            echo "skip: org.wickra:wickra-gym:${version} is already on Maven Central"
+            echo "published=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "org.wickra:wickra-gym:${version} is not on Maven Central yet"
+            echo "published=false" >> "$GITHUB_OUTPUT"
+          fi
       - name: Deploy to Maven Central
+        if: steps.central.outputs.published != 'true'
         env:
           CENTRAL_USERNAME: ${{ secrets.CENTRAL_USERNAME }}
           CENTRAL_PASSWORD: ${{ secrets.CENTRAL_PASSWORD }}
           GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
         run: mvn -B -f bindings/java -Prelease deploy -DskipTests
+      # The jar the attestation job signs has to exist whether or not this run
+      # deployed it.
+      - name: Build the jar when the deploy was skipped
+        if: steps.central.outputs.published == 'true'
+        run: mvn -B -f bindings/java package -DskipTests
 
   # Mirror the in-repo Go module (bindings/go) to the standalone
   # wickra-gym-go repository so `go get
