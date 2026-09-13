@@ -34,6 +34,12 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   pytest-only constructs); 3.10 and up run them under pytest as before. The
   gymnasium step installs from a hash-locked `ci-gymnasium.txt` instead of an
   unpinned `pip install gymnasium`.
+- **The R golden parity test runs instead of skipping.** It needed jsonlite
+  and skipped itself silently when the package was absent, which it always
+  was on CI; both R jobs install jsonlite now (the example needs it too) and
+  the test requires it. osv-scanner runs with `--no-resolve`, since the Java
+  example's dependency on the unpublished org.wickra artefact cannot be
+  resolved from Maven Central until the release exists.
 - **The R package builds for WebAssembly on r-universe.** `configure`
   refused the wasm target outright, which would have left the `wasm-release`
   job red on every build. The r-universe wasm image ships cargo and

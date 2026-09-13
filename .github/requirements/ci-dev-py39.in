@@ -10,3 +10,6 @@
 # bindings/python/tests/run_without_pytest.py instead: the same modules, plain
 # functions with plain asserts, on the floor interpreter.
 maturin
+# The wheel requires numpy (observations are numpy arrays); the row installs
+# the wheel with --no-index, so numpy has to come from this lock.
+numpy

@@ -514,6 +514,11 @@ jobs:
         with:
           r-version: "release"
           use-public-rspm: true
+      # jsonlite is what the golden parity test (tests/golden.R) and the R
+      # example decode the envelope with. Without it the parity test used to
+      # skip itself silently; it is a hard requirement of the test now.
+      - name: Install jsonlite (a binary from the public RSPM mirror)
+        run: Rscript -e 'install.packages("jsonlite")'
       - name: Install and test the R binding
         shell: bash
         # github.workspace is a backslash path on Windows; Makevars(.win) (sh) and
@@ -546,10 +551,21 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: taiki-e/install-action@e67fa11c4b9316fa714ddf0abed07a0c3143b95b # v2.87.4
+      # `--no-resolve`: examples/java/pom.xml depends on the org.wickra artefact
+      # at the version in the tree, which does not exist on Maven Central until
+      # the release publishes it (the Examples job installs it locally first).
+      # Without the flag every version bump fails this job on a lookup for the
+      # artefact the bump exists to create. Everything pinned in a lockfile is
+      # still scanned in full and transitively, because a lockfile needs no
+      # resolution.
+      - name: osv-scanner
+        uses: google/osv-scanner-action/osv-scanner-action@6e4298ebc4db23e847df9b2e2de2939d6f066c67 # v2.5.1
         with:
-          tool: osv-scanner
-      - run: osv-scanner scan source --recursive .
+          scan-args: |-
+            --recursive
+            --no-resolve
+            --config=osv-scanner.toml
+            ./
 
   # Advisory, never blocking. links.yml stays the authoritative run: external
   # link rot is non-deterministic, so a third-party outage must not be able to
@@ -823,6 +839,8 @@ jobs:
       - uses: r-lib/actions/setup-r@465b7d8e732ca3921382b1674c59bada9cbf3399 # v2.13.0
         with:
           use-public-rspm: true
+      - name: Install jsonlite, which the R example decodes the envelope with
+        run: Rscript -e 'install.packages("jsonlite")'
       - name: R
         shell: bash
         env:
