@@ -1,0 +1,5 @@
+# The gymnasium extra for the "Test with Gymnasium" step of the ci.yml python
+# job (3.10 and up; gymnasium requires Python >= 3.10). Kept out of
+# ci-dev-py3.in so the "Test without Gymnasium" step really runs without it.
+# Locked output: ci-gymnasium.txt. Refresh via scripts/update-lockfiles.sh.
+gymnasium

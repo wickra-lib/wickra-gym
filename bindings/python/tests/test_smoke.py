@@ -40,7 +40,10 @@ def test_load_reset_step():
 
 
 def test_bad_spec_raises():
-    import pytest
-
-    with pytest.raises(ValueError):
+    # Plain try/except rather than pytest.raises: this module also runs on the
+    # Python 3.9 row, which has no pytest (see run_without_pytest.py).
+    try:
         RawEnv(json.dumps({"not": "a spec"}))
+    except ValueError:
+        return
+    raise AssertionError("a spec that is not a spec must raise ValueError")

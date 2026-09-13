@@ -194,7 +194,8 @@ jobs:
       # Hash-locked rather than unpinned names: an unpinned `pip install` is a
       # fetch of whatever the index serves that minute, which is exactly what
       # the locked file exists to prevent. 3.9 resolves separately because
-      # pytest and iniconfig both dropped it.
+      # the wheels have to exist for the interpreter that installs them, and it
+      # carries no pytest (see ci-dev-py39.in).
       - name: Install the locked build/test tooling
         shell: bash
         run: |
@@ -208,16 +209,28 @@ jobs:
         working-directory: bindings/python
       - run: pip install --no-index --find-links bindings/python/dist wickra-gym
       # Without gymnasium the RawEnv command surface must fully work; the real
-      # gymnasium.Env contract test skips itself (pytest.importorskip).
+      # gymnasium.Env contract test skips itself (pytest.importorskip). 3.10 and
+      # up run the suite under pytest. The 3.9 row cannot: pytest 9.x requires
+      # 3.10, so pinning it there would mean carrying a version below the fix
+      # for GHSA-6w46-j5rx-g56g with no backport. It runs the same modules
+      # through run_without_pytest.py -- plain functions, plain asserts; the
+      # gymnasium contract test is not among them, since gymnasium needs 3.10.
       - name: Test without Gymnasium
-        run: pytest bindings/python/tests -q
+        shell: bash
+        run: |
+          if [ "${{ matrix.python-version }}" = "3.9" ]; then
+            python bindings/python/tests/run_without_pytest.py
+          else
+            pytest bindings/python/tests -q
+          fi
       # With Gymnasium the WickraGymEnv subclass and its env contract are
       # exercised. Gymnasium requires Python >= 3.10, so skip it on 3.9 (the
-      # RawEnv path above already covers that interpreter).
+      # RawEnv path above already covers that interpreter). Hash-locked like
+      # everything else this job installs.
       - name: Test with Gymnasium
         if: matrix.python-version != '3.9'
         run: |
-          pip install gymnasium
+          python -m pip install --require-hashes -r .github/requirements/ci-gymnasium.txt
           pytest bindings/python/tests -q
 
   node:

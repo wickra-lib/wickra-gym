@@ -1,10 +1,8 @@
 """Cross-language golden: replay the committed golden rollouts through RawEnv and
-confirm byte-identical output. Skipped until the golden fixtures land (§4)."""
+confirm byte-identical output."""
 
 import json
 from pathlib import Path
-
-import pytest
 
 # bindings/python/tests -> repo root -> golden/
 GOLDEN = Path(__file__).resolve().parents[3] / "golden"
@@ -19,9 +17,16 @@ def _cases():
 CASES = _cases()
 
 
-@pytest.mark.skipif(not CASES, reason="golden fixtures not present yet")
-@pytest.mark.parametrize("spec_path", CASES, ids=lambda p: p.parent.name)
-def test_golden_rollout(spec_path):
+def test_golden_rollouts():
+    # One function over every case rather than pytest.mark.parametrize: this
+    # module also runs on the Python 3.9 row, which has no pytest (see
+    # run_without_pytest.py). A missing corpus is a failure, not a skip.
+    assert CASES, "golden corpus not found"
+    for spec_path in CASES:
+        _check_case(spec_path)
+
+
+def _check_case(spec_path):
     from wickra_gym import RawEnv
 
     case = spec_path.parent
@@ -35,11 +40,11 @@ def test_golden_rollout(spec_path):
     seed = expected.get("seed")
     reset_cmd = {"cmd": "reset"} | ({"seed": seed} if seed is not None else {})
     reset = json.loads(env.command(json.dumps(reset_cmd)))
-    assert reset == expected["reset"]
+    assert reset == expected["reset"], spec_path.parent.name
 
     trajectory = []
     for action in actions:
         trajectory.append(
             json.loads(env.command(json.dumps({"cmd": "step", "action": action})))
         )
-    assert trajectory == expected["trajectory"]
+    assert trajectory == expected["trajectory"], spec_path.parent.name

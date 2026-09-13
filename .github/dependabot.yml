@@ -201,14 +201,14 @@ updates:
     # Version-update pull requests disabled (0). Dependabot edits the .txt
     # directly and does not know which interpreter each lock was resolved
     # against, so a bump lands a version the row cannot install: ci-dev-py39.txt
-    # exists precisely because pytest >= 9 and iniconfig >= 2.3 declare
-    # requires-python >= 3.10, and a bump there also drops the exceptiongroup and
-    # tomli backports 3.9 needs. Regenerate with the script instead.
+    # is resolved for 3.9, whose wheels differ, and a bump there would drop the
+    # tomli backport 3.9 needs. Regenerate with the script instead.
     #
     # Security updates are exempt from this limit and still arrive, which is what
     # should happen -- they are judged one at a time. The first one (pytest,
     # GHSA-6w46-j5rx-g56g) proposed 9.0.3 for both files: a downgrade for
-    # ci-dev-py3.txt, already on 9.1.1, and an impossible install for the 3.9 row.
+    # ci-dev-py3.txt, already past it, and an impossible install for the 3.9
+    # row, which is why that row runs without pytest at all now.
     open-pull-requests-limit: 0
     cooldown:
       default-days: 7
