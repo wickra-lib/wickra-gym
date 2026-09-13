@@ -45,10 +45,10 @@ UV_VERSION="0.12.13"
 # https://github.com/astral-sh/uv/releases/download/<version>/<archive>.sha256
 uv_sha256() {
   case "$1" in
-    x86_64-unknown-linux-gnu)  echo "ab9b309d4586403f024e100abaceb396616e178a553e2500c36087d180f09509" ;;
-    aarch64-unknown-linux-gnu) echo "fe08db50cc1b56cd1da7801065ed1103d27ed3f9571cd122386cfc7faf1b8df5" ;;
-    aarch64-apple-darwin)      echo "46740540b63fdee9a6cb2e19baf3f1f475b850c440a33e63455087a6871263f1" ;;
-    x86_64-apple-darwin)       echo "0dc8cd6c961582b0d140b5398f96b23502885277fb3464241456a2435e460dfa" ;;
+    x86_64-unknown-linux-gnu)  echo "745765a3b6e360ad76743599ae5c42e9278c7edf8bbff9fc76d05bf2623a04dd" ;;
+    aarch64-unknown-linux-gnu) echo "2eaa5d94f5db7b3a1a092156b9420459e42ab0217d917fe74a876309cef9b5e9" ;;
+    aarch64-apple-darwin)      echo "7e6ddb9316acc00f2296c82ff4d99977870ee34b2f0ddcae9444d714db9364ed" ;;
+    x86_64-apple-darwin)       echo "5e287ef61cb6a9b61b3a83fef124fd143e400468a7dac794230147a810e17119" ;;
     *)                         echo "" ;;
   esac
 }
