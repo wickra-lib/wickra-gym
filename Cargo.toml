@@ -34,7 +34,7 @@ authors = ["wickra-lib"]
 repository = "https://github.com/wickra-lib/wickra-gym"
 homepage = "https://wickra.org"
 readme = "README.md"
-keywords = ["trading", "backtest", "reinforcement-learning", "gymnasium", "finance"]
+keywords = ["trading", "backtest", "reinforcement", "gymnasium", "finance"]
 categories = ["finance", "science", "command-line-utilities"]
 
 [workspace.dependencies]
