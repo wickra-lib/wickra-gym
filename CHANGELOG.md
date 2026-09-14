@@ -6,6 +6,20 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Fixed
+
+- **The R package installs on macOS and Windows.** r-universe built the
+  first release on every platform and failed on ten of thirteen: the package
+  object linked the C ABI library but nothing bundled it, so macOS could not
+  load `@rpath/libwickra_*.dylib`, and `Makevars.win` still expected the
+  header and library through environment variables that r-universe never
+  sets, so the Windows link found no symbols at all. The package is in the
+  family's form now: `configure` / `configure.win` stage the library into
+  `src/`, `install.libs.R` bundles it beside the package object (the DLL under
+  its `_abi` name, the dylib and the `.so`), `Makevars.win` links the import
+  library `configure.win` builds, a shipped `tests/smoke.R` runs inside the
+  tarball, and `DESCRIPTION` states the R floor.
+
 ## [0.1.1] - 2026-09-14
 
 ### Fixed

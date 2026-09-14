@@ -57,3 +57,10 @@ secrets/
 
 # Java example build output
 examples/java/out/
+# Staged into src/ by configure at build time; never committed.
+bindings/r/src/wickra_gym.h
+bindings/r/src/libwickra_gym*
+bindings/r/src/wickra_gym_abi.def
+bindings/r/src/wickra-gym-c*
+bindings/r/src/Makevars
+bindings/r/src/symbols.rds

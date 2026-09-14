@@ -1,18 +1,14 @@
 #!/bin/sh
-# Resolve the wickra-gym C ABI (header + shared library) for the Unix build.
-#
-# Until this existed the package built only where something had already set
-# WKGYM_INC and WKGYM_LIB -- which is to say, only in this repository's CI. A user
-# running install.packages() got a compiler error about a missing header.
+# Resolve the Wickra C ABI (header + shared library) for the Unix build.
 #
 # Self-contained by default: download the prebuilt wickra-gym-c-<triple>.tar.gz
-# release asset matching this package's version and stage the shared library into
-# src/, so the compiled object links against it and bundles it (via
+# release asset that matches this package's version and stage the shared library
+# into src/ so the compiled wickra_gym.so links against it and bundles it (via
 # install.libs.R), found post-install through an rpath ($ORIGIN on Linux,
-# @loader_path on macOS). Set WKGYM_INC + WKGYM_LIB to build against a locally
-# built C ABI instead (the dev override; e.g. `cargo build -p wickra-gym-c
-# --release`). Download and extraction use base R, which is always present at
-# build time, so there is no curl/wget system dependency.
+# @loader_path on macOS). Set WKGYM_INC + WKGYM_LIB to build
+# against a locally built C ABI instead (dev override; e.g.
+# `cargo build -p wickra-gym-c --release`). Download/extract uses base R (always
+# present at build time), so there is no curl/wget system dependency.
 set -e
 
 inc=""
@@ -20,9 +16,9 @@ lib=""
 
 # A freshly-cut GitHub release can briefly return 404 while its assets propagate
 # across the CDN, and a transient network blip should not fail the build either.
-# Retry base R's download.file with a backoff (~2 min total) rather than giving
-# up on the first miss.
-fetch_release_archive() {
+# Retry base R's download.file with a backoff (~2 min total) instead of giving up
+# on the first miss.
+wickra_gym_download() {
   _url="$1"
   _dest="$2"
   _attempt=1
@@ -30,7 +26,7 @@ fetch_release_archive() {
     if "${R_HOME}/bin/Rscript" -e "download.file('${_url}', '${_dest}', mode = 'wb', quiet = TRUE)"; then
       return 0
     fi
-    echo "wickra-gym: download attempt ${_attempt}/6 failed (${_url}); the release asset may still be propagating -- retrying in 20s..."
+    echo "wickra-gym: download attempt ${_attempt}/6 failed (${_url}); the release asset may still be propagating — retrying in 20s..."
     sleep 20
     _attempt=$((_attempt + 1))
   done
@@ -41,17 +37,16 @@ fetch_release_archive() {
 # WebAssembly (r-universe / webR): there is no prebuilt wasm C ABI to download,
 # but the build image ships cargo (/usr/local/cargo/bin) and emscripten
 # (EMSDK on PATH), so build the C ABI staticlib from source for
-# wasm32-unknown-emscripten right here, from the release tag this package's
-# version names. Building it in the same image with the same emscripten
-# avoids any ABI/version mismatch a prebuilt lib would risk. Default features
-# are off (threads, where a crate has them): the computation is serial there
-# and functionally identical.
+# wasm32-unknown-emscripten right here. Building it in the same image with the
+# same emscripten avoids any ABI/version mismatch a prebuilt lib would risk.
+# rayon (threads) is dropped via --no-default-features; the indicators are pure
+# computation, so the serial path is functionally identical.
 if [ "$(uname -s)" = "Emscripten" ]; then
   version=$(sed -n 's/^Version:[[:space:]]*//p' DESCRIPTION)
   echo "wickra-gym: building C ABI from source for wasm32-unknown-emscripten (v${version})"
   build=$(mktemp -d)
   url="https://github.com/wickra-lib/wickra-gym/archive/refs/tags/v${version}.tar.gz"
-  fetch_release_archive "${url}" "${build}/src.tar.gz" || exit 1
+  wickra_gym_download "${url}" "${build}/src.tar.gz" || exit 1
   "${R_HOME}/bin/Rscript" -e "untar('${build}/src.tar.gz', exdir = '${build}')"
   root="${build}/wickra-gym-${version}"
   rustup target add wasm32-unknown-emscripten 2>/dev/null || true
@@ -63,12 +58,12 @@ if [ "$(uname -s)" = "Emscripten" ]; then
   rm -rf "${build}"
   # The static archive is linked into the package object; no shared lib to
   # bundle and no rpath needed.
-  sed "s|@WKGYM_RPATH@||" src/Makevars.in > src/Makevars
+  sed "s|@WICKRA_RPATH@||" src/Makevars.in > src/Makevars
   exit 0
 fi
 
 if [ -n "${WKGYM_INC}" ] && [ -n "${WKGYM_LIB}" ]; then
-  echo "wickra-gym: using the C ABI from WKGYM_INC / WKGYM_LIB (dev override)"
+  echo "wickra-gym: using C ABI from WKGYM_INC / WKGYM_LIB (dev override)"
   inc="${WKGYM_INC}"
   lib="${WKGYM_LIB}"
 else
@@ -80,24 +75,24 @@ else
       case "${arch}" in
         x86_64) triple="x86_64-unknown-linux-gnu" ;;
         aarch64 | arm64) triple="aarch64-unknown-linux-gnu" ;;
-        *) echo "wickra-gym: unsupported Linux arch '${arch}' -- set WKGYM_INC/WKGYM_LIB"; exit 1 ;;
+        *) echo "wickra-gym: unsupported Linux arch '${arch}' — set WKGYM_INC/WKGYM_LIB"; exit 1 ;;
       esac
       ;;
     Darwin)
       case "${arch}" in
         x86_64) triple="x86_64-apple-darwin" ;;
         arm64 | aarch64) triple="aarch64-apple-darwin" ;;
-        *) echo "wickra-gym: unsupported macOS arch '${arch}' -- set WKGYM_INC/WKGYM_LIB"; exit 1 ;;
+        *) echo "wickra-gym: unsupported macOS arch '${arch}' — set WKGYM_INC/WKGYM_LIB"; exit 1 ;;
       esac
       ;;
     *)
-      echo "wickra-gym: unsupported OS '${os}' -- set WKGYM_INC/WKGYM_LIB"
+      echo "wickra-gym: unsupported OS '${os}' — set WKGYM_INC/WKGYM_LIB"
       exit 1
       ;;
   esac
   url="https://github.com/wickra-lib/wickra-gym/releases/download/v${version}/wickra-gym-c-${triple}.tar.gz"
-  echo "wickra-gym: downloading the C ABI ${triple} for v${version}"
-  fetch_release_archive "${url}" "src/wickra-gym-c.tar.gz" || exit 1
+  echo "wickra-gym: downloading C ABI ${triple} for v${version}"
+  wickra_gym_download "${url}" "src/wickra-gym-c.tar.gz" || exit 1
   "${R_HOME}/bin/Rscript" -e "untar('src/wickra-gym-c.tar.gz', exdir = 'src/wickra-gym-c')"
   inc="src/wickra-gym-c/wickra-gym-c-${triple}/include"
   lib="src/wickra-gym-c/wickra-gym-c-${triple}/lib"
@@ -118,7 +113,7 @@ if [ -z "${staged}" ]; then
   exit 1
 fi
 
-# rpath so the bundled library is found next to the package object after install.
+# rpath so the bundled lib is found next to wickra_gym.so after install.
 case "$(uname -s)" in
   Darwin)
     rpath="-Wl,-rpath,@loader_path"
@@ -130,6 +125,6 @@ case "$(uname -s)" in
     ;;
 esac
 
-sed "s|@WKGYM_RPATH@|${rpath}|" src/Makevars.in > src/Makevars
+sed "s|@WICKRA_RPATH@|${rpath}|" src/Makevars.in > src/Makevars
 echo "wickra-gym: configured (bundled ${staged})"
 exit 0
