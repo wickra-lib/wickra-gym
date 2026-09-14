@@ -6,6 +6,16 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Fixed
+
+- crates.io publish: the `reinforcement-learning` keyword is 22 characters and
+  crates.io caps keywords at 20, so the v0.1.0 run published PyPI, npm, NuGet
+  and Maven Central but no crate. The Cargo keyword is `reinforcement`; the
+  npm and PyPI keyword lists are unchanged.
+- The release workflow uploads the Java jar the provenance job attests: the
+  Maven job never uploaded a `java-jar` artifact, so the attestation job would
+  have had nothing to sign for Java.
+
 ## [0.1.0] - 2026-09-14
 
 ### Fixed

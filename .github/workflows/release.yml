@@ -671,6 +671,19 @@ jobs:
         if: steps.central.outputs.published == 'true'
         run: mvn -B -f bindings/java package -DskipTests
 
+      # The jar is what a Java consumer installs. Maven Central resolves it on
+      # demand, so it does not belong on the release page -- but it does have to
+      # exist as an artifact, or the attestation job has nothing to sign.
+      - name: Upload the Java jar as a build artifact
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: java-jar
+          path: |
+            bindings/java/target/*.jar
+            !bindings/java/target/*-sources.jar
+            !bindings/java/target/*-javadoc.jar
+          if-no-files-found: error
+
   # Mirror the in-repo Go module (bindings/go) to the standalone
   # wickra-gym-go repository so `go get
   # github.com/wickra-lib/wickra-gym-go` builds with no extra steps. The
