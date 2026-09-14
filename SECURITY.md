@@ -11,14 +11,13 @@ trust-boundary breakdown.
 
 ## Supported versions
 
-Nothing is published yet. Security fixes target `main`, and will carry into
-`0.1.0` -- the version the manifests declare and the first that will be
-released. No earlier version exists to support.
+This project is pre-1.0 (alpha). Security fixes are applied to the latest
+released version, `0.1.0`, only; please upgrade to the newest release before
+reporting an issue.
 
 | Version | Supported |
 |---------|-----------|
-| `main`  | ✅        |
-| `0.1.0` (unreleased) | ✅ |
+| 0.1.0 (latest) | ✅ |
 
 ## Reporting a vulnerability
 

@@ -83,11 +83,10 @@ languages, byte for byte.
 
 ## Status
 
-**Pre-release — functionally complete, CI-verified, not yet published.** The
-core, the CLI, all ten language bindings, the golden trajectory corpus, the
-property + fuzz suites, the benchmarks and one runnable example per language are
-built and green across Linux, macOS and Windows. Packages are not yet on the
-registries. Track progress in [ROADMAP.md](ROADMAP.md) and
+**0.1.0 — the first release.** The core, the CLI, all ten language bindings,
+the golden trajectory corpus, the property + fuzz suites, the benchmarks and
+one runnable example per language are built and green across Linux, macOS and
+Windows. Track progress in [ROADMAP.md](ROADMAP.md) and
 [CHANGELOG.md](CHANGELOG.md).
 
 ## Documentation

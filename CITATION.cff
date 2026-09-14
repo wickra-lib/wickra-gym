@@ -8,6 +8,8 @@ abstract: >-
   byte-for-byte in ten languages. The "ImageNet for trading-strategy
   reproducibility". Exposed as a JSON-over-C-ABI data API in ten languages.
 type: software
+version: "0.1.0"
+date-released: "2026-09-14"
 authors:
   - alias: kingchenc
     website: "https://wickra.org"
