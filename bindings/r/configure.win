@@ -1,19 +1,19 @@
 #!/bin/sh
-# Windows build: the package compiles to wickragym.dll, and the C ABI ships
-# its own wickra_gym.dll. The two names do not collide, but the import
-# library must reference the ABI DLL by the exact name that will sit beside the
-# package object after install, so it is staged under that name here and
-# install.libs.R bundles it.
+# Windows build: the package compiles to wickra_gym.dll, which would collide with the
+# C ABI's own wickra_gym.dll (the loader would resolve the import to the package
+# itself). Stage a renamed copy, wickra_gym_abi.dll, into src/ and build an import
+# library that references it by that name. install.libs.R then bundles the DLL.
 #
-# Self-contained by default: download the prebuilt
-# wickra-gym-c-<triple>.tar.gz release asset matching this package's
-# version. Set WKGYM_INC + WKGYM_LIB to build against a locally built C ABI
-# instead (the dev override).
+# Self-contained by default: download the prebuilt wickra-gym-c-<triple>.tar.gz
+# release asset matching this package's version. Set WKGYM_INC +
+# WKGYM_LIB to build against a locally built C ABI instead (dev override).
 set -e
 
 # A freshly-cut GitHub release can briefly return 404 while its assets propagate
-# across the CDN. Retry rather than giving up on the first miss.
-fetch_release_archive() {
+# across the CDN, and a transient network blip should not fail the build either.
+# Retry base R's download.file with a backoff (~2 min total) instead of giving up
+# on the first miss.
+wickra_gym_download() {
   _url="$1"
   _dest="$2"
   _attempt=1
@@ -21,7 +21,7 @@ fetch_release_archive() {
     if "${R_HOME}/bin/Rscript" -e "download.file('${_url}', '${_dest}', mode = 'wb', quiet = TRUE)"; then
       return 0
     fi
-    echo "wickra-gym: download attempt ${_attempt}/6 failed (${_url}); retrying in 20s..."
+    echo "wickra-gym: download attempt ${_attempt}/6 failed (${_url}); the release asset may still be propagating — retrying in 20s..."
     sleep 20
     _attempt=$((_attempt + 1))
   done
@@ -29,9 +29,9 @@ fetch_release_archive() {
   return 1
 }
 
-# Detect R's architecture, not the shell's. On a Windows/arm64 runner `uname -m`
-# reports x86_64 because the shell runs under emulation, which would pull the
-# x64 C ABI into an arm64 R and fail to load ("%1 is not a valid Win32
+# Detect the R architecture, not the shell's. On the Windows/arm64 runner
+# `uname -m` reports x86_64 (the shell runs under emulation), so the x64 C ABI
+# would be pulled into an arm64 R and fail to load ("%1 is not a valid Win32
 # application"). R.version$arch reflects the R build that loads the DLL, and it
 # also selects the import library's target machine below.
 arch=$("${R_HOME}/bin/Rscript" -e 'cat(R.version$arch)')
@@ -45,36 +45,36 @@ case "${arch}" in
     dll_machine="arm64"
     ;;
   *)
-    echo "wickra-gym: unsupported Windows arch '${arch}' -- set WKGYM_INC/WKGYM_LIB"
+    echo "wickra-gym: unsupported Windows arch '${arch}' — set WKGYM_INC/WKGYM_LIB"
     exit 1
     ;;
 esac
 
 if [ -n "${WKGYM_INC}" ] && [ -n "${WKGYM_LIB}" ]; then
-  echo "wickra-gym: using the C ABI from WKGYM_INC / WKGYM_LIB (dev override)"
+  echo "wickra-gym: using C ABI from WKGYM_INC / WKGYM_LIB (dev override)"
   inc="${WKGYM_INC}"
   lib="${WKGYM_LIB}"
 else
   version=$(sed -n 's/^Version:[[:space:]]*//p' DESCRIPTION)
   url="https://github.com/wickra-lib/wickra-gym/releases/download/v${version}/wickra-gym-c-${triple}.tar.gz"
-  echo "wickra-gym: downloading the C ABI ${triple} for v${version}"
-  fetch_release_archive "${url}" "src/wickra-gym-c.tar.gz" || exit 1
+  echo "wickra-gym: downloading C ABI ${triple} for v${version}"
+  wickra_gym_download "${url}" "src/wickra-gym-c.tar.gz" || exit 1
   "${R_HOME}/bin/Rscript" -e "untar('src/wickra-gym-c.tar.gz', exdir = 'src/wickra-gym-c')"
   inc="src/wickra-gym-c/wickra-gym-c-${triple}/include"
   lib="src/wickra-gym-c/wickra-gym-c-${triple}/lib"
 fi
 
 cp "${inc}/wickra_gym.h" src/wickra_gym.h
-cp "${lib}/wickra_gym.dll" src/wickra_gym.dll
+cp "${lib}/wickra_gym.dll" src/wickra_gym_abi.dll
 
 # Take the export list from the staged header rather than by dumping the DLL.
 # cbindgen declares exactly the exported symbols, so header and PE export table
 # agree entry for entry, and reading the header needs no binutils at all: the
 # objdump that resolves on Windows/arm64 is the runner image's x86_64 mingw copy,
-# which carries no aarch64 PE backend and rejects an arm64 DLL with "file format
-# not recognized".
+# which carries no aarch64 PE backend and rejects an arm64 wickra_gym_abi.dll with
+# "file format not recognized".
 {
-  echo 'LIBRARY wickra_gym.dll'
+  echo 'LIBRARY wickra_gym_abi.dll'
   echo 'EXPORTS'
   awk '
     # Strip block and line comments first so a symbol mentioned in the generated
@@ -101,15 +101,15 @@ cp "${lib}/wickra_gym.dll" src/wickra_gym.dll
       print out
     }
   ' src/wickra_gym.h \
-    | grep -oE '\bwickra_[A-Za-z0-9_]*[[:space:]]*\(' \
+    | grep -oE '\bwickra_gym_[A-Za-z0-9_]*[[:space:]]*\(' \
     | sed 's/[[:space:]]*($//' \
     | LC_ALL=C sort -u
-} > src/wickra_gym.def
+} > src/wickra_gym_abi.def
 
 # The import library has to target R's architecture. A binutils build only
 # carries the PE backends it was configured with, so the x86_64 mingw dlltool
-# that resolves on PATH cannot emit an arm64 library -- asked for one via -m it
-# fails outright ("invalid bfd target") rather than quietly producing the wrong
+# that resolves on PATH cannot emit an arm64 library — asked for one via -m it
+# fails outright ("invalid bfd target") instead of quietly producing the wrong
 # thing. That loud failure is what makes trying candidates in order safe: the
 # first that succeeds is by construction one that can target this architecture.
 # BINPREF is R's own pointer at the matching Rtools toolchain, and llvm-dlltool
@@ -118,11 +118,11 @@ BINPREF=$("${R_HOME}/bin/R" CMD config BINPREF 2>/dev/null | tr -d '\r') || BINP
 dlltool_log="src/dlltool.log"
 : > "${dlltool_log}"
 DLLTOOL=""
-for cand in "${WKGYM_DLLTOOL}" "${BINPREF}llvm-dlltool" "${BINPREF}dlltool" llvm-dlltool dlltool; do
+for cand in "${WICKRA_DLLTOOL}" "${BINPREF}llvm-dlltool" "${BINPREF}dlltool" llvm-dlltool dlltool; do
   [ -n "${cand}" ] || continue
   echo "wickra-gym: trying ${cand} -m ${dll_machine}" >> "${dlltool_log}"
-  if "${cand}" -m "${dll_machine}" --input-def src/wickra_gym.def \
-      --dllname wickra_gym.dll --output-lib src/libwickra_gym.dll.a >> "${dlltool_log}" 2>&1; then
+  if "${cand}" -m "${dll_machine}" --input-def src/wickra_gym_abi.def \
+      --dllname wickra_gym_abi.dll --output-lib src/libwickra_gym_abi.dll.a >> "${dlltool_log}" 2>&1; then
     DLLTOOL="${cand}"
     break
   fi
