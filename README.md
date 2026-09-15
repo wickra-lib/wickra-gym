@@ -265,7 +265,7 @@ asserts the ten surfaces stayed in step.
 - **Node 22+** — the Node binding.
 - **Go 1.23+** — the Go binding.
 - **Java 22+** — the Java binding.
-- **R 2.10+** — the R package.
+- **R 4.1+** — the R package.
 - **.NET 8+** — the C# binding.
 - A **C11 / C++17** compiler with CMake for the C and C++ examples.
 
