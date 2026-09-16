@@ -74,9 +74,9 @@ wickra-data = "1.0"
 # "=0.1.4" to the same crate today, but a consumer or a sibling that lands on a
 # newer patch would leave two copies of the engine in one graph, and two copies
 # do not share a BacktestReport or a Candle. Move this with the family.
-wickra-backtest = "=0.1.4"
+wickra-backtest = "=0.1.6"
 # Optional microstructure feeds (orderbook / funding / OI) behind feature `live`.
-wickra-exchange = "=0.1.3"
+wickra-exchange = "=0.1.5"
 # C ABI header generation.
 cbindgen = "0.27"
 # Test/dev.
