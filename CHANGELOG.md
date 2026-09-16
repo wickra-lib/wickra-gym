@@ -6,6 +6,12 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Changed
+
+- **uv 0.12.15 for the lockfile script.** `scripts/update-lockfiles.sh`
+  bootstraps 0.12.15 (was 0.12.13); the pin and all four release
+  checksums move together, taken from the release's `.sha256` files.
+
 ## [0.1.2] - 2026-09-14
 
 ### Security
