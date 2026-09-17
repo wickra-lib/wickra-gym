@@ -25,12 +25,23 @@ A static library (`libwickra_gym.a` / `wickra_gym.lib`) is emitted alongside.
 
 ## Build and run the examples
 
-With CMake, as the CI C ABI job does:
+### With CMake (portable, used by CI)
 
 ```sh
 cmake -S examples/c -B examples/c/build
 cmake --build examples/c/build --config Release
 ctest --test-dir examples/c/build -C Release --output-on-failure
+```
+
+### Directly with a compiler
+
+```sh
+# Linux / macOS
+cc examples/c/rollout.c -DDATA_DIR=\"examples/data\" -I bindings/c/include -L target/release -lwickra_gym -lm -o rollout
+LD_LIBRARY_PATH=target/release ./rollout        # macOS: DYLD_LIBRARY_PATH
+
+# Windows (MinGW gcc, linking the DLL directly)
+gcc examples/c/rollout.c -DDATA_DIR=\"examples/data\" -I bindings/c/include target/release/wickra_gym.dll -lm -o rollout.exe
 ```
 
 ## The examples

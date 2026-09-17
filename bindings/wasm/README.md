@@ -34,7 +34,7 @@ wasm-pack build --target nodejs    # for Node.js (used by the tests)
 ## Quick start
 
 ```js
-import init, { Env } from "./pkg/wickra_gym_wasm.js";
+import init, { Env } from "wickra-gym-wasm";
 
 await init();
 

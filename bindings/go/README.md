@@ -24,7 +24,7 @@ library for every platform, so `go get` + `go build` works with no extra steps
 (a C compiler is still required, as the binding uses cgo):
 
 ```bash
-go get github.com/wickra-lib/wickra-gym/bindings/go
+go get github.com/wickra-lib/wickra-gym-go
 ```
 
 `wickra-gym-go` is generated from this directory by the release pipeline: it mirrors
