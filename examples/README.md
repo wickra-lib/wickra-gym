@@ -5,6 +5,22 @@ Runnable rollouts in every language wickra-gym binds to. Each one loads the
 drives a fixed "always long" policy (discrete action `2`) until the episode
 truncates.
 
+## What every example prints
+
+Because every binding forwards the same JSON commands to the same Rust core, the
+**numbers are identical** across all of them; the printing is each language's
+own. Python, Node.js and Rust format the observation and each step:
+
+```
+wickra-gym 0.1.2
+reset observation: [59.75522252, 102.70537863]
+step 0: reward +1.227974  equity +1.227974  terminated=false truncated=false
+step 1: reward +1.675656  equity +2.903630  terminated=false truncated=false
+step 2: reward +1.993914  equity +4.897544  terminated=false truncated=false
+step 3: reward +2.147713  equity +7.045256  terminated=false truncated=false
+step 4: reward +2.120121  equity +9.165378  terminated=false truncated=true
+```
+
 ## Rust — `examples/rust/`
 
 As the CI examples job runs it, from the repository root:
