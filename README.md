@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://wickra.org"><img src="https://raw.githubusercontent.com/wickra-lib/.github/main/profile/wickra-banner.webp?v=514" alt="Wickra Gym — a Gymnasium-compatible, microstructure-aware backtest environment with O(1) steps for fast, deterministic RL rollouts" width="100%"></a>
+  <a href="https://wickra.org"><img src="https://raw.githubusercontent.com/wickra-lib/.github/main/profile/wickra-banner.webp?v=514-7" alt="Wickra Gym — a Gymnasium-compatible, microstructure-aware backtest environment with O(1) steps for fast, deterministic RL rollouts" width="100%"></a>
 </p>
 
 [![Built on Wickra](https://img.shields.io/badge/built%20on-wickra-3b82f6)](https://github.com/wickra-lib/wickra)
@@ -19,22 +19,24 @@
 [![OpenSSF Scorecard](https://raw.githubusercontent.com/wickra-lib/.github/main/profile/badges/wickra-gym/scorecard.svg)](https://scorecard.dev/viewer/?uri=github.com/wickra-lib/wickra-gym)
 [![OpenSSF Best Practices](https://raw.githubusercontent.com/wickra-lib/.github/main/profile/badges/wickra-gym/best-practices.svg)](https://www.bestpractices.dev)
 [![Build provenance](https://raw.githubusercontent.com/wickra-lib/.github/main/profile/badges/wickra-gym/provenance.svg)](https://github.com/wickra-lib/wickra-gym/attestations)
-[![Docs](https://raw.githubusercontent.com/wickra-lib/.github/main/profile/badges/wickra-gym/docs.svg)](https://wickra.org)
+[![Docs](https://raw.githubusercontent.com/wickra-lib/.github/main/profile/badges/wickra-gym/docs.svg)](https://gym.wickra.org)
 [![Verified across 10 languages](https://raw.githubusercontent.com/wickra-lib/.github/main/profile/badges/wickra-gym/verified.svg)](golden/)
 
 ---
-
-# Wickra Gym
 
 **A Gymnasium-compatible, microstructure-aware backtest environment with O(1)
 steps for fast RL rollouts over 497 streaming indicators.** The whole dataset is
 precomputed once into a fixed feature tensor, so `step()` is a pure array index —
 and the same seed produces a byte-identical trajectory in every language.
 
-> **Part of the [Wickra ecosystem](https://github.com/wickra-lib).** Built on the
-> same deterministic engine and ten-language binding surface as
-> [wickra-backtest](https://github.com/wickra-lib/wickra-backtest),
-> [wickra-benchmark](https://github.com/wickra-lib/wickra-benchmark) and the rest.
+> **▶ Live demos:** the backtester compiled to WebAssembly, an equity curve building bar by bar — **[backtest-live.wickra.org](https://backtest-live.wickra.org)**;
+> one StrategySpec side by side in Python, Rust, JS and Go — **[playground.wickra.org](https://playground.wickra.org)**;
+> all 514 indicators of the core over a real Binance feed — **[live.wickra.org](https://live.wickra.org)**. Zero backend, all of them.
+
+**Part of the [Wickra ecosystem](https://github.com/wickra-lib).** Built on the
+same deterministic engine and ten-language binding surface as
+[wickra-backtest](https://github.com/wickra-lib/wickra-backtest),
+[wickra-benchmark](https://github.com/wickra-lib/wickra-benchmark) and the rest.
 
 `wickra-gym` turns a candle dataset plus an observation/action/reward
 specification into a reinforcement-learning environment. It precomputes every
@@ -69,23 +71,11 @@ Every step is a pure array index into a tensor precomputed once, so a
 `(seed, policy)` pair fully determines the trajectory — in any of the ten
 languages, byte for byte.
 
-## Determinism is the product
-
-- **O(1) steps** — the dataset is precomputed once to a fixed feature tensor;
-  `step()` is a pure array index, never a recompute.
-- **Seed-determined trajectories** — the only RNG is the seeded episode RNG
-  (never `thread_rng`); the same `(seed, policy)` yields a byte-identical
-  trajectory in every language and between the parallel (rayon) and sequential
-  (WASM) tensor precompute.
-- **Fixed observation layout** — an observation is an `f64` vector of fixed
-  length and canonical order (the `ObsSpec` order), so it is comparable across
-  languages bit for bit.
-
 ## Status
 
-**0.1.0 — the first release.** The core, the CLI, all ten language bindings,
-the golden trajectory corpus, the property + fuzz suites, the benchmarks and
-one runnable example per language are built and green across Linux, macOS and
+**0.1.2 — the current release.** The core, the CLI, all ten language bindings,
+the golden trajectory corpus, the property + fuzz suites, the benchmarks and one
+runnable example per language are built and green across Linux, macOS and
 Windows. Track progress in [ROADMAP.md](ROADMAP.md) and
 [CHANGELOG.md](CHANGELOG.md).
 
@@ -103,6 +93,18 @@ Windows. Track progress in [ROADMAP.md](ROADMAP.md) and
   and open-interest observations.
 - [`THREAT_MODEL.md`](THREAT_MODEL.md) — assets, actors, and what determinism
   buys.
+
+## Determinism is the product
+
+- **O(1) steps** — the dataset is precomputed once to a fixed feature tensor;
+  `step()` is a pure array index, never a recompute.
+- **Seed-determined trajectories** — the only RNG is the seeded episode RNG
+  (never `thread_rng`); the same `(seed, policy)` yields a byte-identical
+  trajectory in every language and between the parallel (rayon) and sequential
+  (WASM) tensor precompute.
+- **Fixed observation layout** — an observation is an `f64` vector of fixed
+  length and canonical order (the `ObsSpec` order), so it is comparable across
+  languages bit for bit.
 
 ## Quickstart
 
@@ -276,18 +278,6 @@ dimensions 5/20/50) and `build_tensor` (at 1k/10k/100k bars, parallel vs
 sequential) live in `crates/gym-bench`; numbers and methodology are in
 [BENCHMARKS.md](BENCHMARKS.md).
 
-## Contributing
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) and the
-[Code of Conduct](CODE_OF_CONDUCT.md). Every change runs the full CI matrix (all
-ten languages × three OSes) plus CodeQL, Scorecard, zizmor and the metadata
-audit.
-
-## Security
-
-Report vulnerabilities per [SECURITY.md](SECURITY.md). The threat model is in
-[THREAT_MODEL.md](THREAT_MODEL.md).
-
 ## Ecosystem
 
 Part of the [Wickra](https://github.com/wickra-lib/wickra) family — each one a
@@ -323,10 +313,34 @@ with the in-browser demo and the benchmark figures, is at
 reference is at [docs.wickra.org](https://docs.wickra.org) and the org landing
 page at [wickra.org](https://wickra.org).
 
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) and the
+[Code of Conduct](CODE_OF_CONDUCT.md). Every change runs the full CI matrix (all
+ten languages × three OSes) plus CodeQL, Scorecard, zizmor and the metadata
+audit.
+
+## Security
+
+Report vulnerabilities per [SECURITY.md](SECURITY.md). The threat model is in
+[THREAT_MODEL.md](THREAT_MODEL.md).
+
 ## License
 
-Dual-licensed under either [MIT](LICENSE-MIT) or [Apache-2.0](LICENSE-APACHE), at
-your option.
+Licensed under either of
+
+- Apache License, Version 2.0 ([LICENSE-APACHE](LICENSE-APACHE) or
+  <http://www.apache.org/licenses/LICENSE-2.0>)
+- MIT license ([LICENSE-MIT](LICENSE-MIT) or <http://opensource.org/licenses/MIT>)
+
+at your option. Use it, fork it, modify it, redistribute it — commercially or
+not — file issues, send pull requests; all welcome.
+
+### Contribution
+
+Unless you explicitly state otherwise, any contribution intentionally submitted
+for inclusion in the work by you, as defined in the Apache-2.0 license, shall be
+dual licensed as above, without any additional terms or conditions.
 
 ## Disclaimer
 
