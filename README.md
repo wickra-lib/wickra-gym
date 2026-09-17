@@ -29,10 +29,14 @@ steps for fast RL rollouts over 497 streaming indicators.** The whole dataset is
 precomputed once into a fixed feature tensor, so `step()` is a pure array index —
 and the same seed produces a byte-identical trajectory in every language.
 
+> **▶ Live demos:** the backtester compiled to WebAssembly, an equity curve building bar by bar — **[backtest-live.wickra.org](https://backtest-live.wickra.org)**;
+> one StrategySpec side by side in Python, Rust, JS and Go — **[playground.wickra.org](https://playground.wickra.org)**;
+> all 514 indicators of the core over a real Binance feed — **[live.wickra.org](https://live.wickra.org)**. Zero backend, all of them.
+
 **Part of the [Wickra ecosystem](https://github.com/wickra-lib).** Built on the
-> same deterministic engine and ten-language binding surface as
-> [wickra-backtest](https://github.com/wickra-lib/wickra-backtest),
-> [wickra-benchmark](https://github.com/wickra-lib/wickra-benchmark) and the rest.
+same deterministic engine and ten-language binding surface as
+[wickra-backtest](https://github.com/wickra-lib/wickra-backtest),
+[wickra-benchmark](https://github.com/wickra-lib/wickra-benchmark) and the rest.
 
 `wickra-gym` turns a candle dataset plus an observation/action/reward
 specification into a reinforcement-learning environment. It precomputes every
