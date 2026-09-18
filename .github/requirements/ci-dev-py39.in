@@ -11,5 +11,6 @@
 # functions with plain asserts, on the floor interpreter.
 maturin
 # The wheel requires numpy (observations are numpy arrays); the row installs
-# the wheel with --no-index, so numpy has to come from this lock.
-numpy
+# the wheel with --no-index, so numpy has to come from this lock. Capped <2.1
+# because that is the last series shipping cp39 wheels, as wickra's row says.
+numpy<2.1
