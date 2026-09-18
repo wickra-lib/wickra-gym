@@ -26,7 +26,7 @@ classifiers = [
     "Topic :: Office/Business :: Financial :: Investment",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
-dependencies = ["numpy>=1.21"]
+dependencies = ["numpy>=1.22"]
 
 [project.optional-dependencies]
 gym = ["gymnasium>=0.29,<2"]
