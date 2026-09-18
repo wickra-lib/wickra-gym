@@ -1,7 +1,7 @@
 Package: wickragym
 Type: Package
 Title: Deterministic Gymnasium-Compatible Backtest Environment
-Version: 0.1.2
+Version: 0.1.3
 Authors@R: person("kingchenc", role = c("aut", "cre"), email = "support@wickra.org")
 Description: R bindings for wickra-gym over its C ABI hub: build a
     Gymnasium-compatible backtest environment from a JSON spec, load candles and
