@@ -12,7 +12,7 @@ Because every binding forwards the same JSON commands to the same Rust core, the
 own. Python, Node.js and Rust format the observation and each step:
 
 ```
-wickra-gym 0.1.2
+wickra-gym 0.1.3
 reset observation: [59.75522252, 102.70537863]
 step 0: reward +1.227974  equity +1.227974  terminated=false truncated=false
 step 1: reward +1.675656  equity +2.903630  terminated=false truncated=false

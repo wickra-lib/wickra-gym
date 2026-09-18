@@ -30,7 +30,7 @@ workspace = true
 # the feature-tensor precompute sequentially (no rayon thread pool in a browser
 # sandbox), which is byte-identical to the native parallel run — the exact
 # cross-language golden check.
-wickra-gym-core = { path = "../../crates/gym-core", version = "0.1.2", default-features = false }
+wickra-gym-core = { path = "../../crates/gym-core", version = "0.1.3", default-features = false }
 wasm-bindgen = "0.2"
 
 # wickra-gym-core's seeded episode RNG (via `rand`) pulls in `getrandom`, which needs
