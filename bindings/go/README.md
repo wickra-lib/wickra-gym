@@ -4,14 +4,14 @@
 
 [![CI](https://raw.githubusercontent.com/wickra-lib/.github/main/profile/badges/wickra-gym/ci.svg)](https://github.com/wickra-lib/wickra-gym/actions/workflows/ci.yml)
 [![codecov](https://raw.githubusercontent.com/wickra-lib/.github/main/profile/badges/wickra-gym/codecov.svg)](https://codecov.io/gh/wickra-lib/wickra-gym)
-[![Go module](https://raw.githubusercontent.com/wickra-lib/.github/main/profile/badges/wickra-gym/go.svg)](https://pkg.go.dev/github.com/wickra-lib/wickra-gym/bindings/go)
+[![Go module](https://raw.githubusercontent.com/wickra-lib/.github/main/profile/badges/wickra-gym/go.svg)](https://pkg.go.dev/github.com/wickra-lib/wickra-gym-go)
 [![License: MIT OR Apache-2.0](https://raw.githubusercontent.com/wickra-lib/.github/main/profile/badges/wickra-gym/license.svg)](https://github.com/wickra-lib/wickra-gym#license)
 
 # Wickra Gym — Go
 
 ---
 
-**Part of the [Wickra ecosystem](https://github.com/wickra-lib) — for Go. `go get github.com/wickra-lib/wickra-gym/bindings/go` — over the C ABI via cgo, prebuilt library bundled in the module.**
+**Part of the [Wickra ecosystem](https://github.com/wickra-lib) — for Go. `go get github.com/wickra-lib/wickra-gym-go` — over the C ABI via cgo, prebuilt library bundled in the module.**
 
 Go bindings for [wickra-gym](https://github.com/wickra-lib/wickra-gym) — a
 deterministic, Gymnasium-compatible backtest environment — over the C ABI via
