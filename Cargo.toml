@@ -26,7 +26,7 @@ members = [
 exclude = ["fuzz"]
 
 [workspace.package]
-version = "0.1.3"
+version = "0.1.4"
 edition = "2021"
 rust-version = "1.86"
 license = "MIT OR Apache-2.0"
@@ -39,7 +39,7 @@ categories = ["finance", "science", "command-line-utilities"]
 
 [workspace.dependencies]
 # Workspace-internal core, referenced by the CLI, bench and bindings.
-wickra-gym-core = { version = "0.1.3", path = "crates/gym-core" }
+wickra-gym-core = { version = "0.1.4", path = "crates/gym-core" }
 # Serialization — the data-driven boundary (spec/observation/step as JSON).
 serde = { version = "1", features = ["derive"] }
 # `float_roundtrip` makes serde_json's float parser correctly rounded: a float
@@ -74,9 +74,9 @@ wickra-data = "1.0"
 # "=0.1.4" to the same crate today, but a consumer or a sibling that lands on a
 # newer patch would leave two copies of the engine in one graph, and two copies
 # do not share a BacktestReport or a Candle. Move this with the family.
-wickra-backtest = "=0.1.7"
+wickra-backtest = "=0.1.8"
 # Optional microstructure feeds (orderbook / funding / OI) behind feature `live`.
-wickra-exchange = "=0.1.6"
+wickra-exchange = "=0.1.7"
 # C ABI header generation.
 cbindgen = "0.27"
 # Test/dev.

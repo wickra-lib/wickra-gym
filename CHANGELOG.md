@@ -6,6 +6,55 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [0.1.4] - 2026-09-23
+
+A maintenance release: the trading environment and its bindings are unchanged.
+It publishes the refreshed dependency tree and toolchain pins.
+
+### Added
+
+- **The Node binding reports which artifact it loaded.** The loader generated
+  by `@napi-rs/cli` 3.10.4 exports `__napiBindingTarget` -- `'native'` for the
+  native addon, otherwise the WASI flavor it resolved -- and follows a
+  `NAPI_RS_NATIVE_LIBRARY_PATH` override to a WASI loader instead of
+  misreporting it as native. Typed in `index.d.ts`.
+
+### Changed
+
+- **Built on wickra-core 1.0.6.** The lock takes the indicator core's latest
+  release; the `1.0` requirement already admitted it.
+- **The family pins follow the owners' releases.** `wickra-backtest` =0.1.7 ->
+  =0.1.8, `wickra-exchange` =0.1.6 -> =0.1.7 -- the exact pins this repository
+  keeps on its siblings move to the versions those repositories release in the
+  same train, and every tracked lockfile follows.
+- **Third-party dependencies refreshed.** `Cargo.lock` takes 116 crates to their
+  newest versions compatible with the Rust floor (the lock now resolves
+  MSRV-aware, see below), run across the family in one pass so every repository
+  resolves the same day's versions. The refresh itself changes no manifest.
+- **The lockfile resolves for the Rust floor.** `.cargo/config.toml` sets
+  `incompatible-rust-versions = "fallback"`, so `cargo update` takes the newest
+  version the workspace's `rust-version` can build rather than the newest
+  release -- the setting compile, copilot and shazam already carried, now
+  family-wide. Without it, a routine refresh elsewhere in the family raised the
+  icu crates to 2.3.0, which declares Rust 1.88, above a 1.86 floor. Re-resolved
+  under it, the lock steps back to the newest versions the floor can build for
+  `icu_collections`, `icu_locale_core`, `icu_normalizer`, `icu_normalizer_data`,
+  `icu_properties`, `icu_properties_data`, `icu_provider`, `wasip2`,
+  `wit-bindgen`.
+- **`@napi-rs/cli` 3.10.4** for the Node binding, the family's line.
+- **uv 0.12.18** for the lockfile bootstrap in `scripts/update-lockfiles.sh`,
+  with all four platform checksums moved together.
+- **The README's static badges are served by the organization** rather than
+  hot-linked from shields.io, so they no longer break when shields is down.
+
+### Fixed
+
+- **The Go install line names the published module.** The badge and `go get`
+  in `bindings/go/README.md` pointed at the in-repo path
+  `github.com/wickra-lib//bindings/go`, which the Go proxy never
+  serves; they now name the mirror `github.com/wickra-lib/-go`, as the
+  other bindings' READMEs do.
+
 ## [0.1.3] - 2026-09-18
 
 ### Fixed
@@ -374,7 +423,8 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   config (`deny.toml`, `clippy.toml`, `lychee.toml`, `osv-scanner.toml`,
   `repo-metadata.toml`), and project governance and community docs.
 
-[Unreleased]: https://github.com/wickra-lib/wickra-gym/compare/v0.1.3...HEAD
+[Unreleased]: https://github.com/wickra-lib/wickra-gym/compare/v0.1.4...HEAD
+[0.1.4]: https://github.com/wickra-lib/wickra-gym/compare/v0.1.3...v0.1.4
 [0.1.3]: https://github.com/wickra-lib/wickra-gym/compare/v0.1.2...v0.1.3
 [0.1.2]: https://github.com/wickra-lib/wickra-gym/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/wickra-lib/wickra-gym/compare/v0.1.0...v0.1.1
