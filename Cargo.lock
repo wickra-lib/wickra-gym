@@ -817,7 +817,7 @@ dependencies = [
 
 [[package]]
 name = "gym-bench"
-version = "0.1.3"
+version = "0.1.4"
 dependencies = [
  "codspeed-criterion-compat",
  "serde_json",
@@ -2759,7 +2759,7 @@ dependencies = [
 
 [[package]]
 name = "wickra-gym"
-version = "0.1.3"
+version = "0.1.4"
 dependencies = [
  "clap",
  "serde",
@@ -2770,14 +2770,14 @@ dependencies = [
 
 [[package]]
 name = "wickra-gym-c"
-version = "0.1.3"
+version = "0.1.4"
 dependencies = [
  "wickra-gym-core",
 ]
 
 [[package]]
 name = "wickra-gym-core"
-version = "0.1.3"
+version = "0.1.4"
 dependencies = [
  "proptest",
  "rand 0.10.3",
@@ -2795,7 +2795,7 @@ dependencies = [
 
 [[package]]
 name = "wickra-gym-example"
-version = "0.1.3"
+version = "0.1.4"
 dependencies = [
  "serde_json",
  "wickra-data",
@@ -2804,7 +2804,7 @@ dependencies = [
 
 [[package]]
 name = "wickra-gym-node"
-version = "0.1.3"
+version = "0.1.4"
 dependencies = [
  "napi",
  "napi-build",
@@ -2814,7 +2814,7 @@ dependencies = [
 
 [[package]]
 name = "wickra-gym-python"
-version = "0.1.3"
+version = "0.1.4"
 dependencies = [
  "pyo3",
  "wickra-gym-core",
@@ -2822,7 +2822,7 @@ dependencies = [
 
 [[package]]
 name = "wickra-gym-wasm"
-version = "0.1.3"
+version = "0.1.4"
 dependencies = [
  "getrandom 0.2.17",
  "wasm-bindgen",

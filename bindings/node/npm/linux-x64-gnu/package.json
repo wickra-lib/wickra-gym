@@ -1,6 +1,6 @@
 {
   "name": "wickra-gym-linux-x64-gnu",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Native binding for wickra-gym (linux-x64-gnu). Installed automatically as an optional dependency of wickra-gym on matching platforms.",
   "main": "wickra-gym.linux-x64-gnu.node",
   "files": [
