@@ -73,7 +73,7 @@ languages, byte for byte.
 
 ## Status
 
-**0.1.4 — the current release.** The core, the CLI, all ten language bindings,
+**0.1.5 — the current release.** The core, the CLI, all ten language bindings,
 the golden trajectory corpus, the property + fuzz suites, the benchmarks and one
 runnable example per language are built and green across Linux, macOS and
 Windows. Track progress in [ROADMAP.md](ROADMAP.md) and

@@ -21,7 +21,7 @@ parallel = ["wickra-gym-core/parallel"]
 
 [dependencies]
 # Path (not workspace) dep so `default-features = false` takes effect.
-wickra-gym-core = { path = "../gym-core", version = "0.1.4", default-features = false }
+wickra-gym-core = { path = "../gym-core", version = "0.1.5", default-features = false }
 serde_json.workspace = true
 
 [dev-dependencies]

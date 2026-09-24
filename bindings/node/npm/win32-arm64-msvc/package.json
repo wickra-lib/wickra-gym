@@ -1,6 +1,6 @@
 {
   "name": "wickra-gym-win32-arm64-msvc",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Native binding for wickra-gym (win32-arm64-msvc). Installed automatically as an optional dependency of wickra-gym on matching platforms.",
   "main": "wickra-gym.win32-arm64-msvc.node",
   "files": [
