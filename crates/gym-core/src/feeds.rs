@@ -345,7 +345,7 @@ mod tests {
             FeedKind::CrossSection,
         ] {
             assert!(!all.has(kind), "{} must never be available", kind.as_str());
-            assert!(!kind.why_absent().is_empty());
+            assert_ne!(kind.why_absent(), "");
         }
         assert!(all.has(FeedKind::Candle));
         assert!(all.has(FeedKind::OrderBook));
