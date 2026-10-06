@@ -817,7 +817,7 @@ dependencies = [
 
 [[package]]
 name = "gym-bench"
-version = "0.1.6"
+version = "0.2.0"
 dependencies = [
  "codspeed-criterion-compat",
  "serde_json",
@@ -2677,9 +2677,9 @@ dependencies = [
 
 [[package]]
 name = "wickra-backtest"
-version = "0.1.9"
+version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6aa26d4b854df8075c8b44e45538ff3883be330dd1d57cdb414fd57c5fc054b2"
+checksum = "7c273de502d35bdc1a7735e0aea26478f7b01bda46dfe289fc9f5f037f9e57c8"
 dependencies = [
  "wickra-backtest-core",
  "wickra-backtest-data",
@@ -2687,9 +2687,9 @@ dependencies = [
 
 [[package]]
 name = "wickra-backtest-core"
-version = "0.1.9"
+version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "436b31028d78e0db12ecb4030339fe4301e4abc0b12439b194d2b955a5eed15d"
+checksum = "cbf78d1ea52fd4cf4bcea242de9c1e5aac2c3a7c9154cdec660f037b3e322fc5"
 dependencies = [
  "schemars",
  "serde",
@@ -2700,9 +2700,9 @@ dependencies = [
 
 [[package]]
 name = "wickra-backtest-data"
-version = "0.1.9"
+version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "11d4bbe3f8958abc39a4ff21219f3e2b37177f7ceda5e4b9769fb136eafb3a6d"
+checksum = "52ea853ebf6e8d2cb289d99cefe85db750d4f23479acd70fe495f1cec764e523"
 dependencies = [
  "serde_json",
  "wickra-backtest-core",
@@ -2711,9 +2711,9 @@ dependencies = [
 
 [[package]]
 name = "wickra-core"
-version = "1.0.7"
+version = "2.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9de44a7d1a465021f41c4a182463493a4c1053efbbfdde8fa6a3fcbd6dcc4d62"
+checksum = "b62035347edf307f399651a8b5b28b3883fdc17b891605fd92d95cc4b2e1f749"
 dependencies = [
  "rayon",
  "thiserror",
@@ -2722,9 +2722,9 @@ dependencies = [
 
 [[package]]
 name = "wickra-data"
-version = "1.0.7"
+version = "2.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3dcd22568464c3a55d79ecffadd151195d37312d9a2c6412abe1095dccfd3163"
+checksum = "16a13e69ef914a316ae137ec074c8e34384e77fbf4c7491ef86388f91506e8aa"
 dependencies = [
  "csv",
  "serde",
@@ -2735,9 +2735,9 @@ dependencies = [
 
 [[package]]
 name = "wickra-exchange"
-version = "0.1.8"
+version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "40a9559b60ee03a798367870346880ab49998c6bcfe02b0099d2058fca509485"
+checksum = "aec4cc2a1df2e56b14b7a845f5cb3b56bf1a6848ccfba2931e225f3083fea737"
 dependencies = [
  "flate2",
  "futures-util",
@@ -2749,9 +2749,9 @@ dependencies = [
 
 [[package]]
 name = "wickra-exchange-core"
-version = "0.1.8"
+version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "34ea8c9061f9fdac95f13360864b11bd79899a4f84ee543e1a81b6723ca22e0e"
+checksum = "76e5e1eeaded1a9aef913f5c576367ae787ec5ac9466c4a78139d8a7c0c4e7be"
 dependencies = [
  "base64",
  "hex",
@@ -2769,7 +2769,7 @@ dependencies = [
 
 [[package]]
 name = "wickra-gym"
-version = "0.1.6"
+version = "0.2.0"
 dependencies = [
  "clap",
  "serde",
@@ -2780,14 +2780,14 @@ dependencies = [
 
 [[package]]
 name = "wickra-gym-c"
-version = "0.1.6"
+version = "0.2.0"
 dependencies = [
  "wickra-gym-core",
 ]
 
 [[package]]
 name = "wickra-gym-core"
-version = "0.1.6"
+version = "0.2.0"
 dependencies = [
  "proptest",
  "rand 0.10.3",
@@ -2805,7 +2805,7 @@ dependencies = [
 
 [[package]]
 name = "wickra-gym-example"
-version = "0.1.6"
+version = "0.2.0"
 dependencies = [
  "serde_json",
  "wickra-data",
@@ -2814,7 +2814,7 @@ dependencies = [
 
 [[package]]
 name = "wickra-gym-node"
-version = "0.1.6"
+version = "0.2.0"
 dependencies = [
  "napi",
  "napi-build",
@@ -2824,7 +2824,7 @@ dependencies = [
 
 [[package]]
 name = "wickra-gym-python"
-version = "0.1.6"
+version = "0.2.0"
 dependencies = [
  "pyo3",
  "wickra-gym-core",
@@ -2832,7 +2832,7 @@ dependencies = [
 
 [[package]]
 name = "wickra-gym-wasm"
-version = "0.1.6"
+version = "0.2.0"
 dependencies = [
  "getrandom 0.2.17",
  "wasm-bindgen",
@@ -2841,9 +2841,9 @@ dependencies = [
 
 [[package]]
 name = "wickra-simd"
-version = "1.0.7"
+version = "2.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "80fc26f4f971339fd785bb1445229f90699c9b954c16202f3a63ee9b9e2f2114"
+checksum = "dd924c51e4871af15651e173fd4d88269455e0b3e9524aa3f24ed72a16bf40e6"
 
 [[package]]
 name = "winapi-util"

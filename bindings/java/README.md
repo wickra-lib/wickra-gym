@@ -33,14 +33,14 @@ Maven:
 <dependency>
   <groupId>org.wickra</groupId>
   <artifactId>wickra-gym</artifactId>
-  <version>0.1.6</version>
+  <version>0.2.0</version>
 </dependency>
 ```
 
 Gradle:
 
 ```kotlin
-implementation("org.wickra:wickra-gym:0.1.6")
+implementation("org.wickra:wickra-gym:0.2.0")
 ```
 
 The native library ships prebuilt per platform inside the jar and is
