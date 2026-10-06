@@ -6,7 +6,7 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
-## [0.2.0] - 2026-10-05
+## [0.2.0] - 2026-10-06
 
 A follow-up release on the wickra 2.0 family.
 
