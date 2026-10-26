@@ -262,7 +262,7 @@ asserts the ten surfaces stayed in step.
 
 ## Requirements
 
-- **Rust 1.86+** — the workspace MSRV; the Node binding needs **Rust 1.88**.
+- **Rust 1.87+** — the workspace MSRV; the Node binding needs **Rust 1.88**.
 - **Python 3.9+** — the Python binding (the `gymnasium.Env` subclass needs 3.10+).
 - **Node 22+** — the Node binding.
 - **Go 1.23+** — the Go binding.
