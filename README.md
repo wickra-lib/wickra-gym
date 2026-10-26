@@ -25,7 +25,7 @@
 ---
 
 **A Gymnasium-compatible, microstructure-aware backtest environment with O(1)
-steps for fast RL rollouts over 497 streaming indicators.** The whole dataset is
+steps for fast RL rollouts over 495 streaming indicators.** The whole dataset is
 precomputed once into a fixed feature tensor, so `step()` is a pure array index —
 and the same seed produces a byte-identical trajectory in every language.
 
@@ -299,7 +299,7 @@ data-driven core with a CLI and the same ten-language binding surface:
 - [**wickra-zk**](https://github.com/wickra-lib/wickra-zk) — prove a backtest zero-knowledge — on-chain-verifiable performance without revealing the data or the strategy
 - [**wickra-impact**](https://github.com/wickra-lib/wickra-impact) — the backtester that knows you would have moved the market: agent-based fills on the real historical L2 order book
 - [**wickra-darwin**](https://github.com/wickra-lib/wickra-darwin) — evolutionary strategy search at hundreds of thousands of backtests per second, mutating and crossing JSON specs across the whole indicator registry
-- [**wickra-feature-store**](https://github.com/wickra-lib/wickra-feature-store) — OHLCV and microstructure streams into ML-ready feature matrices over 497 O(1) streaming indicators
+- [**wickra-feature-store**](https://github.com/wickra-lib/wickra-feature-store) — OHLCV and microstructure streams into ML-ready feature matrices over 495 O(1) streaming indicators
 - [**wickra-genome**](https://github.com/wickra-lib/wickra-genome) — a vector database of the whole market: every asset a live vector over the indicator registry, for similarity search, clustering and anomaly detection
 - [**wickra-timemachine**](https://github.com/wickra-lib/wickra-timemachine) — scrub the whole market like a video — every symbol, full order book, rewound to any moment via deterministic re-fold
 - [**wickra-synth**](https://github.com/wickra-lib/wickra-synth) — deterministic synthetic market microstructure: OHLCV, order book, trades and funding from a single seed
