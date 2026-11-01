@@ -6,6 +6,13 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Security
+
+- **The GHSA-6w46-j5rx-g56g entry is gone from `osv-scanner.toml`.** It
+  covered the pytest 8.4.2 pin of the Python 3.9 CI row. That row runs the
+  suite without pytest, so no lock carries an affected pytest any more, and
+  osv-scanner reported the entry as unused.
+
 ## [0.2.1] - 2026-10-28
 
 A maintenance release: the environments and their bindings are unchanged. It
