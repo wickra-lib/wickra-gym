@@ -826,7 +826,7 @@ dependencies = [
 
 [[package]]
 name = "gym-bench"
-version = "0.2.1"
+version = "0.2.2"
 dependencies = [
  "codspeed-criterion-compat",
  "serde_json",
@@ -2701,9 +2701,9 @@ dependencies = [
 
 [[package]]
 name = "wickra-backtest"
-version = "0.2.1"
+version = "0.2.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0a29bb4c100b188e13fa240d5937a0b6112f4e3d112f07096762bc6be19fff3b"
+checksum = "e3d124760d289f955b6f461d0acc218cbd1537a446bb4466b7610d552712bd39"
 dependencies = [
  "wickra-backtest-core",
  "wickra-backtest-data",
@@ -2711,9 +2711,9 @@ dependencies = [
 
 [[package]]
 name = "wickra-backtest-core"
-version = "0.2.1"
+version = "0.2.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6c4192b5075e3dc4ac7a396bc663d3b4f770291c41404c461568edfd2407d088"
+checksum = "784ef403482c5edce04fbe426840337cd6f56619c60becd38666b7faac7f5827"
 dependencies = [
  "schemars",
  "serde",
@@ -2724,9 +2724,9 @@ dependencies = [
 
 [[package]]
 name = "wickra-backtest-data"
-version = "0.2.1"
+version = "0.2.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "219cbca3741f3673fc5fbc682f39b7d6173e01631cc14d87d8860c294b232e06"
+checksum = "9720c8be98abf3b0ae6975b1cea976135b314e19a9fc42016cb59f5743ab8899"
 dependencies = [
  "serde_json",
  "wickra-backtest-core",
@@ -2759,9 +2759,9 @@ dependencies = [
 
 [[package]]
 name = "wickra-exchange"
-version = "0.2.1"
+version = "0.2.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "478e6d074a16087e7e05ef78be0249aea9a97342b095386318851da7eecb5927"
+checksum = "a073118465bbdfc7d5d20950f0eb9a34f755a7c0eacf1aec05b0c719bb1f7189"
 dependencies = [
  "flate2",
  "futures-util",
@@ -2773,9 +2773,9 @@ dependencies = [
 
 [[package]]
 name = "wickra-exchange-core"
-version = "0.2.1"
+version = "0.2.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d609757d42bc1547937aa8ce9c33583c3984427b55019c72510b5d9d7749aac2"
+checksum = "c2675c6b5b0318ee431104218ede0313d67cba54ea35bde630ab66b3ae22c0d7"
 dependencies = [
  "base64 0.22.1",
  "hex",
@@ -2793,7 +2793,7 @@ dependencies = [
 
 [[package]]
 name = "wickra-gym"
-version = "0.2.1"
+version = "0.2.2"
 dependencies = [
  "clap",
  "serde",
@@ -2804,14 +2804,14 @@ dependencies = [
 
 [[package]]
 name = "wickra-gym-c"
-version = "0.2.1"
+version = "0.2.2"
 dependencies = [
  "wickra-gym-core",
 ]
 
 [[package]]
 name = "wickra-gym-core"
-version = "0.2.1"
+version = "0.2.2"
 dependencies = [
  "proptest",
  "rand 0.10.4",
@@ -2829,7 +2829,7 @@ dependencies = [
 
 [[package]]
 name = "wickra-gym-example"
-version = "0.2.1"
+version = "0.2.2"
 dependencies = [
  "serde_json",
  "wickra-data",
@@ -2838,7 +2838,7 @@ dependencies = [
 
 [[package]]
 name = "wickra-gym-node"
-version = "0.2.1"
+version = "0.2.2"
 dependencies = [
  "napi",
  "napi-build",
@@ -2848,7 +2848,7 @@ dependencies = [
 
 [[package]]
 name = "wickra-gym-python"
-version = "0.2.1"
+version = "0.2.2"
 dependencies = [
  "pyo3",
  "wickra-gym-core",
@@ -2856,7 +2856,7 @@ dependencies = [
 
 [[package]]
 name = "wickra-gym-wasm"
-version = "0.2.1"
+version = "0.2.2"
 dependencies = [
  "getrandom 0.2.17",
  "wasm-bindgen",
