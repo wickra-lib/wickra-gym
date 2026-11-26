@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://wickra.org"><img src="https://raw.githubusercontent.com/wickra-lib/.github/main/profile/wickra-banner.svg?v=514-8" alt="Wickra Gym — a Gymnasium-compatible, microstructure-aware backtest environment with O(1) steps for fast, deterministic RL rollouts" width="100%"></a>
+  <a href="https://wickra.org"><img src="https://raw.githubusercontent.com/wickra-lib/.github/main/profile/wickra-banner.svg?v=515-8" alt="Wickra Gym — a Gymnasium-compatible, microstructure-aware backtest environment with O(1) steps for fast, deterministic RL rollouts" width="100%"></a>
 </p>
 
 [![Built on Wickra](https://raw.githubusercontent.com/wickra-lib/.github/main/profile/badges/wickra-gym/built-on.svg)](https://github.com/wickra-lib/wickra)
@@ -31,7 +31,7 @@ and the same seed produces a byte-identical trajectory in every language.
 
 > **▶ Live demos:** the backtester compiled to WebAssembly, an equity curve building bar by bar — **[backtest-live.wickra.org](https://backtest-live.wickra.org)**;
 > one StrategySpec side by side in Python, Rust, JS and Go — **[playground.wickra.org](https://playground.wickra.org)**;
-> all 514 indicators of the core over a real Binance feed — **[live.wickra.org](https://live.wickra.org)**. Zero backend, all of them.
+> all 515 indicators of the core over a real Binance feed — **[live.wickra.org](https://live.wickra.org)**. Zero backend, all of them.
 
 **Part of the [Wickra ecosystem](https://github.com/wickra-lib).** Built on the
 same deterministic engine and ten-language binding surface as
@@ -73,7 +73,7 @@ languages, byte for byte.
 
 ## Status
 
-**0.2.1 — the current release.** The core, the CLI, all ten language bindings,
+**0.2.2 — the current release.** The core, the CLI, all ten language bindings,
 the golden trajectory corpus, the property + fuzz suites, the benchmarks and one
 runnable example per language are built and green across Linux, macOS and
 Windows. Track progress in [ROADMAP.md](ROADMAP.md) and
