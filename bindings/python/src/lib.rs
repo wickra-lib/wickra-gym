@@ -37,7 +37,8 @@ impl RawEnv {
 
 /// The native extension module (`wickra_gym._wickra_gym`).
 #[pymodule]
-fn _wickra_gym(m: &Bound<'_, PyModule>) -> PyResult<()> {
+#[pyo3(name = "_wickra_gym")]
+fn wickra_gym_extension(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_class::<RawEnv>()?;
     m.add("__version__", wickra_gym_core::version())?;
     Ok(())
